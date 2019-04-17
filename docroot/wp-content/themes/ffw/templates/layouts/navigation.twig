@@ -1,0 +1,7 @@
+<nav class="nav main-menu {% if menu_scroll %}menu-scroll{% endif %}">
+  <ul>
+    {% for item in menu.main.get_items %}
+      {% include 'menu-item.twig' with {'item': item} %}
+    {% endfor %}
+  </ul>
+</nav>

@@ -1,0 +1,12 @@
+<div class="block-footer-menu {{ component_class }} {% if layout %}col-md-{{ layout }}{% endif %}">
+  <div class="block--inner">
+    <h2 class="block-title">{{ footer_title }}</h2>
+    <div class="block--content">
+      <ul class="footer-menu">
+        {% for item in fn('wp_get_nav_menu_items', footer_menu_select) %}
+          <li class="menu-item"><a href="{{ item.url }}">{{ item.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>

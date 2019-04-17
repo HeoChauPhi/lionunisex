@@ -1,0 +1,21 @@
+{% set current_link = fn('get_permalink') %}
+
+<div class="block-user-login">
+  <ul>
+    {% if fn('is_user_logged_in') %}
+      {% set current_user = fn('wp_get_current_user') %}
+      {% if current_user.data.display_name %}
+        {% set user_name = current_user.data.display_name %}
+      {% elseif current_user.data.user_nicename %}
+        {% set user_name = current_user.data.user_nicename %}
+      {% else %}
+        {% set user_name = current_user.data.user_login %}
+      {% endif %}
+      <li><a href="{{ fn('wp_logout_url', current_link) }}">{{ pll_e('logout') }}</a></li>
+      <li>{{ pll_e('hello') }} <a href="{{ fn('get_edit_profile_url') }}">{{ user_name }}</a>!</li>
+    {% else %}
+      <li><a href="{{ fn('wp_login_url', current_link) }}">{{ pll_e('login') }}</a></li>
+      <li><a href="{{ fn('wp_registration_url') }}&#38;redirect_to={{ current_link }}">{{ pll_e('register') }}</a></li>
+    {% endif %}
+  </ul>
+</div>

@@ -1,0 +1,37 @@
+{
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "advanced-custom-fields",
+        "type": "wordpress-plugin",
+        "version": "5.7.13",
+        "dist": {
+          "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&k=b3JkZXJfaWQ9NDcwMDB8dHlwZT1kZXZlbG9wZXJ8ZGF0ZT0yMDE0LTEyLTMwIDE5OjAxOjU1&t=5.7.13",
+          "type": "zip"
+        },
+        "require": {
+          "composer/installers": "~1.0"
+        }
+      }
+    }
+  ],
+  "extra": {
+    "installer-paths": {
+      "wp-libs/plugins/{$name}/": ["type:wordpress-plugin"]
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "vendor-dir": "wp-libs/vendor"
+  },
+  "require": {
+    "advanced-custom-fields": "5.7.13",
+    "timber/timber": "^1.9.2"
+  }
+}

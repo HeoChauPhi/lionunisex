@@ -1,0 +1,45 @@
+@mixin breakpoint($point) {
+  @if $point == sidewide {
+    @media (min-width: 1920px) { @content ; }
+  }
+
+  @if $point == desktop {
+    @media (min-width: 1366px) { @content ; }
+  }
+
+  @else if $point == laptop {
+    @media (min-width: 1024px) { @content ; }
+  }
+
+  @else if $point == tablet {
+    @media (min-width: 768px) { @content ; }
+  }
+
+  @else if $point == phablet {
+    @media (min-width: 600px)  { @content ; }
+  }
+
+  @else if $point == mobileonly {
+    @media (max-width: 480px)  { @content ; }
+  }
+
+  @else if $point == smalldevice {
+    @media (max-width: 1023px)  { @content ; }
+  }
+
+  @else if $point == colmd {
+    @media (min-width: 992px)  { @content ; }
+  }
+
+  @else if $point == colmdDown {
+    @media (max-width: 991px)  { @content ; }
+  }
+
+  @else if $point == wpdevice {
+    @media (min-width: 783px)  { @content ; }
+  }
+
+  @else {
+    @media (min-width: $point) { @content ; }
+  }
+}

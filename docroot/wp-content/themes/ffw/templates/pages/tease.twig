@@ -1,0 +1,29 @@
+<div class="block-content top-translation">
+  <div class="container-wide">
+    <div class="block-content__wrappre">
+      <div class="block-main-content">
+        <div class="date align--center">{{ post.date }}</div>
+        {% if post.get_field('summary') %}
+        <div class="sub-page-title">{{ post.get_field('summary') }}</div>
+        {% endif %}
+        {{ function('shortcode', '[share_buttons]') }}
+        <div class="block-content__body">{{ post.content|shortcodes }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{#% if related('category') %}
+  <h3 class="related-title block-title">Related post</h3>
+  <ul class="post-related">
+    {% for post in function('related', 'category') %}
+      <li><a href="{{post.link}}">{{post.title}}</a></li>
+    {% endfor %}
+  </ul>
+{% endif %#}
+
+{#% if function('comments_open') %}
+{% include 'comments.twig' %}
+{{ function('comment_form') }}
+{% endif %#}
+

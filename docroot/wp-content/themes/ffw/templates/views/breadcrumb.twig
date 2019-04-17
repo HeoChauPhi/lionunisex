@@ -1,0 +1,11 @@
+<nav aria-label="breadcrumb" class="breadcrumb-wrapper animation-element" data-animate="fadeIn">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a href="{{ site.url }}">{{ __('home', 'pdj_theme') }}</a>
+    </li>
+
+    <li class="breadcrumb-item active" aria-current="page">
+      {{ post.title|length > 100 ? post.title|slice(0, 100) ~ '...' : post.title }}
+    </li>
+  </ol>
+</nav>

@@ -1,0 +1,24 @@
+{% set current_lang = global_qtransatex.language %}
+{% set current_lang_img = fn('site_url', '/wp-content/') ~ global_qtransatex.flag_location ~ global_qtransatex.flag[current_lang] %}
+
+<div class="language-chooser language-chooser-image qtranxs_language_chooser">
+  <div class="current-lang hidden-on-desktop js-toogle--lang">
+    <img src="{{ current_lang_img }}"  alt="{{ global_qtransatex.language_name[current_lang] }}">
+    <i class="fa fa-angle-down" aria-hidden="true"></i>
+  </div>
+  <div class="lang-list">
+  {% for item in qtranslate_arr %}
+  {% if item.slug == global_qtransatex.default_language %}
+    {% set lang_url = fn('site_url') %}
+  {% else %}
+    {% set lang_url = fn('site_url') ~ '/' ~ item.slug ~ '/' %}
+  {% endif %}
+    <div class="lang-{{item.slug}}">
+      <a href="{{ lang_url }}" hreflang="{{ item.slug }}" title="{{ item.name }} ({{ item.slug }})" class="qtranxs_image qtranxs_image_{{ item.slug }}">
+        <img src="{{ item.flag }}" alt="{{ item.name }} ({{ item.slug }})">
+        <span class="qtranxs_text">{{ item.name }}</span>
+      </a>
+    </div>
+  {% endfor %}
+  </div>
+</div>

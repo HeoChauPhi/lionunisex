@@ -1,0 +1,10 @@
+<div class="block-footer-social col-md-4">
+  {% if facebook_fanpage %}
+  {{ facebook_fanpage }}
+  {% endif %}
+  <ul class="social-list">
+  {% for item in social_list %}
+    <li class="social-item"><a href="{{ item.social_url }}" style="background-color: {{ item.social_color }};">{{ item.social_icon }}</a></li>
+  {% endfor %}
+  </ul>
+</div>

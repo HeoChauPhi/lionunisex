@@ -1,0 +1,7 @@
+# Packages
+#wp-libs/vendor/
+#wp-libs/plugins/
+
+# File setting
+composer.lock
+prepros-6.config

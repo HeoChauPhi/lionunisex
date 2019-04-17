@@ -1,0 +1,7 @@
+<li class="nav-main-item {{item.classes | join(' ')}} {% if item.current %} active{% endif %}{% if item.get_children %} expanded-menu{% endif %}">
+  <a class="nav-main-link {% if item_class %}{{ item_class }}{% endif %}" href="{{item.get_link}}">{{item.title}}</a>
+  {% if item.get_children %}
+    <span class="expanded-menu__button hidden-on-desktop js-toggle-menu-expanded"></span>
+    {% include 'sub-menu.twig' with {'child': item.get_children} %}
+  {% endif %}
+</li>

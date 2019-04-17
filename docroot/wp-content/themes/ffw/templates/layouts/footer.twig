@@ -1,0 +1,31 @@
+{% block footer %}
+  <footer id="footer" class="footer footer-wrapper">
+    <div class="footer-pannel">
+      <div class="container">
+        <div class="row">
+          {% for key, footer in fn('array_unset', footer_widget, '_multiwidget') %}
+            <div class="col-md-8">
+                {{ function('acfwidget', 'footer_components', 'footer_widget-' ~ key ) }}
+            </div>
+            <div class="col-md-4">
+              {% if fn('get_field', 'footer_social', 'widget_footer_widget-' ~ key ) %}
+                {% set footer_social = fn('get_field', 'footer_social', 'widget_footer_widget-' ~ key ) %}
+                {% include 'footer-social.twig' with {'facebook_fanpage': footer_social.facebook_fanpage_url, 'social_list': footer_social.social_list} %}
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+        {% for key, footer in fn('array_unset', footer_widget, '_multiwidget') %}
+          {{ fn('get_field', 'footer_copyright', 'widget_footer_widget-' ~ key ) }}
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="back-to-top js-back-top">{{ __('Back to Top', 'ffw_theme') }}</div>
+  </footer>
+{% endblock %}

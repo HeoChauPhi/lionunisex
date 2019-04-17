@@ -1,0 +1,75 @@
+.no-margin {
+  margin: 0 !important;
+}
+
+.alignleft {
+  float: left;
+  margin-right: rem(20px);
+}
+
+.alignright {
+  float: right;
+  margin-left: rem(20px);
+}
+
+.hidden-on-desktop {
+  @include breakpoint(laptop) {
+    display: none;
+  }
+}
+
+.hidden-on-mobile {
+  display: none;
+
+  @include breakpoint(laptop) {
+    display: block;
+  }
+}
+
+.bg-overlay {
+  background-color: rgba(0,0,0,0.8);
+  bottom: 0;
+  left: 0;
+  opacity: 0.8;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: -2;
+}
+
+.button-scroll-down {
+  border-radius: rem(500px);
+  border: rem(1px) solid $white;
+  cursor: pointer;
+  display: block;
+  height: rem(56px);
+  margin: 0 auto;
+  position: relative;
+  width: rem(31px);
+
+  &:before {
+    -webkit-animation: controlButtonown 2s;
+    -webkit-animation-iteration-count: infinite;
+    animation: controlButtonown 2s;
+    animation-iteration-count: infinite;
+    content: '';
+    height: rem(8px);
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: rem(10px);
+    width: rem(3px);
+    background-color: $white;
+    margin: 0 auto;
+  }
+}
+
+@-webkit-keyframes controlButtonown {
+  from {top: rem(10px);}
+  to {top: rem(20px);}
+}
+
+@keyframes controlButtonown {
+  from {top: rem(10px);}
+  to {top: rem(20px);}
+}

@@ -1,0 +1,37 @@
+// Default variables.
+@import 'default-variables';
+
+// Bootstrap Framework.
+@import '../bootstrap/assets/stylesheets/bootstrap';
+
+// Base-theme overrides.
+//@import 'overrides';
+
+// Child-theme custom.
+@import 'libs/sass-compass/compass';
+@import 'libs/fontawesome/fontawesome';
+@import 'libs/slick';
+@import 'libs/jquer-fancybox';
+@import 'libs/parallax';
+@import 'libs/animate';
+
+@import 'base/functions';
+@import 'base/mixin';
+@import 'base/fonts';
+@import 'base/typography';
+@import 'base/helper';
+@import 'base/navigation';
+
+@import 'layout/header';
+@import 'layout/footer';
+@import 'layout/main-content';
+@import 'layout/sidebar';
+
+@import 'blocks/blocks';
+
+@import 'views/views';
+
+@import 'pages/pages';
+
+// Custom Style
+@import 'custom-style';

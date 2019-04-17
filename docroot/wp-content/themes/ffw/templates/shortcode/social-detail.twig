@@ -1,0 +1,19 @@
+<div class="social-wrapper">
+  <div class="social-icons">
+    <div class="social-icons__label">{{ __('Share this', 'psj_theme') }}</div>
+    <ul class="social-icons__list">
+      <li class="social-icons__item">
+        <a class="social-icons__icon icon-linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url={{ permalink }}&title={{ title }}&summary=&source=" target="_blank">{{ __('linkedin', 'ffw_theme') }}</a>
+      </li>
+      <li class="social-icons__item">
+        <a class="social-icons__icon icon-facebook" href="http://www.facebook.com/sharer/sharer.php?u={{ permalink }}" target="_blank">{{ __('facebook', 'ffw_theme') }}</a>
+      </li>
+      <li class="social-icons__item">
+        <a class="social-icons__icon icon-twitter" href="http://www.twitter.com/share?url={{ permalink }}" target="_blank">{{ __('twitter', 'ffw_theme') }}</a>
+      </li>
+    </ul>
+  </div>
+  {% if print_icon == 1 %}
+  <div class="print-content"><a href="javascript:window.print()">{{ __('Print', 'ffw_theme') }}</a></div>
+  {% endif %}
+</div>

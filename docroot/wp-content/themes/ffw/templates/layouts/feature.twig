@@ -1,0 +1,31 @@
+{% if fn('is_front_page') %}
+  <div id="feature" class="feature front-banner">
+    <div class="feature-media parallax-window" data-parallax="scroll" data-image-src="{{ post.get_field('feature_banner').url }}" title="{{ post.get_field('feature_banner').title|replace({'-': ' ', '_': ' '}) }}"></div>
+    <div class="container">
+      <div class="feature-content">
+        {% if post.get_field('feature_small_title') %}
+        <h3 class="feature-small-title">{{ post.get_field('feature_small_title') }}</h3>
+        {% endif %}
+        {% if post.get_field('feature_title') %}
+        <h2 class="feature-big-title">{{ post.get_field('feature_title') }}</h2>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% else %}
+    <div id="feature" class="feature">
+      <div class="feature-media parallax-window" data-parallax="scroll" data-image-src="{{ post.get_field('feature_banner').url }}" title="{{ post.get_field('feature_banner').title|replace({'-': ' ', '_': ' '}) }}"></div>
+      <div class="container">
+
+      {% if fn('is_page') %}
+        {% if title_option != "on" %}
+          <h1 id="page-title">{{ post.title }}</h1>
+        {% endif %}
+      {% else %}
+        <h1 id="page-title">{{ post.title }}</h1>
+      {% endif %}
+      
+      {% include 'breadcrumb.twig' %}
+      </div>
+    </div>
+{% endif %}

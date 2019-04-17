@@ -1,0 +1,27 @@
+html {
+  @include lato;
+  font-size: $base-font-size;
+  line-height: 1.5;
+}
+
+body {
+  @include lato;
+  color: $color-base;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+a {
+  color: $color-link;
+
+  &:hover {
+    color: $color-link-hover;
+    cursor: pointer;
+    text-decoration: none;
+  }
+}
+
+img {
+  height: auto;
+  max-width: 100%;
+}

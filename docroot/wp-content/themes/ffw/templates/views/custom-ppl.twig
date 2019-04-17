@@ -1,0 +1,16 @@
+<div class="language-chooser language-chooser-image">
+  <div class="current-lang hidden-on-desktop js-toogle--lang">
+    {{ current_lang_flag }}
+    <i class="fa fa-angle-down" aria-hidden="true"></i>
+  </div>
+  <div class="lang-list">
+  {% for item in global_ppl %}
+  <div class="lang-{{item.slug}}">
+    <a href="{{ item.search_url }}" hreflang="{{ item.slug }}" title="{{ item.name }} ({{ item.slug }})" class="qtranxs_image qtranxs_image_{{ item.slug }}">
+      {{ item.flag }}
+      <span class="qtranxs_text">{{ item.name }}</span>
+    </a>
+  </div>
+  {% endfor %}
+  </div>
+</div>
