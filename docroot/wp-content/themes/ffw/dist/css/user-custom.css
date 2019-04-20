@@ -1,0 +1,331 @@
+body {
+    width: 100%;
+    background-color: #f6e5dd;
+}
+
+.logo{
+    max-height: 40px;
+}
+
+
+.nav-item {
+    margin-left: 20px;
+}
+
+.content {
+    background-color: #ffffff;
+    width: 90%;
+    margin: auto;
+}
+
+@media (min-width: 1200px) {
+
+    .navbar {
+        margin: auto;
+        width: 100%;
+        height: auto;
+        background-color: #f6e5dd;
+        padding-right: 5%;
+        padding-left: 5%;
+        font-family: 'Muli', sans-serif;
+        font-size: large;
+        font-weight: bold;
+    }
+
+    .navbar-brand{
+        display: contents;
+    }
+
+
+    .text-layout-left {
+        line-height: 1em;
+        display: block;
+        font-size: 30px;
+        font-weight: bolder;
+    }
+
+    #content-layout-left {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #img-layout-left {
+        width: 400px;
+        display: block;
+        /*margin-left: auto;*/
+        /*margin-right: auto;*/
+    }
+    #content-layout-left {
+        margin-left: 15%;
+        margin-right: auto;
+    }
+
+    .bt-shop-collection {
+        margin-top: 30px;
+        margin-bottom: 50px;
+        font-size: small;
+        width: fit-content;
+        background-color: black;
+        color: white;
+        padding: 3px;
+        border-style: solid;
+        border-width: 2px;
+        border-color: black;
+    }
+
+    .bt-shop-collection:hover {
+        margin-top: 30px;
+        margin-bottom: 50px;
+        width: fit-content;
+        background-color: white;
+        color: black;
+        padding: 3px;
+        border-style: solid;
+        border-width: 2px;
+        border-color: black;
+    }
+
+    .content-instagram {
+        display: block;
+    }
+
+    .instargram {
+        z-index: 0;
+        margin-top: -3%;
+        position: relative;
+
+    }
+
+    .img-right {
+        height: 900px;
+        background-image: url("../images/img/girl.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+
+    button.navbar-toggler{
+        float: right;
+        margin-top: -35px;
+    }
+
+    .navbar {
+        display: block;
+        position: absolute;
+        margin: auto;
+        width: 100%;
+        height: auto;
+        background-color: #f6e5dd;
+        padding-right: 5%;
+        padding-left: 5%;
+        font-family: 'Muli', sans-serif;
+        font-size: large;
+        font-weight: bold;
+    }
+
+    .navbar-brand{
+        display: contents;
+    }
+
+
+    .text-layout-left {
+        font-size: 20px;
+        line-height: 1em;
+        display: block;
+        font-weight: bolder;
+    }
+    #content-layout-left {
+        margin-left: 15%;
+        margin-right: auto;
+        display: block;
+        margin-top: 25%;
+    }
+
+    #img-layout-left {
+        width: 80%;
+        display: block;
+    }
+
+    .bt-shop-collection {
+        margin-top: 30px;
+        margin-bottom: 50px;
+        width: fit-content;
+        background-color: black;
+        color: white;
+        padding: 3px;
+        border-style: solid;
+        border-width: 2px;
+        border-color: black;
+        font-size: small;
+    }
+
+    .bt-shop-collection:hover {
+        margin-top: 30px;
+        margin-bottom: 50px;
+        width: fit-content;
+        background-color: white;
+        color: black;
+        padding: 3px;
+        border-style: solid;
+        border-width: 2px;
+        border-color: black;
+        font-size: small;
+    }
+
+    .content-instagram {
+        display: none;
+    }
+
+    .instargram {
+        z-index: 0;
+        margin-top: 3.5%;
+        position: relative;
+
+    }
+
+    .img-right {
+        display: none;
+    }
+
+}
+
+.follow {
+    float: right;
+    margin-right: 10%;
+    border-style: solid;
+    border-width: 5px;
+    border-color: black;
+    padding: 4% 5% 4% 3%;
+}
+
+.text-follow {
+    line-height: 1.2em;
+    display: block;
+    font-size: 35px;
+    font-weight: bolder;
+}
+
+.text-follow-tag {
+    line-height: 2em;
+    display: block;
+    font-size: 18px;
+    font-weight: bolder;
+}
+
+
+.layout-left {
+    margin: auto;
+}
+
+.text-content-mid {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.name-product {
+    margin-top: 10px;
+    line-height: 1em;
+    display: block;
+    font-weight: bold;
+    font-size: medium;
+}
+
+.price-product {
+    display: block;
+    font-size: small;
+}
+
+.text-shop-all {
+    margin-top: 50px;
+    width: fit-content;
+    background-color: black;
+    color: white;
+    padding: 3px 30px 3px 30px;
+    border-style: solid;
+    border-width: 3px;
+    border-color: black;
+}
+
+.text-shop-all:hover {
+    margin-top: 50px;
+    width: fit-content;
+    background-color: white;
+    color: black;
+    padding: 3px 30px 3px 30px;
+    border-style: solid;
+    border-width: 3px;
+    border-color: black;
+}
+
+.product-two {
+    margin-top: 30px;
+}
+
+.main-product-two {
+    border-style: solid;
+    border-width: 5px;
+    border-color: black;
+}
+
+.img-product-two {
+}
+
+.special-edition {
+    position: absolute;
+    width: fit-content;
+    background-color: black;
+    color: white;
+    font-size: small;
+    padding: 0 10px 5px 10px;
+}
+
+.img-instargram {
+    padding: 15px;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+
+.text-instagram {
+    z-index: 1;
+    position: relative;
+}
+
+.wrapper {
+    display: inline-block;
+    position: relative;
+}
+
+.hover {
+    margin: 15px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 188, 212, 0);
+    transition: background-color 0.5s;
+}
+
+span.text {
+    display: none;
+    text-align: center;
+    margin-top: 45%;
+    color: white;
+    font-weight: bold;
+    /*display: block;*/
+}
+
+.hover:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.footer-copyright {
+    /*background-color: #f6e5dd;*/
+}
+

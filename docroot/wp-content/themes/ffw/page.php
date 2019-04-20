@@ -28,7 +28,14 @@ $context['protected_label'] = 'pwbox-'.( empty( $post->ID ) ? rand() : $post->ID
 $context['post'] = $post;
 $context['title_option'] = framework_page('title');
 
-//print_r($post);
+$posts = get_posts(array(
+    'post_type' => 'colection',
+    'posts_per_page' => -1
+));
+
+$context['collection'] = reset($posts);
+
+
 
 if ($protected) {
   Timber::render( 'single-protected.twig', $context );
