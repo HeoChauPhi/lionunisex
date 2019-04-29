@@ -281,8 +281,7 @@ class WC_Customer_Download_Data_Store implements WC_Customer_Download_Data_Store
 		global $wpdb;
 
 		$args = wp_parse_args(
-			$args,
-			array(
+			$args, array(
 				'user_email'  => '',
 				'user_id'     => '',
 				'order_id'    => '',
@@ -346,7 +345,7 @@ class WC_Customer_Download_Data_Store implements WC_Customer_Download_Data_Store
 			$query[] = $wpdb->prepare( 'LIMIT %d, %d', absint( $args['limit'] ) * absint( $args['page'] - 1 ), absint( $args['limit'] ) );
 		}
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		// phpcs:ignore WordPress.WP.PreparedSQL.NotPrepared
 		$results = $wpdb->get_results( implode( ' ', $query ), $get_results_output );
 
 		switch ( $args['return'] ) {

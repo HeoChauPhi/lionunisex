@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce
  * Plugin URI: https://woocommerce.com/
  * Description: An eCommerce toolkit that helps you sell anything. Beautifully.
- * Version: 3.6.1
+ * Version: 3.5.8
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain: woocommerce
@@ -12,7 +12,9 @@
  * @package WooCommerce
  */
 
-defined( 'ABSPATH' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 // Define WC_PLUGIN_FILE.
 if ( ! defined( 'WC_PLUGIN_FILE' ) ) {
@@ -25,14 +27,16 @@ if ( ! class_exists( 'WooCommerce' ) ) {
 }
 
 /**
- * Returns the main instance of WC.
+ * Main instance of WooCommerce.
+ *
+ * Returns the main instance of WC to prevent the need to use globals.
  *
  * @since  2.1
  * @return WooCommerce
  */
-function WC() { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid
+function wc() {
 	return WooCommerce::instance();
 }
 
 // Global for backwards compatibility.
-$GLOBALS['woocommerce'] = WC();
+$GLOBALS['woocommerce'] = wc();

@@ -36,7 +36,9 @@ class ActionScheduler_IntervalSchedule implements ActionScheduler_Schedule {
 	}
 
 	/**
-	 * @return int
+	 * @param DateTime $after
+	 *
+	 * @return DateTime|null
 	 */
 	public function interval_in_seconds() {
 		return $this->interval_in_seconds;

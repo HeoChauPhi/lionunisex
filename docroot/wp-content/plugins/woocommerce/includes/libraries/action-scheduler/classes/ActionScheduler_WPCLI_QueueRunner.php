@@ -27,8 +27,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 */
 	public function __construct( ActionScheduler_Store $store = null, ActionScheduler_FatalErrorMonitor $monitor = null, ActionScheduler_QueueCleaner $cleaner = null ) {
 		if ( ! ( defined( 'WP_CLI' ) && WP_CLI ) ) {
-			/* translators: %s php class name */
-			throw new Exception( sprintf( __( 'The %s class can only be run within WP CLI.', 'action-scheduler' ), __CLASS__ ) );
+			throw new Exception( __( 'The ' . __CLASS__ . ' class can only be run within WP CLI.', 'action-scheduler' ) );
 		}
 
 		parent::__construct( $store, $monitor, $cleaner );
@@ -77,7 +76,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 */
 	protected function add_hooks() {
 		add_action( 'action_scheduler_before_execute', array( $this, 'before_execute' ) );
-		add_action( 'action_scheduler_after_execute', array( $this, 'after_execute' ), 10, 2 );
+		add_action( 'action_scheduler_after_execute', array( $this, 'after_execute' ) );
 		add_action( 'action_scheduler_failed_execution', array( $this, 'action_failed' ), 10, 2 );
 	}
 
@@ -112,7 +111,11 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 
 			$this->process_action( $action_id );
 			$this->progress_bar->tick();
-			$this->maybe_stop_the_insanity();
+
+			// Free up memory after every 50 items
+			if ( 0 === $this->progress_bar->current() % 50 ) {
+				$this->stop_the_insanity();
+			}
 		}
 
 		$completed = $this->progress_bar->current();
@@ -140,16 +143,11 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 *
 	 * @author Jeremy Pry
 	 *
-	 * @param int $action_id
-	 * @param null|ActionScheduler_Action $action The instance of the action. Default to null for backward compatibility.
+	 * @param $action_id
 	 */
-	public function after_execute( $action_id, $action = null ) {
-		// backward compatibility
-		if ( null === $action ) {
-			$action = $this->store->fetch_action( $action_id );
-		}
+	public function after_execute( $action_id ) {
 		/* translators: %s refers to the action ID */
-		WP_CLI::log( sprintf( __( 'Completed processing action %s with hook: %s', 'action-scheduler' ), $action_id, $action->get_hook() ) );
+		WP_CLI::log( sprintf( __( 'Completed processing action %s', 'action-scheduler' ), $action_id ) );
 	}
 
 	/**
@@ -201,17 +199,6 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 
 		if ( is_callable( array( $wp_object_cache, '__remoteset' ) ) ) {
 			call_user_func( array( $wp_object_cache, '__remoteset' ) ); // important
-		}
-	}
-
-	/**
-	 * Maybe trigger the stop_the_insanity() method to free up memory.
-	 */
-	protected function maybe_stop_the_insanity() {
-		// The value returned by progress_bar->current() might be padded. Remove padding, and convert to int.
-		$current_iteration = intval( trim( $this->progress_bar->current() ) );
-		if ( 0 === $current_iteration % 50 ) {
-			$this->stop_the_insanity();
 		}
 	}
 }

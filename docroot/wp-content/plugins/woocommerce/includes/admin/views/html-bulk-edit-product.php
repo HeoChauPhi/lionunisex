@@ -257,8 +257,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 							$options = array(
 								''  => __( '— No change —', 'woocommerce' ),
 								'1' => __( 'Change to:', 'woocommerce' ),
-								'2' => __( 'Increase existing stock by:', 'woocommerce' ),
-								'3' => __( 'Decrease existing stock by:', 'woocommerce' ),
 							);
 							foreach ( $options as $key => $value ) {
 								echo '<option value="' . esc_attr( $key ) . '">' . $value . '</option>';

@@ -222,16 +222,9 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	 */
 	protected function get_recurrence( $action ) {
 		$recurrence = $action->get_schedule();
-		if ( $recurrence->is_recurring() ) {
-			if ( method_exists( $recurrence, 'interval_in_seconds' ) ) {
-				return sprintf( __( 'Every %s', 'action-scheduler' ), self::human_interval( $recurrence->interval_in_seconds() ) );
-			}
-
-			if ( method_exists( $recurrence, 'get_recurrence' ) ) {
-				return sprintf( __( 'Cron %s', 'action-scheduler' ), $recurrence->get_recurrence() );
-			}
+		if ( method_exists( $recurrence, 'interval_in_seconds' ) ) {
+			return sprintf( __( 'Every %s', 'action-scheduler' ), self::human_interval( $recurrence->interval_in_seconds() ) );
 		}
-
 		return __( 'Non-repeating', 'action-scheduler' );
 	}
 
@@ -287,7 +280,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	protected function get_log_entry_html( ActionScheduler_LogEntry $log_entry, DateTimezone $timezone ) {
 		$date = $log_entry->get_date();
 		$date->setTimezone( $timezone );
-		return sprintf( '<li><strong>%s</strong><br/>%s</li>', esc_html( $date->format( 'Y-m-d H:i:s O' ) ), esc_html( $log_entry->get_message() ) );
+		return sprintf( '<li><strong>%s</strong><br/>%s</li>', esc_html( $date->format( 'Y-m-d H:i:s e' ) ), esc_html( $log_entry->get_message() ) );
 	}
 
 	/**
@@ -385,7 +378,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 
 		$next_timestamp = $schedule->next()->getTimestamp();
 
-		$schedule_display_string .= $schedule->next()->format( 'Y-m-d H:i:s O' );
+		$schedule_display_string .= $schedule->next()->format( 'Y-m-d H:i:s e' );
 		$schedule_display_string .= '<br/>';
 
 		if ( gmdate( 'U' ) > $next_timestamp ) {

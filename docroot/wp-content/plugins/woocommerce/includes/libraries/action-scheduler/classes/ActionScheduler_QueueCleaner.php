@@ -19,6 +19,13 @@ class ActionScheduler_QueueCleaner {
 	private $month_in_seconds = 2678400;
 
 	/**
+	 * Five minutes in seconds
+	 *
+	 * @var int
+	 */
+	private $five_minutes = 300;
+
+	/**
 	 * ActionScheduler_QueueCleaner constructor.
 	 *
 	 * @param ActionScheduler_Store $store      The store instance.
@@ -70,16 +77,8 @@ class ActionScheduler_QueueCleaner {
 		}
 	}
 
-	/**
-	 * Unclaim pending actions that have not been run within a given time limit.
-	 *
-	 * When called by ActionScheduler_Abstract_QueueRunner::run_cleanup(), the time limit passed
-	 * as a parameter is 10x the time limit used for queue processing.
-	 *
-	 * @param int $time_limit The number of seconds to allow a queue to run before unclaiming its pending actions. Default 300 (5 minutes).
-	 */
-	public function reset_timeouts( $time_limit = 300 ) {
-		$timeout = apply_filters( 'action_scheduler_timeout_period', $time_limit );
+	public function reset_timeouts() {
+		$timeout = apply_filters( 'action_scheduler_timeout_period', $this->five_minutes );
 		if ( $timeout < 0 ) {
 			return;
 		}
@@ -98,17 +97,8 @@ class ActionScheduler_QueueCleaner {
 		}
 	}
 
-	/**
-	 * Mark actions that have been running for more than a given time limit as failed, based on
-	 * the assumption some uncatachable and unloggable fatal error occurred during processing.
-	 *
-	 * When called by ActionScheduler_Abstract_QueueRunner::run_cleanup(), the time limit passed
-	 * as a parameter is 10x the time limit used for queue processing.
-	 *
-	 * @param int $time_limit The number of seconds to allow an action to run before it is considered to have failed. Default 300 (5 minutes).
-	 */
-	public function mark_failures( $time_limit = 300 ) {
-		$timeout = apply_filters( 'action_scheduler_failure_period', $time_limit );
+	public function mark_failures() {
+		$timeout = apply_filters( 'action_scheduler_failure_period', $this->five_minutes );
 		if ( $timeout < 0 ) {
 			return;
 		}
@@ -129,13 +119,12 @@ class ActionScheduler_QueueCleaner {
 	/**
 	 * Do all of the cleaning actions.
 	 *
-	 * @param int $time_limit The number of seconds to use as the timeout and failure period. Default 300 (5 minutes).
 	 * @author Jeremy Pry
 	 */
-	public function clean( $time_limit = 300 ) {
+	public function clean() {
 		$this->delete_old_actions();
-		$this->reset_timeouts( $time_limit );
-		$this->mark_failures( $time_limit );
+		$this->reset_timeouts();
+		$this->mark_failures();
 	}
 
 	/**

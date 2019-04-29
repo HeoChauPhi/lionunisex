@@ -111,9 +111,7 @@ class WC_Shipping_Flat_Rate extends WC_Shipping_Method {
 				'percent' => '',
 				'min_fee' => '',
 				'max_fee' => '',
-			),
-			$atts,
-			'fee'
+			), $atts, 'fee'
 		);
 
 		$calculated_fee = 0;
@@ -153,8 +151,7 @@ class WC_Shipping_Flat_Rate extends WC_Shipping_Method {
 		if ( '' !== $cost ) {
 			$has_costs    = true;
 			$rate['cost'] = $this->evaluate_cost(
-				$cost,
-				array(
+				$cost, array(
 					'qty'  => $this->get_package_item_qty( $package ),
 					'cost' => $package['contents_cost'],
 				)
@@ -162,7 +159,7 @@ class WC_Shipping_Flat_Rate extends WC_Shipping_Method {
 		}
 
 		// Add shipping class costs.
-		$shipping_classes = WC()->shipping()->get_shipping_classes();
+		$shipping_classes = WC()->shipping->get_shipping_classes();
 
 		if ( ! empty( $shipping_classes ) ) {
 			$found_shipping_classes = $this->find_shipping_classes( $package );
@@ -179,8 +176,7 @@ class WC_Shipping_Flat_Rate extends WC_Shipping_Method {
 
 				$has_costs  = true;
 				$class_cost = $this->evaluate_cost(
-					$class_cost_string,
-					array(
+					$class_cost_string, array(
 						'qty'  => array_sum( wp_list_pluck( $products, 'quantity' ) ),
 						'cost' => array_sum( wp_list_pluck( $products, 'line_total' ) ),
 					)

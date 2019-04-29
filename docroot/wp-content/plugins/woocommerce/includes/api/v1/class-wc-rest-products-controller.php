@@ -352,7 +352,7 @@ class WC_REST_Products_V1_Controller extends WC_REST_Posts_Controller {
 				} else {
 					$default[] = array(
 						'id'     => 0,
-						'name'   => wc_attribute_taxonomy_slug( $key ),
+						'name'   => str_replace( 'pa_', '', $key ),
 						'option' => $value,
 					);
 				}
@@ -1781,7 +1781,7 @@ class WC_REST_Products_V1_Controller extends WC_REST_Posts_Controller {
 					'description' => __( 'Product status (post status).', 'woocommerce' ),
 					'type'        => 'string',
 					'default'     => 'publish',
-					'enum'        => array_merge( array_keys( get_post_statuses() ), array( 'future' ) ),
+					'enum'        => array_keys( get_post_statuses() ),
 					'context'     => array( 'view', 'edit' ),
 				),
 				'featured' => array(
@@ -2588,7 +2588,7 @@ class WC_REST_Products_V1_Controller extends WC_REST_Posts_Controller {
 			'default'           => 'any',
 			'description'       => __( 'Limit result set to products assigned a specific status.', 'woocommerce' ),
 			'type'              => 'string',
-			'enum'              => array_merge( array( 'any', 'future' ), array_keys( get_post_statuses() ) ),
+			'enum'              => array_merge( array( 'any' ), array_keys( get_post_statuses() ) ),
 			'sanitize_callback' => 'sanitize_key',
 			'validate_callback' => 'rest_validate_request_arg',
 		);

@@ -20,7 +20,7 @@ final class WooCommerce {
 	 *
 	 * @var string
 	 */
-	public $version = '3.6.1';
+	public $version = '3.5.8';
 
 	/**
 	 * The single instance of the class.
@@ -154,18 +154,7 @@ final class WooCommerce {
 		$this->define_constants();
 		$this->includes();
 		$this->init_hooks();
-	}
 
-	/**
-	 * When WP has loaded all plugins, trigger the `woocommerce_loaded` hook.
-	 *
-	 * This ensures `woocommerce_loaded` is called only after all other plugins
-	 * are loaded, to avoid issues caused by plugin directory naming changing
-	 * the load order. See #21524 for details.
-	 *
-	 * @since 3.6.0
-	 */
-	public function on_plugins_loaded() {
 		do_action( 'woocommerce_loaded' );
 	}
 
@@ -177,8 +166,6 @@ final class WooCommerce {
 	private function init_hooks() {
 		register_activation_hook( WC_PLUGIN_FILE, array( 'WC_Install', 'install' ) );
 		register_shutdown_function( array( $this, 'log_errors' ) );
-
-		add_action( 'plugins_loaded', array( $this, 'on_plugins_loaded' ), -1 );
 		add_action( 'after_setup_theme', array( $this, 'setup_environment' ) );
 		add_action( 'after_setup_theme', array( $this, 'include_template_functions' ), 11 );
 		add_action( 'init', array( $this, 'init' ), 0 );
@@ -187,8 +174,6 @@ final class WooCommerce {
 		add_action( 'init', array( $this, 'wpdb_table_fix' ), 0 );
 		add_action( 'init', array( $this, 'add_image_sizes' ) );
 		add_action( 'switch_blog', array( $this, 'wpdb_table_fix' ), 0 );
-		add_action( 'activated_plugin', array( $this, 'activated_plugin' ) );
-		add_action( 'deactivated_plugin', array( $this, 'deactivated_plugin' ) );
 	}
 
 	/**
@@ -198,7 +183,7 @@ final class WooCommerce {
 	 */
 	public function log_errors() {
 		$error = error_get_last();
-		if ( in_array( $error['type'], array( E_ERROR, E_PARSE, E_COMPILE_ERROR, E_USER_ERROR, E_RECOVERABLE_ERROR ), true ) ) {
+		if ( in_array( $error['type'], array( E_ERROR, E_PARSE, E_COMPILE_ERROR, E_USER_ERROR, E_RECOVERABLE_ERROR ) ) ) {
 			$logger = wc_get_logger();
 			$logger->critical(
 				/* translators: 1: error message 2: file name and path 3: line number */
@@ -243,26 +228,6 @@ final class WooCommerce {
 	}
 
 	/**
-	 * Returns true if the request is a non-legacy REST API request.
-	 *
-	 * Legacy REST requests should still run some extra code for backwards compatibility.
-	 *
-	 * @todo: replace this function once core WP function is available: https://core.trac.wordpress.org/ticket/42061.
-	 *
-	 * @return bool
-	 */
-	public function is_rest_api_request() {
-		if ( empty( $_SERVER['REQUEST_URI'] ) ) {
-			return false;
-		}
-
-		$rest_prefix         = trailingslashit( rest_get_url_prefix() );
-		$is_rest_api_request = ( false !== strpos( $_SERVER['REQUEST_URI'], $rest_prefix ) ); // phpcs:disable WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-
-		return apply_filters( 'woocommerce_is_rest_api_request', $is_rest_api_request );
-	}
-
-	/**
 	 * What type of request is this?
 	 *
 	 * @param  string $type admin, ajax, cron or frontend.
@@ -277,7 +242,7 @@ final class WooCommerce {
 			case 'cron':
 				return defined( 'DOING_CRON' );
 			case 'frontend':
-				return ( ! is_admin() || defined( 'DOING_AJAX' ) ) && ! defined( 'DOING_CRON' ) && ! $this->is_rest_api_request();
+				return ( ! is_admin() || defined( 'DOING_AJAX' ) ) && ! defined( 'DOING_CRON' ) && ! defined( 'REST_REQUEST' );
 		}
 	}
 
@@ -371,7 +336,6 @@ final class WooCommerce {
 		include_once WC_ABSPATH . 'includes/class-wc-logger.php';
 		include_once WC_ABSPATH . 'includes/queue/class-wc-action-queue.php';
 		include_once WC_ABSPATH . 'includes/queue/class-wc-queue.php';
-		include_once WC_ABSPATH . 'includes/admin/marketplace-suggestions/class-wc-marketplace-updater.php';
 
 		/**
 		 * Data stores - used to store and retrieve CRUD object data from the database.
@@ -408,13 +372,6 @@ final class WooCommerce {
 		include_once WC_ABSPATH . 'includes/class-wc-api.php';
 		include_once WC_ABSPATH . 'includes/class-wc-auth.php';
 		include_once WC_ABSPATH . 'includes/class-wc-register-wp-admin-settings.php';
-
-		/**
-		 * Blocks.
-		 */
-		if ( file_exists( WC_ABSPATH . 'includes/blocks/class-wc-block-library.php' ) ) {
-			include_once WC_ABSPATH . 'includes/blocks/class-wc-block-library.php';
-		}
 
 		/**
 		 * Libraries
@@ -568,11 +525,7 @@ final class WooCommerce {
 	 * Ensure theme and server variable compatibility and setup image sizes.
 	 */
 	public function setup_environment() {
-		/**
-		 * WC_TEMPLATE_PATH constant.
-		 *
-		 * @deprecated 2.2 Use WC()->template_path() instead.
-		 */
+		/* @deprecated 2.2 Use WC()->template_path() instead. */
 		$this->define( 'WC_TEMPLATE_PATH', $this->template_path() );
 
 		$this->add_thumbnail_support();
@@ -611,11 +564,7 @@ final class WooCommerce {
 		add_image_size( 'woocommerce_single', $single['width'], $single['height'], $single['crop'] );
 		add_image_size( 'woocommerce_gallery_thumbnail', $gallery_thumbnail['width'], $gallery_thumbnail['height'], $gallery_thumbnail['crop'] );
 
-		/**
-		 * Legacy image sizes.
-		 *
-		 * @deprecated These sizes will be removed in 4.0.
-		 */
+		// Registered for bw compat. @todo remove in 4.0.
 		add_image_size( 'shop_catalog', $thumbnail['width'], $thumbnail['height'], $thumbnail['crop'] );
 		add_image_size( 'shop_single', $single['width'], $single['height'], $single['crop'] );
 		add_image_size( 'shop_thumbnail', $gallery_thumbnail['width'], $gallery_thumbnail['height'], $gallery_thumbnail['crop'] );
@@ -695,55 +644,23 @@ final class WooCommerce {
 			return;
 		}
 
-		/**
-		 * Hook: woocommerce_load_webhooks_limit.
-		 *
-		 * @since 3.6.0
-		 * @param int $limit Used to limit how many webhooks are loaded. Default: no limit.
-		 */
-		$limit = apply_filters( 'woocommerce_load_webhooks_limit', null );
-
-		wc_load_webhooks( 'active', $limit );
+		wc_load_webhooks();
 	}
 
 	/**
-	 * Set tablenames inside WPDB object.
+	 * WooCommerce Payment Token Meta API and Term/Order item Meta - set table names.
 	 */
 	public function wpdb_table_fix() {
 		global $wpdb;
-
 		$wpdb->payment_tokenmeta = $wpdb->prefix . 'woocommerce_payment_tokenmeta';
+		$wpdb->order_itemmeta    = $wpdb->prefix . 'woocommerce_order_itemmeta';
 		$wpdb->tables[]          = 'woocommerce_payment_tokenmeta';
+		$wpdb->tables[]          = 'woocommerce_order_itemmeta';
 
-		$wpdb->order_itemmeta = $wpdb->prefix . 'woocommerce_order_itemmeta';
-		$wpdb->tables[]       = 'woocommerce_order_itemmeta';
-
-		$wpdb->wc_product_meta_lookup = $wpdb->prefix . 'wc_product_meta_lookup';
-		$wpdb->tables[]               = 'wc_product_meta_lookup';
-	}
-
-	/**
-	 * Ran when any plugin is activated.
-	 *
-	 * @since 3.6.0
-	 * @param string $filename The filename of the activated plugin.
-	 */
-	public function activated_plugin( $filename ) {
-		include_once dirname( __FILE__ ) . '/admin/helper/class-wc-helper.php';
-
-		WC_Helper::activated_plugin( $filename );
-	}
-
-	/**
-	 * Ran when any plugin is deactivated.
-	 *
-	 * @since 3.6.0
-	 * @param string $filename The filename of the deactivated plugin.
-	 */
-	public function deactivated_plugin( $filename ) {
-		include_once dirname( __FILE__ ) . '/admin/helper/class-wc-helper.php';
-
-		WC_Helper::deactivated_plugin( $filename );
+		if ( get_option( 'db_version' ) < 34370 ) {
+			$wpdb->woocommerce_termmeta = $wpdb->prefix . 'woocommerce_termmeta';
+			$wpdb->tables[]             = 'woocommerce_termmeta';
+		}
 	}
 
 	/**

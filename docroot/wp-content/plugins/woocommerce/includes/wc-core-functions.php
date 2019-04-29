@@ -34,7 +34,7 @@ require WC_ABSPATH . 'includes/wc-webhook-functions.php';
  * Filters on data used in admin and frontend.
  */
 add_filter( 'woocommerce_coupon_code', 'html_entity_decode' );
-add_filter( 'woocommerce_coupon_code', 'wc_sanitize_coupon_code' );
+add_filter( 'woocommerce_coupon_code', 'sanitize_text_field' );
 add_filter( 'woocommerce_coupon_code', 'wc_strtolower' );
 add_filter( 'woocommerce_stock_amount', 'intval' ); // Stock amounts are integers by default.
 add_filter( 'woocommerce_shipping_rate_label', 'sanitize_text_field' ); // Shipping rate label.
@@ -157,35 +157,21 @@ function wc_update_order( $args ) {
  * @param string $name Template name (default: '').
  */
 function wc_get_template_part( $slug, $name = '' ) {
-	$cache_key = sanitize_key( implode( '-', array( 'template-part', $slug, $name ) ) );
-	$template  = (string) wp_cache_get( $cache_key, 'woocommerce' );
+	$template = '';
 
-	if ( ! $template ) {
-		if ( $name ) {
-			$template = WC_TEMPLATE_DEBUG_MODE ? '' : locate_template(
-				array(
-					"{$slug}-{$name}.php",
-					WC()->template_path() . "{$slug}-{$name}.php",
-				)
-			);
+	// Look in yourtheme/slug-name.php and yourtheme/woocommerce/slug-name.php.
+	if ( $name && ! WC_TEMPLATE_DEBUG_MODE ) {
+		$template = locate_template( array( "{$slug}-{$name}.php", WC()->template_path() . "{$slug}-{$name}.php" ) );
+	}
 
-			if ( ! $template ) {
-				$fallback = WC()->plugin_path() . "/templates/{$slug}-{$name}.php";
-				$template = file_exists( $fallback ) ? $fallback : '';
-			}
-		}
+	// Get default slug-name.php.
+	if ( ! $template && $name && file_exists( WC()->plugin_path() . "/templates/{$slug}-{$name}.php" ) ) {
+		$template = WC()->plugin_path() . "/templates/{$slug}-{$name}.php";
+	}
 
-		if ( ! $template ) {
-			// If template file doesn't exist, look in yourtheme/slug.php and yourtheme/woocommerce/slug.php.
-			$template = WC_TEMPLATE_DEBUG_MODE ? '' : locate_template(
-				array(
-					"{$slug}.php",
-					WC()->template_path() . "{$slug}.php",
-				)
-			);
-		}
-
-		wp_cache_set( $cache_key, $template, 'woocommerce' );
+	// If template file doesn't exist, look in yourtheme/slug.php and yourtheme/woocommerce/slug.php.
+	if ( ! $template && ! WC_TEMPLATE_DEBUG_MODE ) {
+		$template = locate_template( array( "{$slug}.php", WC()->template_path() . "{$slug}.php" ) );
 	}
 
 	// Allow 3rd party plugins to filter template file from their plugin.
@@ -205,51 +191,28 @@ function wc_get_template_part( $slug, $name = '' ) {
  * @param string $default_path  Default path. (default: '').
  */
 function wc_get_template( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
-	$cache_key = sanitize_key( implode( '-', array( 'template', $template_name, $template_path, $default_path ) ) );
-	$template  = (string) wp_cache_get( $cache_key, 'woocommerce' );
-
-	if ( ! $template ) {
-		$template = wc_locate_template( $template_name, $template_path, $default_path );
-		wp_cache_set( $cache_key, $template, 'woocommerce' );
-	}
-
-	// Allow 3rd party plugin filter template file from their plugin.
-	$filter_template = apply_filters( 'wc_get_template', $template, $template_name, $args, $template_path, $default_path );
-
-	if ( $filter_template !== $template ) {
-		if ( ! file_exists( $filter_template ) ) {
-			/* translators: %s template */
-			wc_doing_it_wrong( __FUNCTION__, sprintf( __( '%s does not exist.', 'woocommerce' ), '<code>' . $template . '</code>' ), '2.1' );
-			return;
-		}
-		$template = $filter_template;
-	}
-
-	$action_args = array(
-		'template_name' => $template_name,
-		'template_path' => $template_path,
-		'located'       => $template,
-		'args'          => $args,
-	);
-
 	if ( ! empty( $args ) && is_array( $args ) ) {
-		if ( isset( $args['action_args'] ) ) {
-			wc_doing_it_wrong(
-				__FUNCTION__,
-				__( 'action_args should not be overwritten when calling wc_get_template.', 'woocommerce' ),
-				'3.6.0'
-			);
-			unset( $args['action_args'] );
-		}
 		extract( $args ); // @codingStandardsIgnoreLine
 	}
 
-	do_action( 'woocommerce_before_template_part', $action_args['template_name'], $action_args['template_path'], $action_args['located'], $action_args['args'] );
+	$located = wc_locate_template( $template_name, $template_path, $default_path );
 
-	include $action_args['located'];
+	if ( ! file_exists( $located ) ) {
+		/* translators: %s template */
+		wc_doing_it_wrong( __FUNCTION__, sprintf( __( '%s does not exist.', 'woocommerce' ), '<code>' . $located . '</code>' ), '2.1' );
+		return;
+	}
 
-	do_action( 'woocommerce_after_template_part', $action_args['template_name'], $action_args['template_path'], $action_args['located'], $action_args['args'] );
+	// Allow 3rd party plugin filter template file from their plugin.
+	$located = apply_filters( 'wc_get_template', $located, $template_name, $args, $template_path, $default_path );
+
+	do_action( 'woocommerce_before_template_part', $template_name, $template_path, $located, $args );
+
+	include $located;
+
+	do_action( 'woocommerce_after_template_part', $template_name, $template_path, $located, $args );
 }
+
 
 /**
  * Like wc_get_template, but returns the HTML instead of outputting.
@@ -441,7 +404,7 @@ function get_woocommerce_currencies() {
 					'NZD' => __( 'New Zealand dollar', 'woocommerce' ),
 					'OMR' => __( 'Omani rial', 'woocommerce' ),
 					'PAB' => __( 'Panamanian balboa', 'woocommerce' ),
-					'PEN' => __( 'Sol', 'woocommerce' ),
+					'PEN' => __( 'Peruvian nuevo sol', 'woocommerce' ),
 					'PGK' => __( 'Papua New Guinean kina', 'woocommerce' ),
 					'PHP' => __( 'Philippine peso', 'woocommerce' ),
 					'PKR' => __( 'Pakistani rupee', 'woocommerce' ),
@@ -482,7 +445,6 @@ function get_woocommerce_currencies() {
 					'UYU' => __( 'Uruguayan peso', 'woocommerce' ),
 					'UZS' => __( 'Uzbekistani som', 'woocommerce' ),
 					'VEF' => __( 'Venezuelan bol&iacute;var', 'woocommerce' ),
-					'VES' => __( 'Bol&iacute;var soberano', 'woocommerce' ),
 					'VND' => __( 'Vietnamese &#x111;&#x1ed3;ng', 'woocommerce' ),
 					'VUV' => __( 'Vanuatu vatu', 'woocommerce' ),
 					'WST' => __( 'Samoan t&#x101;l&#x101;', 'woocommerce' ),
@@ -514,8 +476,7 @@ function get_woocommerce_currency_symbol( $currency = '' ) {
 	}
 
 	$symbols         = apply_filters(
-		'woocommerce_currency_symbols',
-		array(
+		'woocommerce_currency_symbols', array(
 			'AED' => '&#x62f;.&#x625;',
 			'AFN' => '&#x60b;',
 			'ALL' => 'L',
@@ -627,7 +588,7 @@ function get_woocommerce_currency_symbol( $currency = '' ) {
 			'NZD' => '&#36;',
 			'OMR' => '&#x631;.&#x639;.',
 			'PAB' => 'B/.',
-			'PEN' => 'S/',
+			'PEN' => 'S/.',
 			'PGK' => 'K',
 			'PHP' => '&#8369;',
 			'PKR' => '&#8360;',
@@ -669,7 +630,6 @@ function get_woocommerce_currency_symbol( $currency = '' ) {
 			'UYU' => '&#36;',
 			'UZS' => 'UZS',
 			'VEF' => 'Bs F',
-			'VES' => 'Bs.S',
 			'VND' => '&#8363;',
 			'VUV' => 'Vt',
 			'WST' => 'T',
@@ -758,13 +718,6 @@ function wc_get_theme_support( $prop = '', $default = null ) {
  * @return array Array of dimensions including width, height, and cropping mode. Cropping mode is 0 for no crop, and 1 for hard crop.
  */
 function wc_get_image_size( $image_size ) {
-	$cache_key = 'size-' . ( is_array( $image_size ) ? implode( '-', $image_size ) : $image_size );
-	$size      = wp_cache_get( $cache_key, 'woocommerce' );
-
-	if ( $size ) {
-		return $size;
-	}
-
 	$size = array(
 		'width'  => 600,
 		'height' => 600,
@@ -822,11 +775,7 @@ function wc_get_image_size( $image_size ) {
 		}
 	}
 
-	$size = apply_filters( 'woocommerce_get_image_size_' . $image_size, $size );
-
-	wp_cache_set( $cache_key, $size, 'woocommerce' );
-
-	return $size;
+	return apply_filters( 'woocommerce_get_image_size_' . $image_size, $size );
 }
 
 /**
@@ -877,11 +826,10 @@ function wc_print_js() {
  * @param  string  $value  Value of the cookie.
  * @param  integer $expire Expiry of the cookie.
  * @param  bool    $secure Whether the cookie should be served only over https.
- * @param  bool    $httponly Whether the cookie is only accessible over HTTP, not scripting languages like JavaScript. @since 3.6.0.
  */
-function wc_setcookie( $name, $value, $expire = 0, $secure = false, $httponly = false ) {
+function wc_setcookie( $name, $value, $expire = 0, $secure = false ) {
 	if ( ! headers_sent() ) {
-		setcookie( $name, $value, $expire, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, $secure, apply_filters( 'woocommerce_cookie_httponly', $httponly, $name, $value, $expire, $secure ) );
+		setcookie( $name, $value, $expire, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, $secure, apply_filters( 'woocommerce_cookie_httponly', false, $name, $value, $expire, $secure ) );
 	} elseif ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 		headers_sent( $file, $line );
 		trigger_error( "{$name} cookie cannot be set - headers already sent by {$file} on line {$line}", E_USER_NOTICE ); // @codingStandardsIgnoreLine
@@ -1113,30 +1061,30 @@ function wc_get_base_location() {
  * @return array
  */
 function wc_get_customer_default_location() {
-	$set_default_location_to = get_option( 'woocommerce_default_customer_address', 'geolocation' );
-	$default_location        = '' === $set_default_location_to ? '' : get_option( 'woocommerce_default_country', '' );
-	$location                = wc_format_country_state_string( apply_filters( 'woocommerce_customer_default_location', $default_location ) );
+	$location = array();
 
-	// Geolocation takes priority if used and if geolocation is possible.
-	if ( 'geolocation' === $set_default_location_to || 'geolocation_ajax' === $set_default_location_to ) {
-		$ua = wc_get_user_agent();
+	switch ( get_option( 'woocommerce_default_customer_address' ) ) {
+		case 'geolocation_ajax':
+		case 'geolocation':
+			// Exclude common bots from geolocation by user agent.
+			$ua = strtolower( wc_get_user_agent() );
 
-		// Exclude common bots from geolocation by user agent.
-		if ( ! stristr( $ua, 'bot' ) && ! stristr( $ua, 'spider' ) && ! stristr( $ua, 'crawl' ) ) {
-			$geolocation = WC_Geolocation::geolocate_ip( '', true, false );
-
-			if ( ! empty( $geolocation['country'] ) ) {
-				$location = $geolocation;
+			if ( ! strstr( $ua, 'bot' ) && ! strstr( $ua, 'spider' ) && ! strstr( $ua, 'crawl' ) ) {
+				$location = WC_Geolocation::geolocate_ip( '', true, false );
 			}
-		}
-	}
 
-	// Once we have a location, ensure it's valid, otherwise fallback to a valid location.
-	$allowed_country_codes = WC()->countries->get_allowed_countries();
-
-	if ( ! empty( $location['country'] ) && ! array_key_exists( $location['country'], $allowed_country_codes ) ) {
-		$location['country'] = current( $allowed_country_codes );
-		$location['state']   = '';
+			// Base fallback.
+			if ( empty( $location['country'] ) ) {
+				$location = wc_format_country_state_string( apply_filters( 'woocommerce_customer_default_location', get_option( 'woocommerce_default_country' ) ) );
+			}
+			break;
+		case 'base':
+			$location = wc_format_country_state_string( apply_filters( 'woocommerce_customer_default_location', get_option( 'woocommerce_default_country' ) ) );
+			break;
+		default:
+			$countries = WC()->countries->get_allowed_countries();
+			$location  = wc_format_country_state_string( apply_filters( 'woocommerce_customer_default_location', 1 === count( $countries ) ? key( $countries ) : '' ) );
+			break;
 	}
 
 	return apply_filters( 'woocommerce_customer_default_location_array', $location );
@@ -1339,7 +1287,7 @@ function wc_get_checkout_url() {
  * @param string|object $shipping_method class name (string) or a class object.
  */
 function woocommerce_register_shipping_method( $shipping_method ) {
-	WC()->shipping()->register_shipping_method( $shipping_method );
+	WC()->shipping->register_shipping_method( $shipping_method );
 }
 
 if ( ! function_exists( 'wc_get_shipping_zone' ) ) {
@@ -1370,8 +1318,7 @@ function wc_get_credit_card_type_label( $type ) {
 	$type = str_replace( '_', ' ', $type );
 
 	$labels = apply_filters(
-		'woocommerce_credit_card_type_labels',
-		array(
+		'woocommerce_credit_card_type_labels', array(
 			'mastercard'       => __( 'MasterCard', 'woocommerce' ),
 			'visa'             => __( 'Visa', 'woocommerce' ),
 			'discover'         => __( 'Discover', 'woocommerce' ),
@@ -1502,35 +1449,27 @@ function wc_postcode_location_matcher( $postcode, $objects, $object_id_key, $obj
 function wc_get_shipping_method_count( $include_legacy = false ) {
 	global $wpdb;
 
-	$transient_name    = $include_legacy ? 'wc_shipping_method_count_legacy' : 'wc_shipping_method_count';
-	$transient_version = WC_Cache_Helper::get_transient_version( 'shipping' );
-	$transient_value   = get_transient( $transient_name );
+	$transient_name = 'wc_shipping_method_count_' . ( $include_legacy ? 1 : 0 ) . '_' . WC_Cache_Helper::get_transient_version( 'shipping' );
+	$method_count   = get_transient( $transient_name );
 
-	if ( isset( $transient_value['value'], $transient_value['version'] ) && $transient_value['version'] === $transient_version ) {
-		return absint( $transient_value['value'] );
-	}
+	if ( false === $method_count ) {
+		$method_count = absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}woocommerce_shipping_zone_methods" ) );
 
-	$method_count = absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}woocommerce_shipping_zone_methods" ) );
+		if ( $include_legacy ) {
+			// Count activated methods that don't support shipping zones.
+			$methods = WC()->shipping->get_shipping_methods();
 
-	if ( $include_legacy ) {
-		// Count activated methods that don't support shipping zones.
-		$methods = WC()->shipping()->get_shipping_methods();
-
-		foreach ( $methods as $method ) {
-			if ( isset( $method->enabled ) && 'yes' === $method->enabled && ! $method->supports( 'shipping-zones' ) ) {
-				$method_count++;
+			foreach ( $methods as $method ) {
+				if ( isset( $method->enabled ) && 'yes' === $method->enabled && ! $method->supports( 'shipping-zones' ) ) {
+					$method_count++;
+				}
 			}
 		}
+
+		set_transient( $transient_name, $method_count, DAY_IN_SECONDS * 30 );
 	}
 
-	$transient_value = array(
-		'version' => $transient_version,
-		'value'   => $method_count,
-	);
-
-	set_transient( $transient_name, $transient_value, DAY_IN_SECONDS * 30 );
-
-	return $method_count;
+	return absint( $method_count );
 }
 
 /**
@@ -1540,7 +1479,7 @@ function wc_get_shipping_method_count( $include_legacy = false ) {
  * @param int $limit Time limit.
  */
 function wc_set_time_limit( $limit = 0 ) {
-	if ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) { // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.safe_modeDeprecatedRemoved
+	if ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) { // phpcs:ignore PHPCompatibility.PHP.DeprecatedIniDirectives.safe_modeDeprecatedRemoved
 		@set_time_limit( $limit ); // @codingStandardsIgnoreLine
 	}
 }
@@ -1613,21 +1552,6 @@ function wc_uasort_comparison( $a, $b ) {
 		return 0;
 	}
 	return ( $a < $b ) ? -1 : 1;
-}
-
-/**
- * Sort values based on ascii, usefull for special chars in strings.
- *
- * @param string $a First value.
- * @param string $b Second value.
- * @return int
- */
-function wc_ascii_uasort_comparison( $a, $b ) {
-	if ( function_exists( 'iconv' ) ) {
-		$a = iconv( 'UTF-8', 'ASCII//TRANSLIT', $a );
-		$b = iconv( 'UTF-8', 'ASCII//TRANSLIT', $b );
-	}
-	return strcmp( $a, $b );
 }
 
 /**
@@ -1915,8 +1839,7 @@ function wc_list_pluck( $list, $callback_or_field, $index_key = null ) {
 function wc_get_permalink_structure() {
 	$saved_permalinks = (array) get_option( 'woocommerce_permalinks', array() );
 	$permalinks       = wp_parse_args(
-		array_filter( $saved_permalinks ),
-		array(
+		array_filter( $saved_permalinks ), array(
 			'product_base'           => _x( 'product', 'slug', 'woocommerce' ),
 			'category_base'          => _x( 'product-category', 'slug', 'woocommerce' ),
 			'tag_base'               => _x( 'product-tag', 'slug', 'woocommerce' ),
@@ -2024,18 +1947,10 @@ function wc_enable_wc_plugin_headers( $headers ) {
 		include_once dirname( __FILE__ ) . '/admin/plugin-updates/class-wc-plugin-updates.php';
 	}
 
-	// WC requires at least - allows developers to define which version of WooCommerce the plugin requires to run.
-	$headers[] = WC_Plugin_Updates::VERSION_REQUIRED_HEADER;
-
-	// WC tested up to - allows developers  to define which version of WooCommerce they have tested up to.
-	$headers[] = WC_Plugin_Updates::VERSION_TESTED_HEADER;
-
-	// Woo - This is used in WooCommerce extensions and is picked up by the helper.
-	$headers[] = 'Woo';
-
+	$headers['WCRequires'] = WC_Plugin_Updates::VERSION_REQUIRED_HEADER;
+	$headers['WCTested']   = WC_Plugin_Updates::VERSION_TESTED_HEADER;
 	return $headers;
 }
-add_filter( 'extra_theme_headers', 'wc_enable_wc_plugin_headers' );
 add_filter( 'extra_plugin_headers', 'wc_enable_wc_plugin_headers' );
 
 /**
@@ -2201,7 +2116,7 @@ function wc_decimal_to_fraction( $decimal ) {
  */
 function wc_round_discount( $value, $precision ) {
 	if ( version_compare( PHP_VERSION, '5.3.0', '>=' ) ) {
-		return round( $value, $precision, WC_DISCOUNT_ROUNDING_MODE ); // phpcs:ignore PHPCompatibility.FunctionUse.NewFunctionParameters.round_modeFound
+		return round( $value, $precision, WC_DISCOUNT_ROUNDING_MODE ); // phpcs:ignore PHPCompatibility.PHP.NewFunctionParameters.round_modeFound
 	}
 
 	if ( 2 === WC_DISCOUNT_ROUNDING_MODE ) {

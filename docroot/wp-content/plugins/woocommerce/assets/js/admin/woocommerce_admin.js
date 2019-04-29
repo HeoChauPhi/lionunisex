@@ -343,5 +343,4 @@
 			}
 		});
 	});
-
 })( jQuery, woocommerce_admin );

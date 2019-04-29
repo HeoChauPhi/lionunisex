@@ -203,12 +203,9 @@ class WC_Report_Customers extends WC_Admin_Report {
 		);
 
 		$users_query = new WP_User_Query(
-			apply_filters(
-				'woocommerce_admin_report_customers_user_query_args',
-				array(
-					'fields'  => array( 'user_registered' ),
-					'exclude' => array_merge( $admin_users->get_results(), $manager_users->get_results() ),
-				)
+			array(
+				'fields'  => array( 'user_registered' ),
+				'exclude' => array_merge( $admin_users->get_results(), $manager_users->get_results() ),
 			)
 		);
 

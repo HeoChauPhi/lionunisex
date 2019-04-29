@@ -392,7 +392,8 @@ if ( ! class_exists( 'WC_Admin_Settings', false ) ) :
 											}
 
 										?>
-										><?php echo esc_html( $val ); ?></option>
+										>
+										<?php echo esc_html( $val ); ?></option>
 										<?php
 									}
 									?>

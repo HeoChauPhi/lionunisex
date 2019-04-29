@@ -62,16 +62,11 @@ jQuery( function( $ ) {
 		 */
 		variable_manage_stock: function() {
 			$( this ).closest( '.woocommerce_variation' ).find( '.show_if_variation_manage_stock' ).hide();
-			$( this ).closest( '.woocommerce_variation' ).find( '.variable_stock_status' ).show();
+			$( this ).closest( '.woocommerce_variation' ).find( '.hide_if_variation_manage_stock' ).show();
 
 			if ( $( this ).is( ':checked' ) ) {
 				$( this ).closest( '.woocommerce_variation' ).find( '.show_if_variation_manage_stock' ).show();
-				$( this ).closest( '.woocommerce_variation' ).find( '.variable_stock_status' ).hide();
-			}
-
-			// Parent level.
-			if ( $( 'input#_manage_stock:checked' ).length ) {
-				$( this ).closest( '.woocommerce_variation' ).find( '.variable_stock_status' ).hide();
+				$( this ).closest( '.woocommerce_variation' ).find( '.hide_if_variation_manage_stock' ).hide();
 			}
 		},
 

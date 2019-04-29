@@ -95,7 +95,7 @@ abstract class WC_Log_Levels {
 	/**
 	 * Translate severity integer to level string.
 	 *
-	 * @param int $severity Severity level.
+	 * @param int $severity Serevity level.
 	 * @return bool|string False if not recognized. Otherwise string representation of level.
 	 */
 	public static function get_severity_level( $severity ) {
