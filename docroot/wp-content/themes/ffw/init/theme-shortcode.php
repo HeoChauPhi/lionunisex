@@ -33,3 +33,17 @@ function create_customtax($attrs) {
   ob_end_clean();
   return $content;
 }
+
+// WC Mini cart
+add_shortcode( 'custom-mini-cart', 'create_custom_mini_cart' );
+function create_custom_mini_cart($attrs) {
+  extract(shortcode_atts (array(), $attrs));
+  ob_start();
+    $context = Timber::get_context();
+    $context['cart_count'] = WC()->cart->get_cart_contents_count();
+
+    Timber::render( array( 'woo/mini-cart.twig'), $context );
+  $content = ob_get_contents();
+  ob_end_clean();
+  return $content;
+}
