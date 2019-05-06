@@ -1,0 +1,60 @@
+.block-gallery {
+  .block-inner {
+    width: rem(1010px);
+    margin: 0 auto;
+    max-width: 100%;
+    padding: rem(0 15px);
+  }
+
+  .gallery-group-title {
+    border: rem(5px) solid $black;
+    display: inline-block;
+    float: right;
+    margin: rem(0 50px -45px 0);
+    padding: rem(60px 50px);
+    position: relative;
+    z-index: 9;
+  }
+
+  .block-title {
+    margin: rem(0 0 15px);
+  }
+
+  .post-tags {
+    a {
+      @include poppins-semibold;
+      font-size: rem(20px);
+    }
+  }
+
+  .images-gallery {
+    clear: both;
+  }
+
+  .image-gallery-item {
+    margin-bottom: rem(30px);
+
+    &-inner {
+      background-color: $black;
+    }
+
+    a {
+      @include transition(opacity 0.3s ease);
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      display: block;
+      height: rem(295px);
+      overflow: hidden;
+
+      img {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+  }
+}

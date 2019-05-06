@@ -33,25 +33,16 @@
         border-color: $black;
         border-style: solid;
         border-width: rem(0 0 1px 0);
+        max-width: 100%;
         padding: rem(10px 15px);
         text-align: center;
         text-transform: capitalize;
+        width: rem(225px);
       }
 
       input[type="submit"] {
-        @include poppins-semibold;
-        @include transition(all 0.3s ease);
-        background-color: $black;
-        border: rem(5px) solid $black;
-        color: $white;
+        @extend %btn;
         margin-left: rem(7px);
-        padding: rem(5px 15px 6px 15px);
-        text-transform: capitalize;
-
-        &:hover {
-          background-color: $white;
-          color: $black;
-        }
       }
     }
   }

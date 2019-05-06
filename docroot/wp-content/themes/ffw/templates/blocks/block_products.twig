@@ -1,0 +1,11 @@
+<div class="block-products {{ component_class }}">
+  <div class="block-inner">
+  <h2 class="block-title">{{ block_title }}</h2>
+  <div class="product-list js-masonry-list" data-masonry='{ "itemSelector": ".js-masonry-item", "columnWidth": 65, "gutter": 65, "originLeft": false }'>
+  {% for product in products %}
+    {% include 'woo/product-item.twig' with {'product_class': 'js-masonry-item'} %}
+  {% endfor %}
+  <div class="read-more js-masonry-item"><a class="btn" href="{{ fn('get_permalink', fn('wc_get_page_id', 'shop')) }}">{{ pll_e('shop all') }}</a></div>
+  </div>
+  </div>
+</div>

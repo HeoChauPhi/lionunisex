@@ -37,6 +37,23 @@
   z-index: -2;
 }
 
+%btn,
+.btn {
+  @include poppins-semibold;
+  @include transition(all 0.3s ease);
+  background-color: $black;
+  border-radius: 0;
+  border: rem(5px) solid $black;
+  color: $white;
+  padding: rem(5px 15px 6px 15px);
+  text-transform: capitalize;
+
+  &:hover {
+    background-color: $white;
+    color: $black;
+  }
+}
+
 .button-scroll-down {
   border-radius: rem(500px);
   border: rem(1px) solid $white;

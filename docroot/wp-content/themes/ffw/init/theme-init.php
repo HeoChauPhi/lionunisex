@@ -376,6 +376,22 @@ function flexible_content($name) {
           }
           break;
 
+        case 'block_products':
+          $args = array(
+            'post_type' => 'any',
+            'post__in' => $field['product']
+          );
+
+          $products = Timber::get_posts($args);
+          $field['products'] = $products;
+
+          try {
+            Timber::render($layout . '.twig', $field);
+          } catch (Exception $e) {
+            echo 'Could not find a twig file for layout type: ' . $layout . '<br>';
+          }
+          break;
+
         case 'map_block':
           $theme_options = get_option('ffw_board_settings');
           $google_api_key = $theme_options['ffw_google_api_key'];

@@ -1,0 +1,43 @@
+.block-feature {
+  margin-bottom: rem(110px);
+
+  .feature-content {
+    @include breakpoint(colmd) {
+      margin-bottom: rem(20px);
+    }
+  }
+
+  .feature-content-inner {
+    padding: rem(115px) 17% 0 17%;
+  }
+
+  .block-title {
+    margin: rem(0 0 30px);
+  }
+
+  .feature-link {
+    margin-bottom: rem(65px);
+  }
+  
+  .feature-banner {
+    @include breakpoint(colmd) {
+      padding-left: 0;
+    }
+  }
+
+  .feature-banner-inner {
+    background: none;
+
+    @include breakpoint(colmd) {
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      min-height: rem(1014px);
+
+      img {
+        visibility: hidden;
+        opacity: 0;
+      }
+    }
+  }
+}

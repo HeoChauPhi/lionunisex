@@ -2,6 +2,12 @@
   background-color: $bg-body;
 }
 
+main {
+  .block-title {
+    font-size: rem(40px);
+  }
+}
+
 .main-inner {
   background-color: $white;
 }

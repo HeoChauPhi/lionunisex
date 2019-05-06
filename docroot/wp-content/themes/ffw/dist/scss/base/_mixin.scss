@@ -1,6 +1,6 @@
 @mixin breakpoint($point) {
   @if $point == sidewide {
-    @media (min-width: 1920px) { @content ; }
+    @media (min-width: 1709px) { @content ; }
   }
 
   @if $point == desktop {
@@ -28,11 +28,11 @@
   }
 
   @else if $point == colmd {
-    @media (min-width: 992px)  { @content ; }
+    @media (min-width: $screen-md)  { @content ; }
   }
 
   @else if $point == colmdDown {
-    @media (max-width: 991px)  { @content ; }
+    @media (max-width: ($screen-md - 1))  { @content ; }
   }
 
   @else if $point == wpdevice {

@@ -17,7 +17,10 @@ $mobile: 480px;
 
 // Set the proper directory for the Bootstrap Glyphicon font.
 $icon-font-path: '../bootstrap/assets/fonts/bootstrap/';
-$container-large-desktop: 1709px !default;
+$screen-md: 1200px !default;
+$screen-lg: 1709px !default;
+$container-desktop: 1173px !default;
+$container-lg: $screen-lg !default;
 
 // Fonts.
 @mixin poppins-semibold {

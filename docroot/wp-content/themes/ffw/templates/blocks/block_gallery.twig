@@ -1,0 +1,23 @@
+<div class="block-gallery {{ component_class }}">
+  <div class="block-inner">
+    <div class="gallery-group-title">
+      <h2 class="block-title">{{ block_title }}</h2>
+      <div class="post-tags">
+      {% for term in post_tags %}
+        <a href="{{ fn('get_term_link', term) }}">#{{ term.name }}</a>
+      {% endfor %}
+      </div>
+    </div>
+    <div class="images-gallery">
+      <div class="row">
+      {% for item in images_gallery %}
+        <div class="image-gallery-item col-md-4">
+          <div class="image-gallery-item-inner">
+          <a class="js-fancybox" data-fancybox="image-gallery-component-{{ component_id }}" href="{{ item.url }}" style="background-image: url({{ item.url }});" title="{{ item.name }}"><img src="{{ item.url }}"></a>
+          </div>
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>

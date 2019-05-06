@@ -40,6 +40,9 @@ if(!is_admin()) {
     
     wp_register_script('lib-parallax', get_stylesheet_directory_uri() . '/dist/js/libs/parallax.min.js', array('jquery'), '1.5.0', TRUE);
     wp_enqueue_script('lib-parallax');
+    
+    wp_register_script('lib-masonry', get_stylesheet_directory_uri() . '/dist/js/libs/masonry.pkgd.min.js', array('jquery'), '4.2.2', TRUE);
+    wp_enqueue_script('lib-masonry');
 
     wp_register_script('lib-google-build-map', get_stylesheet_directory_uri() . '/dist/js/libs/jquery.google-build-map.js', array('jquery'), '1.0.0', TRUE);
     wp_enqueue_script('lib-google-build-map');
