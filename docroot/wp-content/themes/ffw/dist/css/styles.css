@@ -16,7 +16,7 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-@import url("https://fonts.googleapis.com/css?family=Lato:300,400,700");
+@import url("https://fonts.googleapis.com/css?family=Poppins:200,400,600");
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -1535,7 +1535,7 @@ pre {
       width: 970px; } }
   @media (min-width: 1200px) {
     .container {
-      width: 1170px; } }
+      width: 1709px; } }
 
 .container-fluid {
   margin-right: auto;
@@ -5859,7 +5859,8 @@ button.close {
 .fas,
 .far,
 .fal,
-.fab {
+.fab,
+.header-nav .social-wrapper .social-icons__icon {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   display: inline-block;
@@ -5942,14 +5943,16 @@ button.close {
 .fas.fa-pull-left,
 .far.fa-pull-left,
 .fal.fa-pull-left,
-.fab.fa-pull-left {
+.fab.fa-pull-left,
+.header-nav .social-wrapper .fa-pull-left.social-icons__icon {
   margin-right: .3em; }
 
 .fa.fa-pull-right,
 .fas.fa-pull-right,
 .far.fa-pull-right,
 .fal.fa-pull-right,
-.fab.fa-pull-right {
+.fab.fa-pull-right,
+.header-nav .social-wrapper .fa-pull-right.social-icons__icon {
   margin-left: .3em; }
 
 .fa-spin {
@@ -7322,7 +7325,7 @@ readers do not read off random characters that represent icons */
 .fa-facebook:before {
   content: "\f09a"; }
 
-.fa-facebook-f:before {
+.fa-facebook-f:before, .header-nav .social-wrapper .social-icons__item .icon-facebook:before {
   content: "\f39e"; }
 
 .fa-facebook-messenger:before {
@@ -8228,7 +8231,7 @@ readers do not read off random characters that represent icons */
 .fa-linkedin:before {
   content: "\f08c"; }
 
-.fa-linkedin-in:before {
+.fa-linkedin-in:before, .header-nav .social-wrapper .social-icons__item .icon-linkedin:before {
   content: "\f0e1"; }
 
 .fa-linode:before {
@@ -9737,7 +9740,7 @@ readers do not read off random characters that represent icons */
 .fa-twitch:before {
   content: "\f1e8"; }
 
-.fa-twitter:before {
+.fa-twitter:before, .header-nav .social-wrapper .social-icons__item .icon-twitter:before {
   content: "\f099"; }
 
 .fa-twitter-square:before {
@@ -10166,7 +10169,9 @@ readers do not read off random characters that represent icons */
   src: url("../fonts/fa-brands-400.eot");
   src: url("../fonts/fa-brands-400.eot?#iefix") format("embedded-opentype"), url("../fonts/fa-brands-400.woff2") format("woff2"), url("../fonts/fa-brands-400.woff") format("woff"), url("../fonts/fa-brands-400.ttf") format("truetype"), url("../fonts/fa-brands-400.svg#fontawesome") format("svg"); }
 
-.fab {
+
+.fab,
+.header-nav .social-wrapper .social-icons__icon {
   font-family: 'Font Awesome 5 Brands'; }
 
 /*!
@@ -10464,7 +10469,7 @@ readers do not read off random characters that represent icons */
 .fa.fa-bookmark-o:before {
   content: "\f02e"; }
 
-.fa.fa-twitter {
+.fa.fa-twitter, .header-nav .social-wrapper .social-icons__item .fa.icon-twitter {
   font-family: 'Font Awesome 5 Brands';
   font-weight: 400; }
 
@@ -10475,11 +10480,11 @@ readers do not read off random characters that represent icons */
 .fa.fa-facebook:before {
   content: "\f39e"; }
 
-.fa.fa-facebook-f {
+.fa.fa-facebook-f, .header-nav .social-wrapper .social-icons__item .fa.icon-facebook {
   font-family: 'Font Awesome 5 Brands';
   font-weight: 400; }
 
-.fa.fa-facebook-f:before {
+.fa.fa-facebook-f:before, .header-nav .social-wrapper .social-icons__item .fa.icon-facebook:before {
   content: "\f39e"; }
 
 .fa.fa-github {
@@ -15777,32 +15782,33 @@ body.compensate-for-scrollbar {
   font-weight: normal;
   font-style: normal;
 } */
-@font-face {
-  font-family: 'MyriadProBold';
-  src: url("../fonts/MyriadProBold.eot");
-  src: url("../fonts/MyriadProBold.eot") format("embedded-opentype"), url("../fonts/MyriadProBold.woff2") format("woff2"), url("../fonts/MyriadProBold.woff") format("woff"), url("../fonts/MyriadProBold.ttf") format("truetype"), url("../fonts/MyriadProBold.svg#MyriadProBold") format("svg"); }
-
 html {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 200;
   font-size: 14px;
   line-height: 1.5; }
 
 body {
-  font-family: 'Lato', sans-serif;
-  color: #3b3b3b;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 200;
+  color: #000000;
   font-size: inherit;
   line-height: inherit; }
 
 a {
-  color: #26baff; }
+  color: #000000; }
   a:hover {
-    color: #26baff;
+    color: #8A8A8A;
     cursor: pointer;
     text-decoration: none; }
 
 img {
   height: auto;
   max-width: 100%; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600; }
 
 .no-margin {
   margin: 0 !important; }
@@ -15870,3 +15876,138 @@ img {
     top: 0.71429rem; }
   to {
     top: 1.42857rem; } }
+
+.block-navigation {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 1.07143rem; }
+  .block-navigation .main-menu ul {
+    margin: 0;
+    padding: 0;
+    list-style: none; }
+    .block-navigation .main-menu ul li {
+      position: relative; }
+      .block-navigation .main-menu ul li a {
+        text-transform: capitalize; }
+  .block-navigation .main-menu > ul > li.menu-item {
+    display: inline-block;
+    list-style: none;
+    margin-left: 1.42857rem; }
+    .block-navigation .main-menu > ul > li.menu-item > a {
+      padding-bottom: 3.57143rem; }
+
+.header-navigation-inner {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 1.78571rem 0rem; }
+
+.header-logo {
+  width: 14.28571rem; }
+  .header-logo .logo {
+    display: block; }
+
+.header-nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center; }
+  .header-nav .social-wrapper {
+    margin-left: 2.85714rem; }
+    .header-nav .social-wrapper .social-icons__list {
+      padding: 0;
+      margin: 0;
+      list-style: none; }
+    .header-nav .social-wrapper .social-icons__icon {
+      text-indent: -9999em; }
+      .header-nav .social-wrapper .social-icons__icon:before {
+        float: left;
+        text-indent: 0; }
+    .header-nav .social-wrapper .social-icons__item {
+      display: inline-block;
+      margin: 0rem 0.5rem; }
+  .header-nav .block-mini-cart {
+    margin-left: 2.85714rem; }
+
+.footer {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400; }
+  .footer-pannel {
+    margin-bottom: 6.07143rem; }
+  .footer-inner {
+    background-color: #ffffff;
+    padding: 3.21429rem 10rem 1.07143rem 10rem; }
+  .footer .block-title {
+    font-size: 1.14286rem;
+    margin: 0rem 0rem 2.85714rem;
+    text-transform: capitalize; }
+  .footer .block-newsletter .block-title {
+    font-size: 2.85714rem;
+    margin-bottom: 1.42857rem; }
+  .footer .block-newsletter .sign-up-newsletter label {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.14286rem;
+    margin: 0rem 0rem 0.71429rem; }
+  .footer .block-newsletter .sign-up-newsletter input[type="email"] {
+    border-color: #000000;
+    border-style: solid;
+    border-width: 0rem 0rem 0.07143rem 0rem;
+    padding: 0.71429rem 1.07143rem;
+    text-align: center;
+    text-transform: capitalize; }
+  .footer .block-newsletter .sign-up-newsletter input[type="submit"] {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    background-color: #000000;
+    border: 0.35714rem solid #000000;
+    color: #ffffff;
+    margin-left: 0.5rem;
+    padding: 0.35714rem 1.07143rem 0.42857rem 1.07143rem;
+    text-transform: capitalize; }
+    .footer .block-newsletter .sign-up-newsletter input[type="submit"]:hover {
+      background-color: #ffffff;
+      color: #000000; }
+
+.block-footer-text p {
+  margin-bottom: 0.71429rem; }
+
+.block-footer-menu ul.footer-menu {
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+  .block-footer-menu ul.footer-menu li {
+    list-style: none;
+    margin-bottom: 0.71429rem; }
+
+.block-copyright {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.85714rem;
+  letter-spacing: 0.35714rem;
+  margin-bottom: 1.07143rem;
+  text-align: center; }
+
+.back-to-top {
+  display: none; }
+
+.page-wrapper {
+  background-color: #F6E5DC; }
+
+.main-inner {
+  background-color: #ffffff; }
+
+.block-mini-cart .dropdown-mini-cart {
+  display: none; }

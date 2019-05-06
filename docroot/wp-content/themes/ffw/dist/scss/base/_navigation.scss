@@ -1,0 +1,33 @@
+.block-navigation {
+  @include poppins-semibold;
+  font-size: rem(15px);
+
+  .main-menu {
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      li {
+        position: relative;
+
+        a {
+          text-transform: capitalize;
+        }
+      }
+    }
+
+    // Main menu lvl 1
+    > ul {
+      > li.menu-item {
+        display: inline-block;
+        list-style: none;
+        margin-left: rem(20px);
+
+        > a {
+          padding-bottom: rem(50px);
+        }
+      }
+    }
+  }
+}

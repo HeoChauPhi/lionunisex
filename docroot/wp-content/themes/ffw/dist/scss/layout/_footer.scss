@@ -1,0 +1,89 @@
+.footer {
+  @include poppins;
+
+  &-pannel {
+    margin-bottom: rem(85px);
+  }
+
+  &-inner {
+    background-color: $white;
+    padding: rem(45px 140px 15px 140px);
+  }
+
+  .block-title {
+    font-size: rem(16px);
+    margin: rem(0 0 40px);
+    text-transform: capitalize;
+  }
+
+  .block-newsletter {
+    .block-title {
+      font-size: rem(40px);
+      margin-bottom: rem(20px);
+    }
+
+    .sign-up-newsletter {
+      label {
+        @include poppins-semibold;
+        font-size: rem(16px);
+        margin: rem(0 0 10px);
+      }
+
+      input[type="email"] {
+        border-color: $black;
+        border-style: solid;
+        border-width: rem(0 0 1px 0);
+        padding: rem(10px 15px);
+        text-align: center;
+        text-transform: capitalize;
+      }
+
+      input[type="submit"] {
+        @include poppins-semibold;
+        @include transition(all 0.3s ease);
+        background-color: $black;
+        border: rem(5px) solid $black;
+        color: $white;
+        margin-left: rem(7px);
+        padding: rem(5px 15px 6px 15px);
+        text-transform: capitalize;
+
+        &:hover {
+          background-color: $white;
+          color: $black;
+        }
+      }
+    }
+  }
+}
+
+.block-footer-text {
+  p {
+    margin-bottom: rem(10px);
+  }
+}
+
+.block-footer-menu {
+  ul.footer-menu {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      list-style: none;
+      margin-bottom: rem(10px);
+    }
+  }
+}
+
+.block-copyright {
+  @include poppins-semibold;
+  font-size: rem(12px);
+  letter-spacing: rem(5px);
+  margin-bottom: rem(15px);
+  text-align: center;
+}
+
+.back-to-top {
+  display: none;
+}

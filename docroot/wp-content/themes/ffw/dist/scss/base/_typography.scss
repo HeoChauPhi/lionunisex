@@ -1,11 +1,11 @@
 html {
-  @include lato;
+  @include poppins-extralight;
   font-size: $base-font-size;
   line-height: 1.5;
 }
 
 body {
-  @include lato;
+  @include poppins-extralight;
   color: $color-base;
   font-size: inherit;
   line-height: inherit;
@@ -24,4 +24,8 @@ a {
 img {
   height: auto;
   max-width: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @include poppins-semibold;
 }

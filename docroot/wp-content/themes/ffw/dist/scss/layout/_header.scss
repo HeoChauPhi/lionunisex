@@ -1,0 +1,66 @@
+.header {
+  &-navigation-inner {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding: rem(25px 0);
+  }
+
+  &-logo {
+    width: rem(200px);
+
+    .logo {
+      display: block;
+    }
+  }
+
+  &-nav {
+    display: flex;
+    align-items: center;
+
+    // Bock Social Header
+    .social-wrapper {
+      margin-left: rem(40px);
+
+      .social-icons {
+        &__list {
+          padding: 0;
+          margin: 0;
+          list-style: none;
+        }
+
+        &__icon {
+          @extend .fab;
+          text-indent: -9999em;
+
+          &:before {
+            float: left;
+            text-indent: 0;
+          }
+        }
+
+        &__item {
+          display: inline-block;
+          margin: rem(0 7px);
+
+          .icon-linkedin {
+            @extend .fa-linkedin-in;
+          }
+
+          .icon-facebook {
+            @extend .fa-facebook-f;
+          }
+
+          .icon-twitter {
+            @extend .fa-twitter;
+          }
+        }
+      }
+    }
+
+    // Block mini cart on header
+    .block-mini-cart {
+      margin-left: rem(40px);
+    }
+  }
+}

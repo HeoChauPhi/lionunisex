@@ -17,40 +17,43 @@ $mobile: 480px;
 
 // Set the proper directory for the Bootstrap Glyphicon font.
 $icon-font-path: '../bootstrap/assets/fonts/bootstrap/';
-$container-large-desktop: 1170px !default;
+$container-large-desktop: 1709px !default;
 
 // Fonts.
-@mixin opensans {
-  font-family: 'Open Sans', sans-serif;
+@mixin poppins-semibold {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
 }
 
-@mixin lato {
-  font-family: 'Lato', sans-serif;
+@mixin poppins {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
 }
 
-@mixin myriadProBold {
-  font-family: 'MyriadProBold', sans-serif;
+@mixin poppins-extralight {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 200;
 }
 
 $base-font-size: 14px;
 
 // Color.
-$red: #26baff;
-$red-dark: #232044;
+$orange: #D47B60;
+$ping: #F6E5DC;
 $black: #000000;
 $white: #ffffff;
 
-$color-primary: $red;
-$color-second: $red-dark;
+$color-primary: $orange;
+$color-seccond: $ping;
 
-$gray-3b: #3b3b3b;
+$gray-8a: #8A8A8A;
 
 // Text color
-$color-base: $gray-3b;
-$color-link: $color-primary;
-$color-link-hover: $color-primary;
-$color-title: $color-second;
+$color-base: $black;
+$color-link: $black;
+$color-link-hover: $gray-8a;
+$color-title: $black;
 
 // bg color
-$color-line: $color-second;
-$bg-footer: $color-second;
+$bg-body: $color-seccond;
+$color-line: rgba($black, .2);

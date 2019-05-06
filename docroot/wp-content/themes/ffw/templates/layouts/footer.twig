@@ -1,24 +1,30 @@
 {% block footer %}
   <footer id="footer" class="footer footer-wrapper">
-    <div class="footer-pannel">
-      <div class="container">
-        <div class="row">
-        {{ fn('shortcode', '[mc4wp_form id="167"]') }}
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-pannel">
+          <div class="row">
+            <div class="col-md-4">
+            <div class="block-newsletter">
+              <h2 class="block-title">{{ fn('get_the_title', 167) }}</h2>
+              {{ fn('shortcode', '[mc4wp_form id="167"]') }}
+              </div>
+            </div>
+            {% for key, footer in fn('array_unset', footer_widget, '_multiwidget') %}
+              <div class="col-md-8">
+                {{ function('acfwidget', 'footer_components', 'footer_widget-' ~ key ) }}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
 
+        <div class="footer-bottom">
           {% for key, footer in fn('array_unset', footer_widget, '_multiwidget') %}
-            <div class="col-md-8">
-              {{ function('acfwidget', 'footer_components', 'footer_widget-' ~ key ) }}
+            <div class="block-copyright">
+            {{ fn('get_field', 'footer_copyright', 'widget_footer_widget-' ~ key ) }}
             </div>
           {% endfor %}
         </div>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <div class="container">
-        {% for key, footer in fn('array_unset', footer_widget, '_multiwidget') %}
-          {{ fn('get_field', 'footer_copyright', 'widget_footer_widget-' ~ key ) }}
-        {% endfor %}
       </div>
     </div>
 
