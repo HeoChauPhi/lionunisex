@@ -3,15 +3,11 @@
     <div class="footer-pannel">
       <div class="container">
         <div class="row">
+        {{ fn('shortcode', '[mc4wp_form id="167"]') }}
+
           {% for key, footer in fn('array_unset', footer_widget, '_multiwidget') %}
             <div class="col-md-8">
-                {{ function('acfwidget', 'footer_components', 'footer_widget-' ~ key ) }}
-            </div>
-            <div class="col-md-4">
-              {% if fn('get_field', 'footer_social', 'widget_footer_widget-' ~ key ) %}
-                {% set footer_social = fn('get_field', 'footer_social', 'widget_footer_widget-' ~ key ) %}
-                {% include 'footer-social.twig' with {'facebook_fanpage': footer_social.facebook_fanpage_url, 'social_list': footer_social.social_list} %}
-              {% endif %}
+              {{ function('acfwidget', 'footer_components', 'footer_widget-' ~ key ) }}
             </div>
           {% endfor %}
         </div>
