@@ -1,29 +1,50 @@
 {% extends "layout.twig" %}
 
 {% block content %}
+  <div class="page-container-inner">
 
   {% do action('woocommerce_before_single_product') %}
 
   <article itemscope itemtype="http://schema.org/Product" class="single-product-details {{ post.class }}">
-
-    <div class="entry-images">
+    <div class="row">
+      <div class="single-product-image entry-images col-md-7">
         {% do action('woocommerce_before_single_product_summary') %}
+        <div class="product-description">{{ fn('wc_get_product').get_short_description }}</div>
+      </div>
 
-        <img src="{{ post.thumbnail.src('shop_single') }}" />
+      <div class="single-product-fullcontent col-md-5">
+        <div class="summary entry-summary">
+          {% do action('woocommerce_single_product_summary') %}
+        </div>
+
+        <div class="product-content js-accordion">
+        {% if post.content %}
+          <div class="accordion-item">
+            <h3 class="accordion-title">{{ pll_e('Product Info') }}</h3>
+            <div class="accordion-content">{{ post.content|shortcodes }}</div>
+          </div>
+        {% endif %}
+        {% if post.get_field('return_and_policy') %}
+          <div class="accordion-item">
+            <h3 class="accordion-title">{{ pll_e('Return & Refund Policy') }}</h3>
+            <div class="accordion-content">{{ post.get_field('return_and_policy')|shortcodes }}</div>
+          </div>
+        {% endif %}
+        {% if post.get_field('shipping_info') %}
+          <div class="accordion-item">
+            <h3 class="accordion-title">{{ pll_e('Shipping Info') }}</h3>
+            <div class="accordion-content">{{ post.get_field('shipping_info')|shortcodes }}</div>
+          </div>
+        {% endif %}
+        </div>
+
+        {% do action('woocommerce_after_single_product_summary') %}
+
+        <meta itemprop="url" content="{{ post.link }}" />
+      </div>
     </div>
-
-    <div class="summary entry-summary">
-        {% do action('woocommerce_single_product_summary') %}
-    </div>
-
-    {% do action('woocommerce_after_single_product_summary') %}
-
-    <meta itemprop="url" content="{{ post.link }}" />
-
   </article>
 
-  {% include ["woo/tease-product.twig"] with { products: related_products } %}
-
   {% do action('woocommerce_after_single_product') %}
-
+  </div>
 {% endblock  %}

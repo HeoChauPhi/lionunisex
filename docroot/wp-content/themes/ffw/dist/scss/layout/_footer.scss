@@ -7,7 +7,11 @@
 
   &-inner {
     background-color: $white;
-    padding: rem(45px 140px 15px 140px);
+    padding: rem(45px 30px 15px 30px);
+
+    @include breakpoint(sidewide) {
+      padding: rem(45px 140px 15px 140px);
+    }
   }
 
   .block-title {
@@ -37,7 +41,11 @@
         padding: rem(10px 15px);
         text-align: center;
         text-transform: capitalize;
-        width: rem(225px);
+        width: rem(215px);
+
+        @include breakpoint(sidewide) {
+          width: rem(225px);
+        }
       }
 
       input[type="submit"] {

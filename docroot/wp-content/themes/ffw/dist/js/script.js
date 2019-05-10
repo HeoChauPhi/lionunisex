@@ -60,6 +60,17 @@
     //$('.js-toogle--menu').on('click', mobileMenu);
     $('.js-back-top').on('click', backToTop);
     $('.js-scroll-down').on('click', scrollDown);
+    $( ".js-accordion" ).accordion({
+      heightStyle: "content",
+      header: '> .accordion-item > .accordion-title'
+    });
+    $('.woocommerce-product-gallery__image > a').on('click', function() {
+      $.fancybox.open( $('.woocommerce-product-gallery__image > a'), {
+        touch: false,
+        infobar: false
+      });
+      return false;
+    });
   });
 
   $(window).scroll(function() {

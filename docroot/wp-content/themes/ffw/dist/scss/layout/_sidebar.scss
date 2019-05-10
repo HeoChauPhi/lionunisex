@@ -1,0 +1,33 @@
+.page-product-list {
+  #sidebar {
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  .sidebar-left {
+    .sidebar-title {
+      border-bottom: rem(1px) solid $color-line;
+      font-size: rem(26px);
+      line-height: 1.2;
+      margin: 0;
+      padding-bottom: rem(20px);
+    }
+
+    .woocommerce {
+      border-bottom: rem(1px) solid $color-line;
+      padding: rem(20px 0);
+
+      > h3 {
+        font-size: rem(16px);
+        margin: 0;
+
+        + * {
+          margin-top: rem(15px) !important;
+        }
+      }
+    }
+  }
+}

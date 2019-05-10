@@ -29,3 +29,13 @@ img {
 h1, h2, h3, h4, h5, h6 {
   @include poppins-semibold;
 }
+
+select,
+input[type="text"],
+textarea {
+  background-color: $white;
+  border: rem(1px) solid $black;
+  color: $black;
+  font-size: rem(15px);
+  padding: rem(4px 10px 5px 10px);
+}

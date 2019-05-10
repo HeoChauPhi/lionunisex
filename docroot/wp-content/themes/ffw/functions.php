@@ -206,6 +206,7 @@ add_action('acf/init', function() {
 });
 
 remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20 );
+remove_action('woocommerce_before_main_content', 'woocommerce_breadcrumb', 20, 0);
 
 function timber_set_product( $post ) {
   global $product;

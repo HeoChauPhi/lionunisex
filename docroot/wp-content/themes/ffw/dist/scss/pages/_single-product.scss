@@ -1,0 +1,130 @@
+.single-product {
+  .single-product-image {
+    position: relative;
+
+    .onsale {
+      @include poppins;
+      background-color: $black;
+      border-radius: 0;
+      color: $white;
+      font-size: rem(16px);
+      height: auto;
+      left: rem(15px);
+      line-height: 1.5;
+      min-height: auto;
+      padding: rem(4px 21px);
+      top: 0;
+    }
+  }
+
+  .woocommerce-product-gallery {
+    display: inline-block;
+    margin-bottom: rem(30px);
+    width: 100%;
+  }
+
+  .woocommerce-product-gallery__image {
+    float: left;
+    text-align: center;
+    width: 25%;
+
+    &:first-of-type {
+      border: rem(1px) solid $color-line;
+      float: none;
+      margin: rem(0 0 10px);
+      width: 100%;
+    }
+
+    a {
+      display: block;
+    }
+
+    img {
+      height: auto;
+      max-width: 100%;
+    }
+  }
+
+  .product-description {}
+
+  .product_title {
+    font-size: rem(20px);
+    margin: rem(0 0 6px);
+  }
+
+  .product-sku {
+    margin-bottom: rem(30px);
+
+    label {
+      margin: 0;
+      font-weight: 400;
+    }
+  }
+
+  .price {
+    @include poppins-semibold;
+    margin-bottom: rem(30px);
+
+    del {
+      margin-right: rem(10px);
+    }
+  }
+
+  .variations_form {
+    margin-bottom: rem(25px);
+
+    table,
+    tbody,
+    tr,
+    td {
+      border: none !important;
+      clear: both;
+      display: block;
+      float: left;
+      padding: 0;
+      width: 100%
+
+    }
+
+    tr {
+      padding-bottom: rem(40px);
+    }
+
+    label {
+      color: $black;
+      display: block;
+      font-size: rem(14px);
+      font-weight: 400;
+      margin: rem(0 0 20px);
+      text-align: left;
+    }
+
+    .single_variation_wrap {
+      clear: both;
+
+      .quantity {
+        margin-bottom: rem(25px);
+
+        .input-text {
+          min-width: rem(76px);
+          padding: rem(8px 10px);
+          text-align: left;
+        }
+      }
+
+      .woocommerce-variation-add-to-cart .single_add_to_cart_button {
+        background-color: $black;
+        color: $white;
+        display: block;
+        font-size: rem(15px);
+        opacity: 1;
+        padding: rem(17px 10px);
+        width: 100%;
+
+        &:hover {
+          background-color: $color-link-hover;
+        }
+      }
+    }
+  }
+}

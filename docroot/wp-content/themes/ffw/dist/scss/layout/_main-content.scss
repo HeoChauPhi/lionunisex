@@ -3,11 +3,52 @@
 }
 
 main {
+  .main-inner {
+    padding: rem(0 15px 35px 15px);
+  }
+
   .block-title {
     font-size: rem(40px);
+  }
+
+  .sidebar-content {
+    @include breakpoint(colmdDown) {
+      .layout-mobile {
+        display: flex;
+        flex-direction: column;
+
+        > .main-content {
+          margin-bottom: rem(40px);
+          order: 1;
+        }
+
+        > .sidebar-left {
+          order: 2;
+        }
+
+        > .sidebar-right {
+          margin-top: rem(40px);
+          order: 3;
+        }
+      }
+    }
   }
 }
 
 .main-inner {
   background-color: $white;
+}
+
+// woocommerce page: Shop, Single product, cart, checkout
+body.woocommerce-page {
+  .main-inner {
+    padding: rem(120px 15px 65px 15px);
+  }
+}
+
+.page-container-inner {
+  margin: 0 auto;
+  max-width: 100%;
+  padding: rem(0 15px);
+  width: rem(1010px);
 }
