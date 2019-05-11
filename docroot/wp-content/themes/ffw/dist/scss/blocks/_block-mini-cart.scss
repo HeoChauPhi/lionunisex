@@ -1,5 +1,45 @@
 .block-mini-cart {
+  position: relative;
+
+  .mini-cart-icon {
+    text-decoration: none;
+
+    &.active {
+      color: $color-link-hover;
+    }
+  }
+
   .dropdown-mini-cart {
+    background-color: $white;
+    box-shadow: rem(0 0 5px 1px) $black;
     display: none;
+    min-width: rem(300px);
+    padding: rem(10px 15px);
+    position: absolute;
+    right: 0;
+    top: calc(100% + 30px);
+    z-index: 9;
+
+    .woocommerce-mini-cart {
+      margin-bottom: rem(10px);
+
+      .woocommerce-mini-cart-item {
+        padding: rem(10px 0);
+        border-bottom: rem(1px) solid $color-line;
+      }
+    }
+
+    .woocommerce-mini-cart__total {
+      margin-bottom: rem(10px);
+    }
+
+    .woocommerce-mini-cart__buttons {
+      margin: 0;
+
+      > a {
+        @extend %btn;
+        margin-right: rem(10px);
+      }
+    }
   }
 }

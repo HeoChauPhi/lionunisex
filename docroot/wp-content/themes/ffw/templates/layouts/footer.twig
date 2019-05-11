@@ -12,7 +12,9 @@
             </div>
             {% for key, footer in fn('array_unset', footer_widget, '_multiwidget') %}
               <div class="col-md-8">
-                {{ function('acfwidget', 'footer_components', 'footer_widget-' ~ key ) }}
+                <div class="row">
+                  {{ function('acfwidget', 'footer_components', 'footer_widget-' ~ key ) }}
+                </div>
               </div>
             {% endfor %}
           </div>

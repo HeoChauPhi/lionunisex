@@ -30,4 +30,24 @@
       }
     }
   }
+
+  .price_slider_wrapper {
+    .ui-slider-horizontal {
+      height: rem(2px);
+
+      .ui-slider-range,
+      .ui-slider-handle {
+        background-color: $black;
+      }
+
+      .ui-slider-handle {
+        top: rem(-7px);
+      }
+    }
+
+    #min_price,
+    #max_price {
+      display: none;
+    }
+  }
 }

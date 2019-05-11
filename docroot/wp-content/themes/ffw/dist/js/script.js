@@ -42,6 +42,13 @@
     $("html, body").animate({ scrollTop: height_scroll }, 600);
   }
 
+  // Show cart
+  function showCart() {
+    $(this).toggleClass('active');
+    $(this).next('.dropdown-mini-cart').slideToggle();
+    return false;
+  }
+
   // Counter up
   function counterUp() {
     $('.js-count-up').counterUp({
@@ -60,6 +67,7 @@
     //$('.js-toogle--menu').on('click', mobileMenu);
     $('.js-back-top').on('click', backToTop);
     $('.js-scroll-down').on('click', scrollDown);
+    $('.js-show-cart').on('click', showCart);
     $( ".js-accordion" ).accordion({
       heightStyle: "content",
       header: '> .accordion-item > .accordion-title'

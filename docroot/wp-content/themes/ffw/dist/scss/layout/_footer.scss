@@ -21,6 +21,10 @@
   }
 
   .block-newsletter {
+    @include breakpoint(colmdDown) {
+      margin-bottom: rem(30px);
+    }
+
     .block-title {
       font-size: rem(40px);
       margin-bottom: rem(20px);

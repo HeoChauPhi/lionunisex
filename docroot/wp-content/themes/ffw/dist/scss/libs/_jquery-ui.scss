@@ -12,6 +12,11 @@
     font-size: rem(14px);
     margin: 0;
     cursor: pointer;
+
+    &:active,
+    &:focus {
+      outline: none !important;
+    }
   }
 
   .accordion-content {

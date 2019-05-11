@@ -29,8 +29,16 @@
     .product-image {
       background-position: center center;
       background-repeat: no-repeat;
-      background-size: cover;
+      background-size: contain;
+      height: rem(169px);
       margin-bottom: rem(20px);
+      overflow: hidden;
+      width: 100%;
+
+      img {
+        visibility: hidden;
+        opacity: 0;
+      }
     }
 
     .onsale {

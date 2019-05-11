@@ -44,5 +44,7 @@ if ( is_singular( 'product' ) ) {
 
 function product_display_fields_after_title() {
   global $product;
-  echo '<div class="product-sku"><label>' . pll__('SKU') . ':</label> ' . $product->get_sku() . '</div>';
+  if ($product->get_sku()) {
+    echo '<div class="product-sku"><label>' . pll__('SKU') . ':</label> ' . $product->get_sku() . '</div>';
+  }
 }
