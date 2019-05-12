@@ -17,14 +17,16 @@ if(is_admin()) {
 
 // Add admin script
 function ct_options_admin_scripts() {
+  wp_enqueue_media ();
   wp_register_script('options-script', get_stylesheet_directory_uri() . '/init/options/access/js/options-script.js', array('jquery'), '1.0.0', true);
   wp_localize_script( 'options-script', 'fieldsAjax', array( 'ajaxurl' => admin_url('admin-ajax.php' )));
   wp_enqueue_script('options-script');
 }
-add_action('admin_init', 'ct_options_admin_scripts');
+add_action('admin_enqueue_scripts', 'ct_options_admin_scripts');
 
 // Add admin script
 function ct_options_admin_styles() {
+  wp_enqueue_style('thickbox');
   wp_register_style('options-style', get_stylesheet_directory_uri() . '/init/options/access/css/options-style.css', array(), '1.0', 'all');
   wp_enqueue_style('options-style');
 }

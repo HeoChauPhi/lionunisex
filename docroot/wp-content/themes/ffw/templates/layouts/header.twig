@@ -22,7 +22,10 @@
               {% endblock %}
 
               {% block header_social %}
-                {% include 'social-detail.twig' %} 
+                {% for key, header in fn('array_unset', header_widget, '_multiwidget') %}
+                  {% set socials = fn('get_field', 'social_fanpage', 'widget_header_widget-' ~ key ) %}
+                  {% include 'social-fanpage.twig' with {'socials': socials} %}
+                {% endfor %}
               {% endblock %}
 
               {% block header_cart %}

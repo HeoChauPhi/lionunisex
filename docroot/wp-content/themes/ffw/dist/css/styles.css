@@ -5860,7 +5860,7 @@ button.close {
 .far,
 .fal,
 .fab,
-.header-nav .social-wrapper .social-icons__icon {
+.single-product main .social-wrapper .social-icons__icon {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   display: inline-block;
@@ -5944,7 +5944,7 @@ button.close {
 .far.fa-pull-left,
 .fal.fa-pull-left,
 .fab.fa-pull-left,
-.header-nav .social-wrapper .fa-pull-left.social-icons__icon {
+.single-product main .social-wrapper .fa-pull-left.social-icons__icon {
   margin-right: .3em; }
 
 .fa.fa-pull-right,
@@ -5952,7 +5952,7 @@ button.close {
 .far.fa-pull-right,
 .fal.fa-pull-right,
 .fab.fa-pull-right,
-.header-nav .social-wrapper .fa-pull-right.social-icons__icon {
+.single-product main .social-wrapper .fa-pull-right.social-icons__icon {
   margin-left: .3em; }
 
 .fa-spin {
@@ -7325,7 +7325,7 @@ readers do not read off random characters that represent icons */
 .fa-facebook:before {
   content: "\f09a"; }
 
-.fa-facebook-f:before, .header-nav .social-wrapper .social-icons__item .icon-facebook:before {
+.fa-facebook-f:before, .single-product main .social-wrapper .social-icons__item .icon-facebook:before {
   content: "\f39e"; }
 
 .fa-facebook-messenger:before {
@@ -8231,7 +8231,7 @@ readers do not read off random characters that represent icons */
 .fa-linkedin:before {
   content: "\f08c"; }
 
-.fa-linkedin-in:before, .header-nav .social-wrapper .social-icons__item .icon-linkedin:before {
+.fa-linkedin-in:before, .single-product main .social-wrapper .social-icons__item .icon-linkedin:before {
   content: "\f0e1"; }
 
 .fa-linode:before {
@@ -9740,7 +9740,7 @@ readers do not read off random characters that represent icons */
 .fa-twitch:before {
   content: "\f1e8"; }
 
-.fa-twitter:before, .header-nav .social-wrapper .social-icons__item .icon-twitter:before {
+.fa-twitter:before, .single-product main .social-wrapper .social-icons__item .icon-twitter:before {
   content: "\f099"; }
 
 .fa-twitter-square:before {
@@ -10171,7 +10171,7 @@ readers do not read off random characters that represent icons */
 
 
 .fab,
-.header-nav .social-wrapper .social-icons__icon {
+.single-product main .social-wrapper .social-icons__icon {
   font-family: 'Font Awesome 5 Brands'; }
 
 /*!
@@ -10469,7 +10469,7 @@ readers do not read off random characters that represent icons */
 .fa.fa-bookmark-o:before {
   content: "\f02e"; }
 
-.fa.fa-twitter, .header-nav .social-wrapper .social-icons__item .fa.icon-twitter {
+.fa.fa-twitter, .single-product main .social-wrapper .social-icons__item .fa.icon-twitter {
   font-family: 'Font Awesome 5 Brands';
   font-weight: 400; }
 
@@ -10480,11 +10480,11 @@ readers do not read off random characters that represent icons */
 .fa.fa-facebook:before {
   content: "\f39e"; }
 
-.fa.fa-facebook-f, .header-nav .social-wrapper .social-icons__item .fa.icon-facebook {
+.fa.fa-facebook-f, .single-product main .social-wrapper .social-icons__item .fa.icon-facebook {
   font-family: 'Font Awesome 5 Brands';
   font-weight: 400; }
 
-.fa.fa-facebook-f:before, .header-nav .social-wrapper .social-icons__item .fa.icon-facebook:before {
+.fa.fa-facebook-f:before, .single-product main .social-wrapper .social-icons__item .fa.icon-facebook:before {
   content: "\f39e"; }
 
 .fa.fa-github {
@@ -15968,18 +15968,13 @@ textarea {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center; }
-  .header-nav .social-wrapper {
+  .header-nav .social-fanpage {
     margin-left: 2.85714rem; }
-    .header-nav .social-wrapper .social-icons__list {
+    .header-nav .social-fanpage .social-icons__list {
       padding: 0;
       margin: 0;
       list-style: none; }
-    .header-nav .social-wrapper .social-icons__icon {
-      text-indent: -9999em; }
-      .header-nav .social-wrapper .social-icons__icon:before {
-        float: left;
-        text-indent: 0; }
-    .header-nav .social-wrapper .social-icons__item {
+    .header-nav .social-fanpage .social-icons__item {
       display: inline-block;
       margin: 0rem 0.5rem; }
   .header-nav .block-mini-cart {
@@ -16051,14 +16046,45 @@ textarea {
   margin-bottom: 1.07143rem;
   text-align: center; }
 
-.back-to-top {
+.popup-banner {
   display: none; }
 
-.page-wrapper {
-  background-color: #F6E5DC; }
+#popup-banner-content {
+  line-height: 0;
+  padding: 0 !important;
+  width: 60%; }
+  #popup-banner-content a {
+    display: block; }
+    #popup-banner-content a img {
+      height: auto;
+      width: 100%; }
+
+.back-to-top {
+  -webkit-transition: opacity 0.3s ease-in-out;
+  -moz-transition: opacity 0.3s ease-in-out;
+  -o-transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
+  background-image: url("../images/icons/backtotop.png");
+  background-size: cover;
+  bottom: 1.42857rem;
+  cursor: pointer;
+  height: 3.57143rem;
+  left: 1.42857rem;
+  opacity: 0;
+  position: fixed;
+  text-indent: -999em;
+  width: 3.57143rem; }
+  .back-to-top.btn-show {
+    opacity: .4; }
+  .back-to-top:hover {
+    opacity: 1; }
 
 main .main-inner {
   padding: 0rem 1.07143rem 2.5rem 1.07143rem; }
+  main .main-inner > .row > .col-md-6 {
+    padding-left: 0; }
+  main .main-inner > .row > .main-media {
+    padding-right: 0; }
 
 main .block-title {
   font-size: 2.85714rem; }
@@ -16296,6 +16322,30 @@ body.woocommerce-page .main-inner {
     .block-gallery .image-gallery-item a:hover {
       opacity: 0.5; }
 
+.block-icon-content .icon-content-item {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  margin-bottom: 4.64286rem; }
+  .block-icon-content .icon-content-item:last-of-type {
+    margin-bottom: 0; }
+  .block-icon-content .icon-content-item .icon-group-item .icon-item-image {
+    max-width: 3.28571rem; }
+  .block-icon-content .icon-content-item .icon-group-item .icon-item-size {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600; }
+  .block-icon-content .icon-content-item .icon-group-content {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    margin-left: 6.07143rem; }
+
 .page-product-list #page-title {
   font-size: 2.85714rem;
   line-height: 3.42857rem;
@@ -16457,3 +16507,27 @@ body.woocommerce-page .main-inner {
     .single-product .single_variation_wrap .single_add_to_cart_button.button:hover,
     .single-product .single_variation_wrap .woocommerce-variation-add-to-cart .single_add_to_cart_button.button:hover {
       background-color: #8A8A8A; }
+
+.single-product .product-content {
+  margin-bottom: 1.42857rem; }
+
+.single-product main .social-wrapper {
+  margin-bottom: 2.14286rem; }
+  .single-product main .social-wrapper .social-icons__list {
+    padding: 0;
+    margin: 0;
+    list-style: none; }
+  .single-product main .social-wrapper .social-icons__icon {
+    text-indent: -9999em; }
+    .single-product main .social-wrapper .social-icons__icon:before {
+      float: left;
+      text-indent: 0; }
+  .single-product main .social-wrapper .social-icons__item {
+    display: inline-block;
+    margin: 0rem 0.5rem 0rem 0rem; }
+    .single-product main .social-wrapper .social-icons__item .icon-linkedin {
+      color: #266FA9; }
+    .single-product main .social-wrapper .social-icons__item .icon-facebook {
+      color: #3A5797; }
+    .single-product main .social-wrapper .social-icons__item .icon-twitter {
+      color: #47C7F2; }

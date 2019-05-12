@@ -294,12 +294,124 @@
                 },
                 "layout_5b8372f2dae72": {
                     "key": "layout_5b8372f2dae72",
+                    "name": "block_icon_content",
+                    "label": "Block Icon Content",
+                    "display": "row",
+                    "sub_fields": [
+                        {
+                            "key": "field_5b8372f3dae75",
+                            "label": "List Term",
+                            "name": "list_term",
+                            "type": "repeater",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "collapsed": "",
+                            "min": 0,
+                            "max": 0,
+                            "layout": "block",
+                            "button_label": "Add Items",
+                            "sub_fields": [
+                                {
+                                    "key": "field_5cd7a807a746f",
+                                    "label": "Icon",
+                                    "name": "icon",
+                                    "type": "image",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "return_format": "array",
+                                    "preview_size": "thumbnail",
+                                    "library": "all",
+                                    "min_width": "",
+                                    "min_height": "",
+                                    "min_size": "",
+                                    "max_width": "",
+                                    "max_height": "",
+                                    "max_size": "",
+                                    "mime_types": ""
+                                },
+                                {
+                                    "key": "field_5cd7a817a7470",
+                                    "label": "Size",
+                                    "name": "size",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": "",
+                                    "placeholder": "",
+                                    "prepend": "",
+                                    "append": "",
+                                    "maxlength": ""
+                                },
+                                {
+                                    "key": "field_5cd7a828a7471",
+                                    "label": "Content",
+                                    "name": "content",
+                                    "type": "textarea",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": "",
+                                    "placeholder": "",
+                                    "maxlength": "",
+                                    "rows": 3,
+                                    "new_lines": "br"
+                                }
+                            ]
+                        },
+                        {
+                            "key": "field_5b8372f3dae76",
+                            "label": "Component Class",
+                            "name": "component_class",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_5cd7a777a746a": {
+                    "key": "layout_5cd7a777a746a",
                     "name": "map_block",
                     "label": "Map Block",
                     "display": "row",
                     "sub_fields": [
                         {
-                            "key": "field_5b8372f2dae73",
+                            "key": "field_5cd7a777a746b",
                             "label": "Map Title",
                             "name": "map_title",
                             "type": "text",
@@ -318,7 +430,7 @@
                             "maxlength": ""
                         },
                         {
-                            "key": "field_5b8372f3dae74",
+                            "key": "field_5cd7a777a746c",
                             "label": "Map Description",
                             "name": "map_description",
                             "type": "textarea",
@@ -337,7 +449,7 @@
                             "new_lines": ""
                         },
                         {
-                            "key": "field_5b8372f3dae75",
+                            "key": "field_5cd7a777a746d",
                             "label": "Map Embed",
                             "name": "map_embed",
                             "type": "google_map",
@@ -355,7 +467,7 @@
                             "height": 300
                         },
                         {
-                            "key": "field_5b8372f3dae76",
+                            "key": "field_5cd7a777a746e",
                             "label": "Component Class",
                             "name": "component_class",
                             "type": "text",
@@ -400,5 +512,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1557174052
+    "modified": 1557637373
 }

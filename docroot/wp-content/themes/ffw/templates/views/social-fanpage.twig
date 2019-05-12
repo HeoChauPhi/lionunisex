@@ -1,0 +1,11 @@
+<div class="social-wrapper social-fanpage">
+  <div class="social-icons">
+    <ul class="social-icons__list">
+      {% for item in socials %}
+        <li class="social-icons__item">
+          <a class="social-icons__icon" href="{{ item.fanpage_url }}" target="_blank">{{ item.social_icon }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>

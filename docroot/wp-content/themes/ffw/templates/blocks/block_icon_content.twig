@@ -1,0 +1,13 @@
+<div class="block-icon-content {{ component_class }}">
+  <div class="icon-content-list">
+  {% for item in list_term %}
+    <div class="icon-content-item">
+      <div class="icon-group-item">
+        <div class="icon-item-image"><img src="{{ item.icon.url }}"></div>
+        <div class="icon-item-size">{{ item.size }}</div>
+      </div>
+      <div class="icon-group-content">{{ item.content }}</div>
+    </div>
+  {% endfor %}
+  </div>
+</div>

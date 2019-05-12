@@ -64,6 +64,7 @@
    ================================================================== */
   $(document).ready(function() {
     // Call to function
+    $('.popup-banner > a.js-fancybox').trigger('click');
     //$('.js-toogle--menu').on('click', mobileMenu);
     $('.js-back-top').on('click', backToTop);
     $('.js-scroll-down').on('click', scrollDown);

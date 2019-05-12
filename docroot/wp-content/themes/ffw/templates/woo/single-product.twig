@@ -38,6 +38,8 @@
         {% endif %}
         </div>
 
+        {% include 'social-detail.twig' with {'permalink': post.link} %}
+
         {% do action('woocommerce_after_single_product_summary') %}
 
         <meta itemprop="url" content="{{ post.link }}" />

@@ -19,7 +19,7 @@
     align-items: center;
 
     // Bock Social Header
-    .social-wrapper {
+    .social-fanpage {
       margin-left: rem(40px);
 
       .social-icons {
@@ -29,31 +29,9 @@
           list-style: none;
         }
 
-        &__icon {
-          @extend .fab;
-          text-indent: -9999em;
-
-          &:before {
-            float: left;
-            text-indent: 0;
-          }
-        }
-
         &__item {
           display: inline-block;
           margin: rem(0 7px);
-
-          .icon-linkedin {
-            @extend .fa-linkedin-in;
-          }
-
-          .icon-facebook {
-            @extend .fa-facebook-f;
-          }
-
-          .icon-twitter {
-            @extend .fa-twitter;
-          }
         }
       }
     }

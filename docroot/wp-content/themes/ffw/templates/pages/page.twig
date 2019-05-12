@@ -2,19 +2,37 @@
 
 {% block content %}
   {% for post in posts %}
-    {% if fn('is_page') %}
-      {% if title_option != "on" %}
-        <h1 id="page-title">{{ post.title }}</h1>
-      {% endif %}
+    {% if post.get_field('banner_image') %}
+      {% set block_class = 'col-md-6' %}
     {% else %}
-      <h1 id="page-title">{{ post.title }}</h1>
+      {% set block_class = 'col-md-12' %}
     {% endif %}
 
-    {% if post.content %}
-    <div class="block-content__body">{{ post.content|shortcodes }}</div>
-    {% endif %}
+    <div class="row">
+      <div class="{{ block_class }} main-content">
+        {% if fn('is_page') %}
+          {% if title_option != "on" %}
+            <h1 id="page-title">{{ post.title }}</h1>
+          {% endif %}
+        {% else %}
+          <h1 id="page-title">{{ post.title }}</h1>
+        {% endif %}
 
-    {{ function('flexible_content', 'group_component') }}
+        {% if post.content %}
+        <div class="block-content__body">{{ post.content|shortcodes }}</div>
+        {% endif %}
+
+        {{ function('flexible_content', 'group_component') }}
+      </div>
+
+      {% if post.get_field('banner_image') %}
+      <div class="{{ block_class }} main-media">
+        <div class="main-media-inner" style="background-image: url({{ post.get_field('banner_image').url }});" title="{{ post.get_field('banner_image').name }}">
+          <img src="{{ post.get_field('banner_image').url }}" title="{{ post.get_field('banner_image').name }}">
+        </div>
+      </div>
+      {% endif %}
+    </div>
   {% endfor %}
 
   {#% if function('comments_open') %}

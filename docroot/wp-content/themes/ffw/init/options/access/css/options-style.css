@@ -1,0 +1,35 @@
+.banner-wrapper {
+  position: relative;
+}
+
+.banner-wrapper img {
+  max-width: 100%;
+}
+
+.remove_media_button {
+  background: transparent;
+  border-radius: 500px;
+  border: none;
+  cursor: pointer;
+  height: 30px;
+  padding: 0;
+  position: absolute;
+  right: 7px;
+  top: 7px;
+  width: 30px;
+}
+
+.remove_media_button:hover {
+  color: #fff;
+}
+
+.remove_media_button .fa {
+  display: block;
+  font-size: 34px;
+  height: 100%;
+  width: 100%;
+}
+
+.upload_media_button {
+  padding: 7px 10px;
+}

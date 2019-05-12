@@ -620,8 +620,12 @@ function ffw_twig_data($data){
   // Theme option
   $theme_options                = get_option('ffw_board_settings');
   $google_api_key               = $theme_options['ffw_google_api_key'];
+  $popup_banner_url             = $theme_options['ffw_popup_banner_url'];
+  $popup_banner_image           = $theme_options['ffw_popup_banner_image'];
 
   $data['google_api_key']       = $google_api_key;
+  $data['popup_banner_url']     = $popup_banner_url;
+  $data['popup_banner_image']   = $popup_banner_image;
 
   // Get PPL Plugin
   if ( !empty($GLOBALS["polylang"]) ) {

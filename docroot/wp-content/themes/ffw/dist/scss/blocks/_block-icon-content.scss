@@ -1,0 +1,29 @@
+.block-icon-content {
+  .icon-content {
+    &-item {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: rem(65px);
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+
+      .icon-group-item {
+        .icon-item-image {
+          max-width: rem(46px);
+        }
+
+        .icon-item-size {
+          @include poppins-semibold;
+        }
+      }
+
+      .icon-group-content {
+        flex: 1;
+        margin-left: rem(85px);
+      }
+    }
+  }
+}

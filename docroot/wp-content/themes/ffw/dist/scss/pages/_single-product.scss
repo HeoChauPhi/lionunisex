@@ -45,8 +45,6 @@
     }
   }
 
-  .product-description {}
-
   .product_title {
     font-size: rem(20px);
     margin: rem(0 0 6px);
@@ -132,6 +130,54 @@
 
       &:hover {
         background-color: $color-link-hover;
+      }
+    }
+  }
+
+  .product-content {
+    margin-bottom: rem(20px);
+  }
+
+  main {
+    .social-wrapper {
+      margin-bottom: rem(30px);
+
+      .social-icons {
+        &__list {
+          padding: 0;
+          margin: 0;
+          list-style: none;
+        }
+
+        &__icon {
+          @extend .fab;
+          text-indent: -9999em;
+
+          &:before {
+            float: left;
+            text-indent: 0;
+          }
+        }
+
+        &__item {
+          display: inline-block;
+          margin: rem(0 7px 0 0);
+
+          .icon-linkedin {
+            @extend .fa-linkedin-in;
+            color: #266FA9;
+          }
+
+          .icon-facebook {
+            @extend .fa-facebook-f;
+            color: #3A5797;
+          }
+
+          .icon-twitter {
+            @extend .fa-twitter;
+            color: #47C7F2;
+          }
+        }
       }
     }
   }

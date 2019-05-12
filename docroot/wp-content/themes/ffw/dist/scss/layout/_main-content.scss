@@ -1,10 +1,20 @@
 .page-wrapper {
-  background-color: $bg-body;
+  //background-color: $bg-body;
 }
 
 main {
   .main-inner {
     padding: rem(0 15px 35px 15px);
+
+    > .row {
+      > .col-md-6 {
+        padding-left: 0;
+      }
+
+      > .main-media {
+        padding-right: 0;
+      }
+    }
   }
 
   .block-title {

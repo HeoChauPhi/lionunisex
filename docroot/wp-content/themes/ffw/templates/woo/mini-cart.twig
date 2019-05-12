@@ -1,10 +1,10 @@
 <div class="block-mini-cart">
-<a href="#" class="mini-cart-icon js-show-cart">
-  <span class="cart-icon"><i class="fas fa-shopping-basket"></i></span>
-  <span class="cart-count">{{ cart_count }}</span>
-</a>
-{#{ fn('shortcode', '[woocommerce_cart]') }#}
-<div class="dropdown-mini-cart">
-  {{ fn('woocommerce_mini_cart') }}
-</div>
+  <a href="#" class="mini-cart-icon js-show-cart">
+    <span class="cart-icon"><i class="fas fa-shopping-basket"></i></span>
+    <span class="cart-count">{{ cart_count }}</span>
+  </a>
+  {#{ fn('shortcode', '[woocommerce_cart]') }#}
+  <div class="dropdown-mini-cart woocommerce">
+    {{ fn('woocommerce_mini_cart') }}
+  </div>
 </div>
