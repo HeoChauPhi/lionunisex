@@ -2,18 +2,31 @@
   //background-color: $bg-body;
 }
 
+#page-title {
+  font-size: rem(40px);
+  margin: rem(0 0 60px);
+}
+
 main {
   .main-inner {
-    padding: rem(0 15px 35px 15px);
+    padding: rem(30px 15px 35px 15px);
 
     > .row {
       > .col-md-6 {
         padding-left: 0;
+
+        &.main-content {
+          padding-top: rem(150px);
+        }
       }
 
       > .main-media {
         padding-right: 0;
       }
+    }
+
+    .block-content__body {
+      margin-bottom: rem(70px);
     }
   }
 

@@ -33,6 +33,11 @@
                 "param": "post_type",
                 "operator": "==",
                 "value": "post"
+            },
+            {
+                "param": "page_template",
+                "operator": "!=",
+                "value": "page-templates\/template-landing-page.php"
             }
         ],
         [
@@ -40,6 +45,11 @@
                 "param": "post_type",
                 "operator": "==",
                 "value": "page"
+            },
+            {
+                "param": "page_template",
+                "operator": "!=",
+                "value": "page-templates\/template-landing-page.php"
             }
         ]
     ],
@@ -51,5 +61,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1557637252
+    "modified": 1557660519
 }

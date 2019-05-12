@@ -32,10 +32,13 @@ h1, h2, h3, h4, h5, h6 {
 
 select,
 input[type="text"],
+input[type="email"],
+input[type="tel"],
 textarea {
   background-color: $white;
   border: rem(1px) solid $black;
   color: $black;
   font-size: rem(15px);
+  max-width: 100%;
   padding: rem(4px 10px 5px 10px);
 }

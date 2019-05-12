@@ -406,12 +406,122 @@
                 },
                 "layout_5cd7a777a746a": {
                     "key": "layout_5cd7a777a746a",
+                    "name": "about_block_on_page",
+                    "label": "About Block On Page",
+                    "display": "row",
+                    "sub_fields": [
+                        {
+                            "key": "field_5cd810b8136d0",
+                            "label": "Content Two Col",
+                            "name": "content_two_col",
+                            "type": "repeater",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "collapsed": "",
+                            "min": 0,
+                            "max": 0,
+                            "layout": "block",
+                            "button_label": "Add Contents",
+                            "sub_fields": [
+                                {
+                                    "key": "field_5cd811acbcbe9",
+                                    "label": "Content Title",
+                                    "name": "content_title",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": "",
+                                    "placeholder": "",
+                                    "prepend": "",
+                                    "append": "",
+                                    "maxlength": ""
+                                },
+                                {
+                                    "key": "field_5cd810f9136d1",
+                                    "label": "Block Content",
+                                    "name": "block_content",
+                                    "type": "wysiwyg",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": "",
+                                    "tabs": "all",
+                                    "toolbar": "full",
+                                    "media_upload": 1,
+                                    "delay": 0
+                                }
+                            ]
+                        },
+                        {
+                            "key": "field_5cd81113136d2",
+                            "label": "Contact Form Attach",
+                            "name": "contact_form_attach",
+                            "type": "post_object",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "post_type": [
+                                "wpcf7_contact_form"
+                            ],
+                            "taxonomy": "",
+                            "allow_null": 0,
+                            "multiple": 0,
+                            "return_format": "id",
+                            "ui": 1
+                        },
+                        {
+                            "key": "field_5cd7a777a746e",
+                            "label": "Component Class",
+                            "name": "component_class",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_5cd81094136cb": {
+                    "key": "layout_5cd81094136cb",
                     "name": "map_block",
                     "label": "Map Block",
                     "display": "row",
                     "sub_fields": [
                         {
-                            "key": "field_5cd7a777a746b",
+                            "key": "field_5cd81094136cc",
                             "label": "Map Title",
                             "name": "map_title",
                             "type": "text",
@@ -430,7 +540,7 @@
                             "maxlength": ""
                         },
                         {
-                            "key": "field_5cd7a777a746c",
+                            "key": "field_5cd81094136cd",
                             "label": "Map Description",
                             "name": "map_description",
                             "type": "textarea",
@@ -449,7 +559,7 @@
                             "new_lines": ""
                         },
                         {
-                            "key": "field_5cd7a777a746d",
+                            "key": "field_5cd81094136ce",
                             "label": "Map Embed",
                             "name": "map_embed",
                             "type": "google_map",
@@ -467,7 +577,7 @@
                             "height": 300
                         },
                         {
-                            "key": "field_5cd7a777a746e",
+                            "key": "field_5cd81094136cf",
                             "label": "Component Class",
                             "name": "component_class",
                             "type": "text",
@@ -512,5 +622,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1557637373
+    "modified": 1557664184
 }

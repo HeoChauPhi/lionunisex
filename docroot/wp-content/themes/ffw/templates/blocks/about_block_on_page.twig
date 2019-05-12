@@ -1,0 +1,17 @@
+<div class="block-about-page {{ component_class }}">
+  <div class="block-about-contents">
+  {% for item in content_two_col %}
+    <div class="block-content-item">
+      <h3 class="content-title">{{ item.content_title }}</h3>
+      <div class="content-body">{{ item.block_content|shortcodes }}</div>
+    </div>
+  {% endfor %}
+  </div>
+
+  <div class="block-about-form">
+    <h3 class="form-title">{{ fn('get_the_title', contact_form_attach) }}</h3>
+    <div class="form-body">
+    {{ fn('shortcode', '[contact-form-7 id="' ~ contact_form_attach ~ '" title="' ~ fn('get_the_title', contact_form_attach) ~ '"]') }}
+    </div>
+  </div>
+</div>
