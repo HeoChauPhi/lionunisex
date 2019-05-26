@@ -33,9 +33,7 @@
     <div class="back-to-top js-back-top">{{ __('Back to Top', 'ffw_theme') }}</div>
 
     {% if popup_banner_image and fn('is_front_page') %}
-    <div class="popup-banner">
-      <a class="js-fancybox" data-fancybox data-src="#popup-banner-content">{{ pll_e('Trigger the fancybox') }}</a>
-      
+    <div class="popup-banner">      
       <div style="display: none;" id="popup-banner-content">
         <a href="{{ popup_banner_url }}" target="_blank"><img src="{{ popup_banner_image }}"></a>
       </div>

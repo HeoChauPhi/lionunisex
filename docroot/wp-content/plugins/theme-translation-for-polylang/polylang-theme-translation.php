@@ -1,7 +1,7 @@
 <?php
 /* Plugin Name: Theme and plugin translation for Polylang (TTfP)
 Description: Polylang - theme and plugin translation for WordPress
-Version: 2.0.4
+Version: 3.0.0
 Author: Marcin Kazmierski
 License: GPL2
 */
@@ -9,6 +9,10 @@ License: GPL2
 defined('ABSPATH') or die('No script kiddies please!');
 
 include_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'polylang-tt-access.php';
+
+include_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Polylang_TT_importer.php';
+include_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Polylang_TT_exporter.php';
+include_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Polylang_TT_theme.php';
 
 /**
  * Class Polylang_Theme_Translation.
@@ -40,11 +44,13 @@ class Polylang_Theme_Translation
         $this->run_plugin_scanner();
     }
 
+
     /**
      * Find strings in themes.
      */
-    protected function run_theme_scanner()
+    public function run_theme_scanner()
     {
+        $data = [];
         $themes = wp_get_themes();
         if (!empty($themes)) {
             foreach ($themes as $name => $theme) {
@@ -52,14 +58,16 @@ class Polylang_Theme_Translation
                 $files = $this->get_files_from_dir($theme_path);
                 $strings = $this->file_scanner($files);
                 $this->add_to_polylang_register($strings, $name);
+                $data[$name] = $strings;
             }
         }
+        return $data;
     }
 
     /**
      * Find strings in plugins.
      */
-    protected function run_plugin_scanner()
+    public function run_plugin_scanner()
     {
         $excludePlugins = array(
             'polylang',
@@ -67,19 +75,21 @@ class Polylang_Theme_Translation
         );
 
         $plugins = wp_get_active_and_valid_plugins();
-
+        $data = [];
         if (!empty($plugins)) {
             foreach ($plugins as $plugin) {
                 $pluginDir = dirname($plugin);
                 $pluginName = pathinfo($plugin, PATHINFO_FILENAME);
 
-                if (!in_array($pluginName, $excludePlugins)) {
+                if (!in_array($pluginName, $excludePlugins) && $pluginDir !== WP_PLUGIN_DIR) {
                     $files = $this->get_files_from_dir($pluginDir);
                     $strings = $this->file_scanner($files);
                     $this->add_to_polylang_register($strings, $pluginName);
+                    $data[$pluginName] = $strings;
                 }
             }
         }
+        return $data;
     }
 
     /**
@@ -140,9 +150,60 @@ add_action('init', 'process_polylang_theme_translation');
 function process_polylang_theme_translation()
 {
     if (Polylang_TT_access::get_instance()->is_polylang_page()) {
-        if (Polylang_TT_access::get_instance()->chceck_plugin_access()) {
+        if (Polylang_TT_access::get_instance()->chceck_plugin_access() && current_user_can('manage_options')) {
             $plugin_obj = new Polylang_Theme_Translation();
             $plugin_obj->run();
         }
     }
+}
+
+add_action('wp_loaded', 'process_polylang_theme_translation_wp_loaded');
+function process_polylang_theme_translation_wp_loaded()
+{
+    if (isset($_POST) && isset($_POST['export_strings']) && (int)$_POST['export_strings'] === 1 && current_user_can('manage_options')) {
+        $translation = new Polylang_Theme_Translation();
+        $exporter = new Polylang_TT_exporter($translation);
+        $exporter->export();
+    }
+
+    if (isset($_POST["action_import_strings"])) {
+        if (PLL() instanceof PLL_Settings) {
+            $fileName = $_FILES["import_strings"]["tmp_name"];
+            if ($_FILES["import_strings"]["size"] > 0 && $fileName) {
+                $importer = new Polylang_TT_importer();
+                $counter = $importer->import($fileName);
+
+                wp_redirect((add_query_arg(['_msg' => 'translations-imported', 'items' => $counter], wp_get_referer())));
+                exit;
+            }
+        }
+        wp_redirect((add_query_arg('_msg', 'translations-import-error', wp_get_referer())));
+        exit;
+    }
+
+}
+
+add_filter('pll_settings_tabs', 'import_export_strings', 10, 1);
+function import_export_strings(array $tabs)
+{
+    $tabs['import_export_strings'] = __("Export/import translations", 'polylang-tt');
+    return $tabs;
+}
+
+
+add_action('pll_settings_active_tab_import_export_strings', 'custom_pll_settings_active_tab_import_export_strings', 10, 0);
+function custom_pll_settings_active_tab_import_export_strings()
+{
+    $data = [
+        'items' => (int)(isset($_GET['items']) ? $_GET['items'] : 0),
+        'msg' => filter_var(isset($_GET['_msg']) ? $_GET['_msg'] : '', FILTER_SANITIZE_STRING),
+    ];
+    print Polylang_TT_theme::includeTemplates('admin-import-export-page', $data);
+}
+
+
+add_action('plugins_loaded', 'plugins_loaded_tt_for_polylang');
+function plugins_loaded_tt_for_polylang()
+{
+    load_plugin_textdomain('polylang-tt', false, basename(__DIR__) . '/languages');
 }

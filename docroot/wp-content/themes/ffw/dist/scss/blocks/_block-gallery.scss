@@ -36,9 +36,10 @@
 
     &-inner {
       background-color: $black;
+      position: relative;
     }
 
-    a {
+    .image-gallery-media {
       @include transition(opacity 0.3s ease);
       background-position: center center;
       background-repeat: no-repeat;
@@ -51,9 +52,29 @@
         opacity: 0;
         visibility: hidden;
       }
+    }
 
-      &:hover {
+    .icon-fancybox {
+      align-items: center;
+      bottom: 0;
+      color: $white;
+      display: flex;
+      font-size: rem(30px);
+      justify-content: center;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      visibility: hidden;
+    }
+
+    &:hover {
+      .image-gallery-media {
         opacity: 0.5;
+      }
+
+      .icon-fancybox {
+        visibility: visible;
       }
     }
   }

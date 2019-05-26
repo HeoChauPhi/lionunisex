@@ -64,7 +64,22 @@
    ================================================================== */
   $(document).ready(function() {
     // Call to function
-    $('.popup-banner > a.js-fancybox').trigger('click');
+
+    // Set time popup enable
+    if(!$.cookie('banner_popup_cookie') && $('#popup-banner-content').length > 0) {
+      $.fancybox.open({
+        src: '#popup-banner-content',
+        opts : {
+          beforeClose : function( instance, current ) {
+            var date = new Date();
+            date.setTime(date.getTime() + (3600 * 1000));
+            $.cookie('banner_popup_cookie', 'close', { expires: date, path: '/' });
+            console.log($.cookie('banner_popup_cookie'));
+          }
+        }
+      });
+    }
+
     //$('.js-toogle--menu').on('click', mobileMenu);
     $('.js-back-top').on('click', backToTop);
     $('.js-scroll-down').on('click', scrollDown);

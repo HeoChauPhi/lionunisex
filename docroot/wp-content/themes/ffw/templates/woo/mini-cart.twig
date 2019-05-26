@@ -4,7 +4,7 @@
     <span class="cart-count">{{ cart_count }}</span>
   </a>
   {#{ fn('shortcode', '[woocommerce_cart]') }#}
-  <div class="dropdown-mini-cart woocommerce">
+  <div class="dropdown-mini-cart woocommerce {% if minicart_class %}{{ minicart_class }}{% endif %}">
     {{ fn('woocommerce_mini_cart') }}
   </div>
 </div>

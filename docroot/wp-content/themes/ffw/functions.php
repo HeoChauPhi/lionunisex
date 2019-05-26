@@ -50,6 +50,9 @@ if(!is_admin()) {
     wp_register_script('jquery-ui', get_stylesheet_directory_uri() . '/dist/js/libs/jquery-ui.js', array('jquery'), '1.12.1', TRUE);
     wp_enqueue_script('jquery-ui');
     
+    wp_register_script('jquery-cookie', get_stylesheet_directory_uri() . '/dist/js/libs/jquery.cookie.js', array('jquery'), '1.4.1', TRUE);
+    wp_enqueue_script('jquery-cookie');
+    
     wp_register_script('lib-waypoints', get_stylesheet_directory_uri() . '/dist/js/libs/waypoints.min.js', array('jquery'), '1.6.2', TRUE);
     wp_enqueue_script('lib-waypoints');
     

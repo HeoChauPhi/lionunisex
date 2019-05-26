@@ -16315,8 +16315,9 @@ body.woocommerce-page .main-inner {
 .block-gallery .image-gallery-item {
   margin-bottom: 2.14286rem; }
   .block-gallery .image-gallery-item-inner {
-    background-color: #000000; }
-  .block-gallery .image-gallery-item a {
+    background-color: #000000;
+    position: relative; }
+  .block-gallery .image-gallery-item .image-gallery-media {
     -webkit-transition: opacity 0.3s ease;
     -moz-transition: opacity 0.3s ease;
     -o-transition: opacity 0.3s ease;
@@ -16327,11 +16328,31 @@ body.woocommerce-page .main-inner {
     display: block;
     height: 21.07143rem;
     overflow: hidden; }
-    .block-gallery .image-gallery-item a img {
+    .block-gallery .image-gallery-item .image-gallery-media img {
       opacity: 0;
       visibility: hidden; }
-    .block-gallery .image-gallery-item a:hover {
-      opacity: 0.5; }
+  .block-gallery .image-gallery-item .icon-fancybox {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    bottom: 0;
+    color: #ffffff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 2.14286rem;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    visibility: hidden; }
+  .block-gallery .image-gallery-item:hover .image-gallery-media {
+    opacity: 0.5; }
+  .block-gallery .image-gallery-item:hover .icon-fancybox {
+    visibility: visible; }
 
 .block-icon-content .icon-content-item {
   -webkit-box-align: center;

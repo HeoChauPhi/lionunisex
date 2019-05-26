@@ -1,6 +1,14 @@
 <?php
+
+global $woocommerce;
 $context            = Timber::context();
 $context['sidebar'] = Timber::get_widgets( 'shop-sidebar' );
+
+if (get_option('woocommerce_cart_redirect_after_add')=='yes') {
+  $context['minicart_class'] = 'show-cart';
+} else {
+  $context['minicart_class'] = 'hide-cart';
+}
 
 if ( is_singular( 'product' ) ) {
   add_action( 'woocommerce_single_product_summary', 'product_display_fields_after_title', 6 );

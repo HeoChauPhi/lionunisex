@@ -1,0 +1,121 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2019-05-13 16:44+0200\n"
+"PO-Revision-Date: 2019-05-13 16:52+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: Polylang_TT_exporter.php:26
+msgid "String"
+msgstr "Tekst"
+
+#: Polylang_TT_exporter.php:27
+msgid "Source (plugin or theme)"
+msgstr "Źródło (plugin lub skórka)"
+
+#: polylang-theme-translation.php:139
+msgid "TTfP:"
+msgstr "TTfP:"
+
+#: polylang-theme-translation.php:189
+msgid "Export/import translations"
+msgstr "Import/eksport tłumaczeń"
+
+#: theme/admin-import-export-page.tpl.php:8
+msgid "Translations updated"
+msgstr "Zaktualizowano tłumaczenia"
+
+#: theme/admin-import-export-page.tpl.php:8
+msgid "Items"
+msgstr "Elementy"
+
+#: theme/admin-import-export-page.tpl.php:19
+msgid "Translations import error."
+msgstr "Wystąpił błąd podczas importowania."
+
+#: theme/admin-import-export-page.tpl.php:29
+msgid "How it is work?"
+msgstr "Jak to działa?"
+
+#: theme/admin-import-export-page.tpl.php:33
+msgid ""
+"\"Theme and plugin translation for Polylang (TTfP)\" automatically searches "
+"all files of WordPress themes and plugins."
+msgstr ""
+"Wtyczka \"Theme and plugin translation for Polylang (TTfP)\" automatycznie "
+"przeszukuje wszystkie pliki pluginów i skórek wordpressa."
+
+#: theme/admin-import-export-page.tpl.php:34
+msgid "It chooses from this file only those files with extensions:"
+msgstr "Wybiera z tych plików tylko te, które mają rozszerzenie:"
+
+#: theme/admin-import-export-page.tpl.php:42
+msgid ""
+"Plugin in searched skins or plugins chooses texts from Polylang functions, "
+"such as:"
+msgstr ""
+"Wtyczka w wybranych plikach wyszukuje użytych funkcji Polylang, takich jak:"
+
+#: theme/admin-import-export-page.tpl.php:49
+msgid "This functions are defined by Polylang plugin for printing"
+msgstr "Te funkcje są zdefiniowane przez wtyczkę Polylang do wyświetlania"
+
+#: theme/admin-import-export-page.tpl.php:50
+msgid ""
+"Thanks \"Theme and plugin translation for Polylang\" you can find these "
+"strings to translate and add to Polylang register on very simple way."
+msgstr ""
+"Przy pomocy wtyczki \"Theme and plugin translation for Polylang\" możesz "
+"znaleźć teksty do tłumaczenia i dodać je automatycznie do rejestru Polylang."
+
+#: theme/admin-import-export-page.tpl.php:52
+msgid "Then you can translate these texts from the admin dashboard."
+msgstr ""
+"Następnie możesz przetłumaczyć te teksty z poziomu panelu administracyjnego."
+
+#: theme/admin-import-export-page.tpl.php:53
+msgid "The scan result can be seen on the tab with translations:"
+msgstr "Wynik skanowania można zobaczyć w zakładce z tłumaczeniami:"
+
+#: theme/admin-import-export-page.tpl.php:54
+msgid "`Settings -> Languages -> String translation`"
+msgstr "`Ustawienia -> Języki -> String translation`"
+
+#: theme/admin-import-export-page.tpl.php:55
+msgid "or"
+msgstr "lub"
+
+#: theme/admin-import-export-page.tpl.php:56
+msgid "`Languages -> String translation`"
+msgstr "`Języki -> String translation`"
+
+#: theme/admin-import-export-page.tpl.php:62
+msgid "Export all texts for translate as CSV file"
+msgstr "Wyeksportuj wszystkie teksty do tłumaczenia do pliku CSV"
+
+#: theme/admin-import-export-page.tpl.php:69
+msgid "Export data"
+msgstr "Wyeksportuj"
+
+#: theme/admin-import-export-page.tpl.php:77
+msgid "Import all translated texts"
+msgstr "Importuj wszystkie tłumaczenia"
+
+#: theme/admin-import-export-page.tpl.php:84
+msgid "Select CSV file:"
+msgstr "Wybierz plik w formacie CSV:"
+
+#: theme/admin-import-export-page.tpl.php:88
+msgid "Run importer"
+msgstr "Importuj"
