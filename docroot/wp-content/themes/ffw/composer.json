@@ -9,9 +9,9 @@
       "package": {
         "name": "advanced-custom-fields",
         "type": "wordpress-plugin",
-        "version": "5.7.13",
+        "version": "5.8.0",
         "dist": {
-          "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&k=b3JkZXJfaWQ9NDcwMDB8dHlwZT1kZXZlbG9wZXJ8ZGF0ZT0yMDE0LTEyLTMwIDE5OjAxOjU1&t=5.7.13",
+          "url": "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&k=b3JkZXJfaWQ9NDcwMDB8dHlwZT1kZXZlbG9wZXJ8ZGF0ZT0yMDE0LTEyLTMwIDE5OjAxOjU1&t=5.8.0",
           "type": "zip"
         },
         "require": {
@@ -31,7 +31,7 @@
     "vendor-dir": "wp-libs/vendor"
   },
   "require": {
-    "advanced-custom-fields": "5.7.13",
-    "timber/timber": "^1.9.2"
+    "advanced-custom-fields": "5.8.0",
+    "timber/timber": "^1.9.5"
   }
 }

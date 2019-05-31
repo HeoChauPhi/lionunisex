@@ -16082,6 +16082,9 @@ textarea {
   .back-to-top:hover {
     opacity: 1; }
 
+.page-wrapper {
+  background-color: #F6E5DC; }
+
 #page-title {
   font-size: 2.85714rem;
   margin: 0rem 0rem 4.28571rem; }
