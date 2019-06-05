@@ -9,15 +9,21 @@
 
 main {
   .main-inner {
-    padding: rem(30px 15px 35px 15px);
+    padding: rem(0 15px 35px 15px);
 
     > .row {
       > .col-md-6 {
-        padding-left: 0;
+        padding-left: 7%;
 
         &.main-content {
           padding-top: rem(150px);
         }
+      }
+
+      .col-md-12.main-content {
+        padding-top: rem(120px);
+        padding-left: 7%;
+        padding-right: 7%;
       }
 
       > .main-media {

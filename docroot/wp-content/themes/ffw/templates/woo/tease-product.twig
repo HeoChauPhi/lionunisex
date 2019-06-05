@@ -10,12 +10,12 @@
     {% set post_thumb_url = fn('wc_placeholder_img_src') %}
     {% endif %}
 
-    <div class="product-image" style="background-image: url({{ post_thumb_url }});">
+    <div class="product-image" style="background-image: url({{ post_thumb_url|resize(303, 303) }});">
       {% if showthumb %}
         <div class="media-figure {% if not post.thumbnail %}placeholder{% endif %}">
           <a href="{{ post.link }}">
             {% if post.thumbnail %}
-              <img src="{{ post.thumbnail.src|resize(post_thumb_size[0], post_thumb_size[1]) }}" />
+              <img src="{{ post.thumbnail.src|resize(post_thumb_size[0], post_thumb_size[1]) }}" alt />
             {% else %}
               <span class="thumb-placeholder"><i class="icon-camera"></i></span>
             {% endif %}
@@ -24,7 +24,7 @@
       {% endif %}
 
       {% do action('woocommerce_before_shop_loop_item_title') %}
-      <img src="{{ post_thumb_url }}">
+      <img src="{{ post_thumb_url|resize(303, 303) }}" alt>
     </div>
 
     <div class="product-info">
@@ -37,11 +37,11 @@
       <div class="post-content">
       <div class="product-price">
         {% if fn('wc_get_product', post.ID).get_sale_price %}
-        <span class="product-regular-price">{{ fn('get_woocommerce_currency_symbol') ~ fn('wc_get_product', post.ID).get_regular_price }}</span>
+        <span class="product-regular-price">{{ fn('wc_get_product', post.ID).get_regular_price ~ ' ' ~ fn('get_woocommerce_currency_symbol') }}</span>
         </span>
         {% endif %}
         {% if fn('wc_get_product', post.ID).get_price %}
-        <span class="product-sale-price">{{ fn('get_woocommerce_currency_symbol') ~ fn('wc_get_product', post.ID).get_price }}
+        <span class="product-sale-price">{{ fn('wc_get_product', post.ID).get_price ~ ' ' ~ fn('get_woocommerce_currency_symbol') }}
         {% else %}
         <span class="product-sale-price">{{ pll_e('Contact') }}
         {% endif %}

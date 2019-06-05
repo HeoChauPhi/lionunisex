@@ -95,6 +95,15 @@
       });
       return false;
     });
+
+    // Color hover filter
+    $('.woo-attribute-color .woocommerce-widget-layered-nav-list__item > a').mouseenter(function() {
+      var color_name = $(this).text();
+      $(this).parents('.woo-attribute-color').find('> .widget-title').append('<span class="color-name-attribute">: ' + color_name + '</span>');
+    })
+    .mouseleave(function() {
+      $('.color-name-attribute').remove();
+    });
   });
 
   $(window).scroll(function() {

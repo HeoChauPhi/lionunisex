@@ -8,6 +8,8 @@
   }
 
   .sidebar-left {
+    font-size: rem(14px);
+
     .sidebar-title {
       border-bottom: rem(1px) solid $color-line;
       font-size: rem(26px);
@@ -26,6 +28,14 @@
 
         + * {
           margin-top: rem(15px) !important;
+        }
+      }
+
+      ul {
+        li {
+          a {
+            font-weight: 700;
+          }
         }
       }
     }
@@ -48,6 +58,47 @@
     #min_price,
     #max_price {
       display: none;
+    }
+  }
+}
+
+.woo-attribute-color {
+  ul {
+    li {
+      display: inline-block;
+      margin-right: rem(10px);
+      position: relative;
+
+      a {
+        display: block;
+        height: 100%;
+        position: absolute;
+        text-indent: -9999em;
+        width: 100%;
+      }
+
+      &.woocommerce-widget-layered-nav-list__item--chosen {
+        a {
+          @include box-shadow(rem(0px 0px 0px 1px) $color-link);
+          border-radius: rem(500px);
+          border: rem(1px) solid $white;
+
+          &:before {
+            content: "" !important;
+          }
+        }
+      }
+
+      .count {
+        display: none;
+      }
+
+      .term-slug {
+        border-radius: rem(500px);
+        display: block;
+        height: rem(18px);
+        width: rem(18px);
+      }
     }
   }
 }

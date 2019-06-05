@@ -393,6 +393,7 @@ function flexible_content($name) {
           break;
 
         case 'map_block':
+        case 'bottom_map_block':
           $theme_options = get_option('ffw_board_settings');
           $google_api_key = $theme_options['ffw_google_api_key'];
 

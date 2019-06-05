@@ -78,7 +78,7 @@ if (function_exists('register_sidebar')) {
     'id' => 'sidebar-1',
     'before_widget' => '<div id="%1$s" class="%2$s">',
     'after_widget' => '</div>',
-    'before_title' => '<h3>',
+    'before_title' => '<h3 class="widget-title">',
     'after_title' => '</h3>'
   ));
   // Define Header block
@@ -101,6 +101,35 @@ if (function_exists('register_sidebar')) {
     'before_title' => '<h3>',
     'after_title' => '</h3>'
   ));
+}
+
+// Add class by slug to widget
+add_filter('dynamic_sidebar_params', 'add_classes_to__widget'); 
+function add_classes_to__widget($params){
+  $sidebar_id = 'sidebar-1';
+  $sidebars_widgets = wp_get_sidebars_widgets();
+  $widget_ids = $sidebars_widgets[$sidebar_id]; 
+
+  foreach ($widget_ids as $id) {
+    $wdgtvar = 'widget_'._get_widget_id_base( $id );
+    $idvar = _get_widget_id_base( $id );
+    $instance = get_option( $wdgtvar );
+    $idbs = str_replace( $idvar.'-', '', $id );
+    if (isset($instance[$idbs]['attribute'])) {
+      $title = str_replace(' ', '-', strtolower($instance[$idbs]['attribute']));
+    }
+    else {
+      $title = str_replace(' ', '-', strtolower($instance[$idbs]['title']));
+    }
+
+    $classe_to_add = 'woo-attribute-' . $title . ' '; // make sure you leave a space at the end
+    $classe_to_add = 'class="'.$classe_to_add;
+    if ($params[0]['widget_id'] == $id) {
+      $params[0]['before_widget'] = str_replace('class="', $classe_to_add, $params[0]['before_widget']);
+    }
+  }
+
+  return $params;
 }
 
 // Theme support get widget ID

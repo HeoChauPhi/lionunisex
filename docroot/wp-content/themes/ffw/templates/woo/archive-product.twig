@@ -5,11 +5,11 @@
     <h1 id="page-title">{{ title }}</h1>
 
     <div class="row layout-mobile">
-      <div class="col-md-3 sidebar-left">
+      <div class="col-md-2 sidebar-left">
         {% include ["woo/sidebar-product.twig"] %}
       </div>
 
-      <div class="col-md-9 main-content">
+      <div class="col-md-10 main-content">
         {% do action('woocommerce_before_main_content') %}
 
         <div class="before-shop-loop">

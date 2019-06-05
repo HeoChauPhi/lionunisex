@@ -218,3 +218,10 @@ function timber_set_product( $post ) {
     $product = wc_get_product( $post->ID );
   }
 }
+
+// define the woocommerce_layered_nav_term_html callback 
+function filter_woocommerce_layered_nav_term_html( $term_html, $term, $link, $count ) {
+  $term_html .= '<span class="term-slug" data-value="' . $term->slug . '" style="background-color: ' . $term->slug . ';"></span>';
+  return $term_html; 
+};
+add_filter( 'woocommerce_layered_nav_term_html', 'filter_woocommerce_layered_nav_term_html', 10, 4 ); 

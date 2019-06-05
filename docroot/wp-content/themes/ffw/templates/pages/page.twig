@@ -22,7 +22,7 @@
         <div class="block-content__body">{{ post.content|shortcodes }}</div>
         {% endif %}
 
-        {{ function('flexible_content', 'group_component') }}
+        {{ fn('flexible_content', 'group_component') }}
       </div>
 
       {% if post.get_field('banner_image') %}
@@ -33,6 +33,7 @@
       </div>
       {% endif %}
     </div>
+
   {% endfor %}
 
   {#% if function('comments_open') %}
@@ -40,4 +41,10 @@
   {{ function('comment_form') }}
   {% endif %#}
 
+{% endblock %}
+
+{% block bottom_panel %}
+  <div class="bottom-panel">
+  {{ fn('flexible_content', 'region_bottom_panel') }}
+  </div>
 {% endblock %}
