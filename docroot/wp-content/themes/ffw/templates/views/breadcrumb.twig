@@ -1,11 +1,25 @@
-<nav aria-label="breadcrumb" class="breadcrumb-wrapper animation-element" data-animate="fadeIn">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item">
-      <a href="{{ site.url }}">{{ __('home', 'pdj_theme') }}</a>
-    </li>
+<div class="nav-breadcrumb">
+  <nav aria-label="breadcrumb" class="breadcrumb-wrapper">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{{ site.url }}">{{ __('home', 'pdj_theme') }}</a>
+      </li>
 
-    <li class="breadcrumb-item active" aria-current="page">
-      {{ post.title|length > 100 ? post.title|slice(0, 100) ~ '...' : post.title }}
-    </li>
-  </ol>
-</nav>
+      {% if fn('is_singular', 'product') %}
+      <li class="breadcrumb-item">
+        <a href="{{ fn('get_permalink', fn('wc_get_page_id', 'shop')) }}">{{ pll_e('Shop') }}</a>
+      </li>
+      {% endif %}
+
+      <li class="breadcrumb-item active" aria-current="page">
+        {{ post.title|length > 100 ? post.title|slice(0, 100) ~ '...' : post.title }}
+      </li>
+    </ol>
+  </nav>
+
+  <div class="nav-post-link">
+    {{ fn('previous_post_link', '<span class="prev-post-link"><span class="nav-post-link-icon nav-post-prev-icon"></span>%link</span>', __('Previous')) }}
+    <span class="nav-seperate">|</span>
+    {{ fn('next_post_link', '<span class="next-post-link">%link<span class="nav-post-link-icon nav-post-next-icon"></span></span>', __('Next')) }}
+  </div>
+</div>

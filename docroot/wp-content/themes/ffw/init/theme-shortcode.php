@@ -47,3 +47,30 @@ function create_custom_mini_cart($attrs) {
   ob_end_clean();
   return $content;
 }
+
+// --> Custom online payment
+add_shortcode( 'custom_online_payment', 'create_custom_online_payment' );
+function create_custom_online_payment($attrs) {
+  extract(shortcode_atts (array(
+    'title' => ''
+  ), $attrs));
+  ob_start();
+    $context = Timber::get_context();
+
+    // Range online count
+    $context['online_title'] = $title;
+    $context['online_count'] = rand(1500,2000);
+
+    $args = array(
+      'post_type'       => 'product',
+      'posts_per_page'  => -1,
+      'post_status'     => 'publish',
+    );
+    $posts = Timber::get_posts($args);
+    $context['products'] = $posts;
+
+    Timber::render( array( 'woo/block-online-payment.twig'), $context );
+  $content = ob_get_contents();
+  ob_end_clean();
+  return $content;
+}

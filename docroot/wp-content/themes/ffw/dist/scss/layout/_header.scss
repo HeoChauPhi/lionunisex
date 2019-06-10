@@ -1,27 +1,44 @@
 .header {
   &-navigation-inner {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
     padding: rem(25px 0);
+
+    @include breakpoint(laptop) {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+    }
   }
 
   &-logo {
-    width: rem(200px);
+    border-bottom: rem(1px) solid $color-line;
+    margin-bottom: rem(15px);
+    padding-bottom: rem(20px);
+    position: relative;
 
     .logo {
       display: block;
+      max-width: rem(200px);
+    }
+
+    @include breakpoint(laptop) {
+      border: none;
+      margin: 0;
+      padding: 0;
+      width: rem(200px);
+
+      .logo {
+        max-width: none;
+      }
     }
   }
 
   &-nav {
-    display: flex;
     align-items: center;
+    display: flex;
+    justify-content: space-between;
 
     // Bock Social Header
     .social-fanpage {
-      margin-left: rem(40px);
-
       .social-icons {
         &__list {
           padding: 0;
@@ -33,6 +50,14 @@
           display: inline-block;
           margin: rem(0 7px);
         }
+      }
+    }
+
+    @include breakpoint(laptop) {
+      justify-content: unset;
+
+      .social-fanpage {
+        margin-left: rem(40px);
       }
     }
 

@@ -1,0 +1,36 @@
+.block-online-payment {
+  .user-online {
+    margin-bottom: rem(20px);
+  }
+
+  .user-payment-item {
+    display: none;
+
+    &.slick-slide {
+      display: block;
+    }
+  }
+
+  .user-payment-notice {
+    margin-bottom: rem(10px);
+  }
+
+  .user-payment-id {
+    font-weight: 700;
+  }
+
+  .product-item {
+    align-items: flex-start;
+    display: flex;
+
+    .product-image {
+      max-width: 30%;
+      margin-right: rem(10px);
+    }
+
+    .product-title {
+      font-weight: 700;
+      text-transform: capitalize;
+    }
+  }
+}

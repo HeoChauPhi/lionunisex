@@ -364,6 +364,7 @@ function flexible_content($name) {
       $layout = $field['acf_fc_layout'];
       $fc_type[$layout] = array();
       $field['component_id'] = $key + 1;
+      $field['current_post_id'] = $post->ID;
 
       switch ($layout) {
         case 'test':

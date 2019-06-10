@@ -29,6 +29,31 @@
 
   .images-gallery {
     clear: both;
+    position: relative;
+
+    .ajax-loader {
+      align-items: center;
+      background-color: rgba($color-line, 0.7);
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;    
+      z-index: 999;
+
+      .ajax-icon {
+        background-color: transparent;
+        background-image: url(../images/loading.gif);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        display: block;
+        height: rem(32px);
+        width: rem(32px);
+      }
+    }
   }
 
   .image-gallery-item {
@@ -76,6 +101,21 @@
       .icon-fancybox {
         visibility: visible;
       }
+    }
+  }
+
+  .show-more {
+    text-align: center;
+  }
+
+  .show-more-link {
+    background-color: $white;
+    border: rem(2px) solid $black;
+    color: $black;
+
+    &:hover {
+      background-color: $black;
+      color: $white;
     }
   }
 }

@@ -13,21 +13,39 @@ main {
 
     > .row {
       > .col-md-6 {
-        padding-left: 7%;
+        @include breakpoint(colmd) {
+          padding-left: 7%;
+        }
 
         &.main-content {
-          padding-top: rem(150px);
+          padding-top: rem(30px);
+
+          @include breakpoint(colmd) {
+            padding-top: rem(150px);
+          }
+
+          @include breakpoint(colmdDown) {
+            margin-bottom: rem(30px);
+          }
         }
       }
 
       .col-md-12.main-content {
-        padding-top: rem(120px);
-        padding-left: 7%;
-        padding-right: 7%;
+        padding-top: rem(30px);
+
+        @include breakpoint(colmd) {
+          padding-top: rem(120px);
+          padding-left: 7%;
+          padding-right: 7%;
+        }
       }
 
       > .main-media {
         padding-right: 0;
+
+        @include breakpoint(colmdDown) {
+          padding-left: 0;
+        }
       }
     }
 
@@ -72,6 +90,10 @@ main {
 body.woocommerce-page {
   .main-inner {
     padding: rem(120px 15px 65px 15px);
+
+    .main-content[class*='col-md-'] {
+      padding-top: 0;
+    }
   }
 }
 

@@ -224,4 +224,14 @@ function filter_woocommerce_layered_nav_term_html( $term_html, $term, $link, $co
   $term_html .= '<span class="term-slug" data-value="' . $term->slug . '" style="background-color: ' . $term->slug . ';"></span>';
   return $term_html; 
 };
-add_filter( 'woocommerce_layered_nav_term_html', 'filter_woocommerce_layered_nav_term_html', 10, 4 ); 
+add_filter( 'woocommerce_layered_nav_term_html', 'filter_woocommerce_layered_nav_term_html', 10, 4 );
+
+function ffw_add_to_cart_message() {
+  if ( get_option( 'woocommerce_cart_redirect_after_add' ) == 'yes' ) :
+    $message = sprintf( '<span class="success-added-products">%s</span> <a href="%s" class="your-style">%s</a>', __( 'Successfully added to cart.', 'woocommerce' ), esc_url( get_permalink( woocommerce_get_page_id( 'shop' ) ) ), __( 'Continue Shopping', 'woocommerce' ) );
+  else :
+    $message = sprintf( '<span class="success-added-products">%s</span> <a href="%s" class="your-class">%s</a>', __( 'Successfully added to cart.' , 'woocommerce' ), esc_url( get_permalink( woocommerce_get_page_id( 'cart' ) ) ), __( 'View Cart', 'woocommerce' ) );
+  endif;
+  return $message;
+}
+add_filter( 'wc_add_to_cart_message', 'ffw_add_to_cart_message' );

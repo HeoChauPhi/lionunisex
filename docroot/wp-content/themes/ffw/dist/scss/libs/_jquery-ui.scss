@@ -9,14 +9,28 @@
   }
 
   .accordion-title {
+    cursor: pointer;
     font-size: rem(14px);
     margin: 0;
-    cursor: pointer;
+    padding-right: rem(20px);
+    position: relative;
 
     &:active,
     &:focus {
       outline: none !important;
     }
+  }
+
+  .ui-accordion-header-icon {
+    background-image: url(../images/icons/plus.svg);
+    height: rem(15px);
+    position: absolute;
+    right: 0;
+    width: rem(15px);
+  }
+
+  .ui-accordion-header-active .ui-accordion-header-icon {
+    background-image: url(../images/icons/minus.svg);
   }
 
   .accordion-content {

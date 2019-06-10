@@ -5,6 +5,12 @@
   </a>
   {#{ fn('shortcode', '[woocommerce_cart]') }#}
   <div class="dropdown-mini-cart woocommerce {% if minicart_class %}{{ minicart_class }}{% endif %}">
-    {{ fn('woocommerce_mini_cart') }}
+    <div class="block-mini-cart-inner">
+      <h2 class="block-mini-cart-title"><span class="mini-cart-close" title="{{ pll_e('close cart widget') }}"></span>{{ pll_e('Cart') }}</h2>
+      <div class="block-mini-cart-content">
+        {{ fn('woocommerce_mini_cart') }}
+      </div>
+    </div>
+    <div class="layer-fixed"></div>
   </div>
 </div>

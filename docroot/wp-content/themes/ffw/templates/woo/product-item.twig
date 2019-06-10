@@ -3,9 +3,9 @@
     <a class="product-link" href="{{ product.link }}"></a>
     <div class="product-image">
       {% if product.thumbnail.src('shop_single') %}
-      <img src="{{ product.thumbnail.src('shop_single') }}">
+      <img src="{{ product.thumbnail.src('shop_single') }}" alt>
       {% else %}
-      <img src="{{ fn('wc_placeholder_img_src') }}">
+      <img src="{{ fn('wc_placeholder_img_src') }}" alt>
       {% endif %}
     </div>
     <div class="product-info">
@@ -13,11 +13,11 @@
       <h3 class="product-title">{{ product.title }}</h3>
       <div class="product-price">
         {% if fn('wc_get_product', product.ID).get_sale_price %}
-        <span class="product-regular-price">{{ fn('get_woocommerce_currency_symbol') ~ fn('wc_get_product', product.ID).get_regular_price }}</span>
+        <span class="product-regular-price">{{ (fn('wc_get_product', product.ID).get_regular_price)|number_format(0, '', ',') ~ ' ' ~ fn('get_woocommerce_currency_symbol') }}</span>
         </span>
         {% endif %}
         {% if fn('wc_get_product', product.ID).get_price %}
-        <span class="product-sale-price">{{ fn('get_woocommerce_currency_symbol') ~ fn('wc_get_product', product.ID).get_price }}
+        <span class="product-sale-price">{{ (fn('wc_get_product', product.ID).get_price)|number_format(0, '', ',') ~ ' ' ~ fn('get_woocommerce_currency_symbol') }}
         {% else %}
         <span class="product-sale-price">{{ pll_e('Contact') }}
         {% endif %}

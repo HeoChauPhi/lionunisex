@@ -25,6 +25,7 @@
 
       {% do action('woocommerce_before_shop_loop_item_title') %}
       <img src="{{ post_thumb_url|resize(303, 303) }}" alt>
+      <div class="product-view-link">{{ pll_e('View product') }}</div>
     </div>
 
     <div class="product-info">
@@ -37,11 +38,11 @@
       <div class="post-content">
       <div class="product-price">
         {% if fn('wc_get_product', post.ID).get_sale_price %}
-        <span class="product-regular-price">{{ fn('wc_get_product', post.ID).get_regular_price ~ ' ' ~ fn('get_woocommerce_currency_symbol') }}</span>
+        <span class="product-regular-price">{{ (fn('wc_get_product', post.ID).get_regular_price)|number_format(0, '', ',') ~ ' ' ~ fn('get_woocommerce_currency_symbol') }}</span>
         </span>
         {% endif %}
         {% if fn('wc_get_product', post.ID).get_price %}
-        <span class="product-sale-price">{{ fn('wc_get_product', post.ID).get_price ~ ' ' ~ fn('get_woocommerce_currency_symbol') }}
+        <span class="product-sale-price">{{ (fn('wc_get_product', post.ID).get_price)|number_format(0, '', ',') ~ ' ' ~ fn('get_woocommerce_currency_symbol') }}
         {% else %}
         <span class="product-sale-price">{{ pll_e('Contact') }}
         {% endif %}

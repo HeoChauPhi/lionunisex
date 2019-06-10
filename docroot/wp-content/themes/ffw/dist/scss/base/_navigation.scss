@@ -35,4 +35,167 @@
       }
     }
   }
+
+  @include breakpoint(smalldevice) {
+    @include transition(all 0.3s ease);
+    background: $bg-body;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    opacity: 0;
+    padding-top: rem(100px);
+    position: fixed;
+    right: 0;
+    top: 0;
+    visibility: hidden;
+    z-index: -1;
+
+    &.menu-show {
+      opacity: 1;
+      visibility: visible;
+      z-index: 9;
+    }
+
+    .main-menu {
+      ul {
+        text-align: center;
+      }
+
+      > ul {
+        > li.menu-item {
+          display: block;
+          margin: rem(0 0 20px);
+        }
+      }
+    }
+  }
+}
+
+.nav-breadcrumb {
+  align-items: center;
+  display: flex;
+  font-weight: 400;
+  justify-content: space-between;
+  margin-bottom: rem(65px);
+  text-transform: capitalize;
+
+  .breadcrumb {
+    background: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      &:before {
+        color: $black !important;
+      }
+    }
+  }
+
+  .nav-post-link {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+    .nav-seperate {
+      margin: rem(0 10px);
+    }
+
+    .prev-post-link,
+    .next-post-link {
+      align-items: center;
+      display: flex;
+    }
+
+    .nav-post-link-icon {
+      width: rem(16px);
+      height: rem(16px);
+    }
+
+    .nav-post-prev-icon {
+      background-image: url(../images/icons/chevron-left.svg);
+      margin-right: rem(5px);
+    }
+
+    .nav-post-next-icon {
+      background-image: url(../images/icons/chevron-right.svg);
+      margin-left: rem(5px);
+    }
+  }
+}
+
+.menu-responsive {
+  cursor: pointer;
+  height: rem(50px);
+  padding: rem(15px);
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: rem(50px);
+  z-index: 99;
+
+  &-inner {
+    @include transform(rotate(0deg));
+    @include transition(all 0.3s ease);
+    height: 100%;
+    position: relative;
+    width: 100%;
+  }
+
+  .line-menu {
+    @include transform(rotate(0deg));
+    @include transition(all 0.3s ease);
+    background-color: $black;
+    display: block;
+    height: rem(3px);
+    left: 0;
+    opacity: 1;
+    position: absolute;
+    width: 100%;
+
+    &-top {
+      top: rem(0px);
+    }
+
+    &-middle {
+      top: rem(8px);
+    }
+
+    &-bottom {
+      top: rem(17px);
+    }
+  }
+
+  &.active {
+    .line-menu {
+      &-top {
+        @include transform(rotate(135deg));
+        top: rem(8px);
+      }
+
+      &-middle {
+        opacity: 0;
+        left: rem(-20px);
+      }
+
+      &-bottom {
+        @include transform(rotate(-135deg));
+        top: rem(8px);
+      }
+    }
+  }
+}
+
+.admin-bar {
+  .block-navigation {
+    padding-top: rem(146px);
+
+    @include breakpoint(783px) {
+      padding-top: rem(132px);
+    }
+
+    @include breakpoint(laptop) {
+      padding-top: 0;
+    }
+  }
 }

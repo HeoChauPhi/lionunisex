@@ -1,0 +1,26 @@
+<div class="block-online-payment">
+  <div class="user-online">
+    <label class="online-title">{{ online_title }}</label>: <span class="online-count">{{ online_count }}</span>
+  </div>
+  <div class="user-payment">
+    <div class="user-payment-sider">
+    {% for product in products %}
+      <div class="user-payment-item">
+        <div class="user-payment-notice">{{ pll_e('User') }} <span class="user-payment-id">#{{ fn('rand', 10000, 99999) }}</span> {{ pll_e('paymented product:') }}</div>
+        <div class="product-item">
+          <div class="product-image">
+            <a href="{{ product.link }}">
+              {% if product.thumbnail.src('shop_single') %}
+              <img src="{{ product.thumbnail.src('shop_single') }}" alt>
+              {% else %}
+              <img src="{{ fn('wc_placeholder_img_src') }}" alt>
+              {% endif %}
+            </a>
+          </div>
+          <a href="{{ product.link }}" class="product-title">{{ product.title }}</a>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+  </div>
+</div>

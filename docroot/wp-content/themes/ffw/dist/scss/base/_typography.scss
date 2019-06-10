@@ -46,3 +46,19 @@ textarea {
 select {
   font-weight: 700;
 }
+
+table {
+  border: none;
+
+  tr {
+    border: none;
+  }
+
+  th,
+  td {
+    border-color: $color-line;
+    border-style: solid;
+    border-width: rem(0 0 1px);
+    padding: rem(10px 0);
+  }
+}

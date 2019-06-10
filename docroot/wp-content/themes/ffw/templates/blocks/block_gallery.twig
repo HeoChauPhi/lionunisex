@@ -9,15 +9,15 @@
       </div>
     </div>
     <div class="images-gallery">
-      <div class="row">
-      {% for item in images_gallery %}
-        <div class="image-gallery-item col-md-4">
-          <div class="image-gallery-item-inner">
-            <div class="image-gallery-media" style="background-image: url({{ item.url }});" title="{{ item.name }}"><img src="{{ item.url }}"></div>
-            <a class="icon-fancybox" data-fancybox="image-gallery-component-{{ component_id }}" href="{{ item.url }}"><i class="fas fa-expand-arrows-alt"></i></a>
-          </div>
-        </div>
-      {% endfor %}
+      <div class="row image-result">
+      {% include 'image-gallery-loop.twig' with {"images_gallery": images_gallery, "component_id": component_id, "counter": 7} only %}
+      </div>
+      <div class="show-more"><a href="#" class="show-more-link btn" data-postid="{{ current_post_id }}" data-componentid="{{ component_id }}" data-count="7">{{ pll_e('show more') }}</a></div>
+      <div class="data-hidden hidden">
+      <input type="hidden" name="postid" value="{{ current_post_id }}">
+      <input type="hidden" name="componentid" value="{{ component_id }}">
+      <input type="hidden" name="totalimages" value="{{ images_gallery|length + 1 }}">
+      <input type="hidden" name="count" value="7">
       </div>
     </div>
   </div>

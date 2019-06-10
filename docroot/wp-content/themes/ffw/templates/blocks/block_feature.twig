@@ -7,14 +7,14 @@
           <a class="btn" href="{{ feature_link.url }}" {% if feature_link.target %}target="_blank"{% endif %}>{{ feature_link.title }}</a>
         </div>
         <div class="feature-image-small">
-          <img src="{{ feature_image_small.url }}" title="{{ feature_image_small.name }}">
+          <img src="{{ feature_image_small.url }}" title="{{ feature_image_small.name }}" alt>
         </div>
       </div>
     </div>
 
     <div class="col-md-6 feature-banner">
       <div class="feature-banner-inner" style="background-image: url({{ feature_image_large.url }});" title="{{ feature_image_large.name }}">
-        <img src="{{ feature_image_large.url }}" title="{{ feature_image_large.name }}">
+        <img src="{{ feature_image_large.url }}" title="{{ feature_image_large.name }}" alt>
       </div>
     </div>
   </div>

@@ -5,6 +5,36 @@
 **
 */
 
+/*
+** Ajax call back
+*/
+// Image gallery show more call back
+add_action( 'wp_ajax_showgallery', 'showgallery_callback' );
+add_action( 'wp_ajax_nopriv_showgallery', 'showgallery_callback' );
+function showgallery_callback() {
+  $content = '';
+  $values = $_REQUEST;
+
+  $gallery_id     = (int) $values['component_id'] - 1;
+  $images_list    = get_field( 'group_component', (int) $values['current_post_id'] )[$gallery_id]['images_gallery'];
+  $component_id   = (int) $values['component_id'];
+  $counter        = (int) $values['image_count'] + 6;
+
+  foreach ($images_list as $key => $item) {
+    if ( ((int) $values['image_count'] <= ((int) $key + 1)) && (((int) $key + 1) < $counter) ) {
+      $content .= '<div class="image-gallery-item col-md-4"><div class="image-gallery-item-inner">';
+      $content .= '<div class="image-gallery-media" style="background-image: url(' . $item['url'] . ');" title="' . $item['name'] . '"><img src="' . $item['url'] . '" alt></div>';
+      $content .= '<a class="icon-fancybox" data-fancybox="image-gallery-component-' . $component_id . '" href="' . $item['url'] . '"><i class="fas fa-expand-arrows-alt"></i></a>';
+      $content .= '</div></div>';
+    }
+  }
+
+  $result = json_encode(array('markup' => $content, 'counter' => $counter));
+  echo $result;
+  wp_die();
+}
+
+
 // menu
 add_theme_support( 'menus' );
 add_action('init', 'ffw_menu');

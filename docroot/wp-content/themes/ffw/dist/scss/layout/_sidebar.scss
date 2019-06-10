@@ -1,3 +1,19 @@
+#sidebar {
+  .widget-title {
+    font-size: rem(16px);
+    margin: 0;
+
+    + * {
+      margin-top: rem(15px) !important;
+    }
+  }
+
+  .widget_text {
+    border-bottom: rem(1px) solid $color-line;
+    padding: rem(20px 0);
+  }
+}
+
 .page-product-list {
   #sidebar {
     ul {
@@ -22,19 +38,11 @@
       border-bottom: rem(1px) solid $color-line;
       padding: rem(20px 0);
 
-      > h3 {
-        font-size: rem(16px);
-        margin: 0;
-
-        + * {
-          margin-top: rem(15px) !important;
-        }
-      }
-
       ul {
         li {
           a {
             font-weight: 700;
+            text-transform: capitalize;
           }
         }
       }
