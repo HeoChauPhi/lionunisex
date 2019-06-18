@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 
 <!-- Premium plugin Content -->
-<div class="service-content" style="display: none;"  >
+<div class="service-content" style="display: block;"  >
     <div class="row">
         <div class="col s12 m6">
             <!-- docs -->

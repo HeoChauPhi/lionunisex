@@ -361,7 +361,6 @@
     padding: 15px 30px 30px 60px;
     font-size: 14px;
     position: relative;
-    overflow: hidden;
     background-color: #FFFFFF;
 }
 
@@ -534,7 +533,7 @@ body .toc-tab-box .button {
     margin-bottom: 2px;
 }
 
-.acc-content .testchat:hover {
+.acc-content .testchat:hover,.button.testchat:active {
     background-color: #6071fb;
     color: #FFFFFF;
 }
@@ -583,4 +582,7 @@ body .toc-tab-box .button {
     display: inline-block;
     position: relative;
     text-align: justify;
+}
+.sp-input{
+    text-transform: uppercase;
 }

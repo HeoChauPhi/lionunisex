@@ -393,6 +393,23 @@ function flexible_content($name) {
           }
           break;
 
+        case 'block_instagram':
+          $insta_json = file_get_contents('https://api.instagram.com/v1/users/self/media/recent/?access_token='.$field['instagram_access_tocken']);
+          $insta_data = json_decode($insta_json, true);
+
+          if ( $insta_data['meta']['code'] == 200 ) {
+            $field['instagram_name'] = $insta_data['data'][0]['user']['username'];
+            $field['instagram_url'] = 'https://www.instagram.com/'.$field['instagram_name'];
+            $field['instagram_data'] = $insta_data['data'];
+          }
+
+          try {
+            Timber::render($layout . '.twig', $field);
+          } catch (Exception $e) {
+            echo 'Could not find a twig file for layout type: ' . $layout . '<br>';
+          }
+          break;
+
         case 'map_block':
         case 'bottom_map_block':
           $theme_options = get_option('ffw_board_settings');
@@ -643,6 +660,11 @@ function ffw_twig_data($data){
   
   // $data['pll_e'] = pll_e();
   // $data['pll_'] = pll_();
+
+  // Custom data for WC
+  if (is_cart()) {
+    $data['cart_counts'] = WC()->cart->get_cart_contents_count();
+  }
 
   return $data;
 }

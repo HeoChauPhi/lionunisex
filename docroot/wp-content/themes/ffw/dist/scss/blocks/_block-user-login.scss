@@ -1,0 +1,87 @@
+.block-user-login {
+  .user-login-icon {
+    text-decoration: none;
+  }
+
+  .user-login-content {
+    @include box-shadow(rem(0px 0px 3px 0px) $color-line);
+    background-color: $white;
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: rem(10px 15px);
+    position: absolute;
+    right: 0;
+    top: 100%;
+    width: rem(285px);
+    z-index: 99;
+  }
+
+  .user-data {
+    align-items: flex-start;
+    border-bottom: rem(1px) solid $color-line;
+    display: flex;
+    margin-bottom: rem(10px);
+    padding-bottom: rem(10px);
+  }
+
+  .user-avatar {
+    display: block;
+    margin-right: rem(15px);
+    width: rem(50px);
+  }
+
+  .user-name {
+    font-weight: 700;
+    text-transform: capitalize;
+  }
+
+  .user-logout {
+    text-align: right;
+    text-transform: capitalize;
+  }
+
+  #loginform {
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+    }
+
+    .login-submit {
+      input[type="submit"] {
+        @extend %btn;
+        padding: rem(3px 20px 5px 20px);
+        width: 100%;
+      }
+    }
+  }
+
+  .user-login-register {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  .user-register {
+    font-weight: 700;
+    margin-bottom: rem(7px);
+    text-transform: capitalize;
+  }
+
+  .fbl-spinner {
+    display: none;
+  }
+
+  .fbl-button {
+    margin: 0;
+  }
+
+  .fbl-button,
+  .fb-login-button,
+  .fb-login-button > span,
+  .fb-login-button > span > iframe {
+    max-width: 100%;
+    width: 100% !important;
+  }
+}

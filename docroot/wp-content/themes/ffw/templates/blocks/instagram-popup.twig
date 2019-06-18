@@ -1,0 +1,35 @@
+{% set insta_comment_data = fn('json_decode', data_comment_json, true).data %}
+<div class="instagram-wrapper">
+  <div class="row">
+    <div class="instagram-media col-md-7">
+    {% if item.videos %}
+      <video controls autoplay name="media">
+        <source src="{{ item.videos.standard_resolution.url }}" type="video/mp4">
+        <source src="{{ item.videos.standard_resolution.url }}" type="video/ogg">
+      </video>
+    {% else %}
+      <img src="{{ item.images.standard_resolution.url }}" alt>
+    {% endif %}
+    </div>
+    <div class="instagram-content col-md-5">
+      <div class="instagram-header">
+        <div class="instagram-picture"><img src="{{ item.user.profile_picture }}" alt></div>
+        <h3 class="instagram-username"><a href="https://www.instagram.com/{{ item.user.username }}/">{{ item.user.username }}</a></h3>
+        <a href="https://www.instagram.com/{{ item.user.username }}/" class="instagram-link"><i class="fab fa-instagram"></i></a>
+      </div>
+      <div class="instagram-active">
+        <div class="instagram-icons">
+          <span class="instagram-like"><i class="far fa-heart"></i> <span class="instagram-count">{{ item.likes.count }}</span></span>
+          <span class="instagram-comment"><i class="far fa-comment"></i> <span class="instagram-count">{{ item.comments.count }}</span></span>
+        </div>
+      </div>
+      <div class="instagram-comments">
+      {% for comment in insta_comment_data %}
+        <div class="instagram-comment">
+          <span class="comment-username">{{ comment.from.username }}</span> {{ comment.text }}
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>

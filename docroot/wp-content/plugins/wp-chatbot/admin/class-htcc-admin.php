@@ -22,6 +22,8 @@ if (!class_exists('HTCC_Admin')) :
 		private $botid;
 		private $token;
 		private $test;
+		private $internal;
+		private $stepdis;
 
 		public function __construct()
 		{
@@ -29,7 +31,9 @@ if (!class_exists('HTCC_Admin')) :
 			$this->token = $this->api->connectMobileMonkey();
 			$this->options = get_option('htcc_options');
 			$this->fb_page_id = $this->options['fb_page_id'];
-			$this->botid = $this->api->getActivePage();
+			$this->botid = $this->api->getActivePage()['bot_id'];
+			$this->internal = get_option('mobilemonkey_active_page_id');
+			$this->stepdis = "close";
 		}
 
 		private function getApi()
@@ -46,10 +50,11 @@ if (!class_exists('HTCC_Admin')) :
 		 * @return void
 		 */
 		public function htcc_options_page()
-		{
+	    {
+            $notification = '!';
 			add_menu_page(
 				'WP-Chatbot Setting page',
-				'WP-Chatbot',
+				 !$this->fb_page_id||!$this->token&&!$this->internal ? sprintf('WP-Chatbot <span class="awaiting-mod">%s</span>', $notification) : 'WP-Chatbot',
 				'manage_options',
 				'wp-chatbot',
 				array($this, 'settings_page'),
@@ -63,7 +68,38 @@ if (!class_exists('HTCC_Admin')) :
 
 
 		}
+		/**
+		 * Incomplete Setup Notification
+		 *
+		 * @uses action hook - admin_init
+		 *
+		 * @since 1.0.0
+		 * @return void
+		 */
+		public function htcc_incomplete_setup(){
 
+            if (!$this->fb_page_id || !$this->token && !$this->internal){
+                add_action( 'admin_bar_menu', function( \WP_Admin_Bar $bar )
+                {
+                    $bar->add_menu( array(
+                        'id'     => 'wp-chatbot',
+                        'title'  => '<span class="ab-icon chat-bot"></span>',
+                        'parent' => 'top-secondary',
+                        'href'   => admin_url( 'admin.php?page=wp-chatbot' ),
+                        'meta'   => array(
+                            'target'   => '_self',
+                            'title'    => __( 'Wp-Chatbot', 'htcc_plugin' ),
+                            'html'     => '',
+                        ),
+                    ) );
+                }, 210);
+            }
+		}
+        public function example_admin_notice() {
+		    if (!$this->fb_page_id || !$this->token && !$this->internal){
+                HT_CC::view('th-cc-admin-notice-not-connected');
+		    }
+        }
 		/**
 		 * Options page Content -
 		 *   get settings form from a template settings_page.php
@@ -112,7 +148,6 @@ if (!class_exists('HTCC_Admin')) :
 			add_settings_field('htcc_fb_answer3','', array($this, 'htcc_fb_answer3_cb'), 'wp-chatbot', 'htcc_settings_as');
 			add_settings_field('htcc_fb_thank_answer','', array($this, 'htcc_fb_thank_answer_cb'), 'wp-chatbot', 'htcc_settings_as');
 			add_settings_field('htcc_fb_email_trans','', array($this, 'htcc_fb_email_trans_cb'), 'wp-chatbot', 'htcc_settings_as');
-
 			register_setting('htcc_setting_group', 'htcc_as_options', array($this, 'htcc_as_options_sanitize'));
 
 
@@ -124,13 +159,11 @@ if (!class_exists('HTCC_Admin')) :
 			add_settings_field('htcc_fb_greeting_dialog_display', __('Greeting Dialog Display', 'wp-chatbot'), array($this, 'htcc_fb_greeting_dialog_display_cb'), 'wp-chatbot', 'htcc_settings');
 			add_settings_field('htcc_fb_greeting_dialog_delay', __('Greeting Dialog Delay', 'wp-chatbot'), array($this, 'htcc_fb_greeting_dialog_delay_cb'), 'wp-chatbot', 'htcc_settings');
 			add_settings_field('htcc_fb_sdk_lang', __('Messenger language', 'wp-chatbot'), array($this, 'htcc_fb_sdk_lang_cb'), 'wp-chatbot', 'htcc_settings');
-			add_settings_field('htcc_fb_ref', __('Ref', 'wp-chatbot'), array($this, 'htcc_fb_ref_cb'), 'wp-chatbot', 'htcc_settings');
 			add_settings_field('htcc_show_hide', __('Hide Based on post type', 'wp-chatbot'), array($this, 'htcc_show_hide_post_types_cb'), 'wp-chatbot', 'htcc_settings');
 			add_settings_field('htcc_list_id_tohide', __('Post, Page Id\'s to Hide', 'wp-chatbot'), array($this, 'htcc_list_id_tohide_cb'), 'wp-chatbot', 'htcc_settings');
 			add_settings_field('htcc_list_cat_tohide', __('Categorys to Hide', 'wp-chatbot'), array($this, 'htcc_list_cat_tohide_cb'), 'wp-chatbot', 'htcc_settings');
 			add_settings_field('htcc_devices_show_hide', __('Hide Based on Devices', 'wp-chatbot'), array($this, 'htcc_show_hide_devices_cb'), 'wp-chatbot', 'htcc_settings');
 			add_settings_field('htcc_shortcode', __('Shortcode name', 'wp-chatbot'), array($this, 'htcc_custom_shortcode_cb'), 'wp-chatbot', 'htcc_settings');
-			add_settings_field('htcc_page_load', __('Call SDK after Page Load', 'wp-chatbot'), array($this, 'htcc_page_load_cb'), 'wp-chatbot', 'htcc_settings');
 			register_setting('htcc_setting_group', 'htcc_options', array($this, 'htcc_options_sanitize'));
 		}
 
@@ -150,6 +183,7 @@ if (!class_exists('HTCC_Admin')) :
 			?>
 			<?php
             if ($this->fb_page_id && $this->token && $this->botid){
+               $this->stepdis = "open";
                 if ($this->api->mmOnlyCheck($this->fb_page_id)){
                         $style = "disabled";
                         $this->test = "none";
@@ -159,13 +193,13 @@ if (!class_exists('HTCC_Admin')) :
                 }
             }
 			?>
-             <h3 class="acc-title <?php if ($this->fb_page_id && $this->token && $this->botid){ echo "open"; } else {echo "close";}?>"><div class="circle">2</div>Set up your ChatBot<i class="fa fa-angle-down step_fa"></i></h3>
+             <h3 class="acc-title <?php echo $this->stepdis?>"><div class="circle">2</div>Set up your ChatBot<i class="fa fa-angle-down step_fa"></i></h3>
                     <div class="acc-content answering-service <?php echo $style; ?>" style="display:block">
                         <div class="accordionItemHeading">
 
                             <div class="mm_only" style="display: none">
                                 <h6><?php _e('Looks like you\'ve already worked in MobileMonkey. Please use the MobileMonkey app to make additional edits to the \'Welcome message\' and \'Answering Service\'.', 'wp-chatbot') ?></h6>
-                                <a target="_blank" rel="noopener noreferrer" href='https://app.mobilemonkey.com/chatbot-editor/bot-builder' class="button">Go to MobileMonkey</a>
+                                <a target="_blank" rel="noopener noreferrer" href='https://app.mobilemonkey.com/chatbot-editor/<?php echo"$this->internal"?>/home' class="button">Go to MobileMonkey</a>
                             </div>
             <?php
 		}
@@ -173,7 +207,7 @@ if (!class_exists('HTCC_Admin')) :
 		    ?>
             </div>
             </div>
-            <h3 class="acc-title <?php if ($this->fb_page_id && $this->token && $this->botid){ echo "open"; } else {echo "close";} ?>"><div class="circle">3</div>Customize<i class="fa fa-angle-down step_fa"></i></h3>
+            <h3 class="acc-title <?php echo $this->stepdis?>"><div class="circle">3</div>Customize<i class="fa fa-angle-down step_fa"></i></h3>
             <div class="acc-content" style="display:block">
             <div class="accordionItemHeading">
         <?php
@@ -188,64 +222,96 @@ if (!class_exists('HTCC_Admin')) :
 			$token = $api->connectMobileMonkey();
 
 			if ($token) {
-
 				$reset = FALSE;
 				if ($api->connectPage() || $api->disconnectPage()) {
 					$reset = TRUE;
 				}
 
 				$pages = $api->getPages();
+
 				$activePage = $api->getActivePage($reset);
 				if ($activePage) {
-				    $test = $api->getWidgets($activePage['remote_id']);
-                    if ((float)$test->enabled!== (float)$options_as['fb_as_state']){
+				    if ($activePage['bot_id']){
+				         if ( isset($_REQUEST['settings-updated']) && $_REQUEST['settings-updated']){
+                            if (!$this->api->mmOnlyCheck($this->fb_page_id)){
+                                $test = $api->getWidgets($activePage['remote_id']);
+                                if ((float)$test->enabled!== (float)$options_as['fb_as_state']){
 
-                        if ($options_as['fb_as_state']==null || $options_as['fb_as_state']==0){
-                            $valuse = false;
-                        } else {
-                             $valuse = true;
+                                    if ($options_as['fb_as_state']== null || $options_as['fb_as_state']==0){
+                                        $valuse = false;
+                                    } else {
+                                         $valuse = true;
+                                    }
+                                    $api->AsStateSave($valuse,$activePage['remote_id']);
+                                }
+                                if ($test) {
+                                    foreach ($test->widgets as $key=>$value){
+                                        if ($value->type == "quick_question"){
+                                            $key+=1;
+                                            if ($options_as['fb_answer'.$key.'']!== $value->config->body){
+                                                $dump_value = $value;
+                                                $dump_value->config->body = $options_as['fb_answer'.$key.''];
+                                                $api->updateWidgets($dump_value);
+                                            }
+                                        }
+                                        if ($value->type == 'text'){
+                                            if ($options_as['thank_message']!== $value->config->body) {
+                                                $dump_value = $value;
+                                                $dump_value->config->body = $options_as['thank_message'];
+                                                $api->updateWidgets($dump_value);
+
+                                            }
+                                        }
+                                        if ($value->type == 'email'){
+                                            if ($options_as['email']!== $value->config->recipient) {
+                                                $dump_value = $value;
+                                                $dump_value->config->recipient = $options_as['email'];
+                                                $api->updateWidgets($dump_value);
+
+                                            }
+                                        }
+                                    }
+                                }
+                                $current_welcome_message = $api->getWelcomeMessage($activePage['remote_id']);
+                                if ($options['fb_welcome_message'] !== $current_welcome_message) {
+                                    $api->updateWelcomeMessage($options['fb_welcome_message'], $activePage['remote_id']);
+                                }
+                            }
                         }
-                        $api->AsStateSave($valuse,$activePage['remote_id']);
-                    }
+                        $custom_settings = $this->api->getCustomChatSettings($activePage['remote_id']);
+                        if (isset($_REQUEST['settings-updated']) && $_REQUEST['settings-updated']){
+                                 if ($custom_settings) {
+                                     foreach ($custom_settings as $key=>$value){
+                                         if ($key != "js_src"){
+                                             if ($key == 'hide_mobile' || $key == 'hide_desktop'){
+                                                if (!$options['fb_'.$key]){
+                                                    $options['fb_'.$key] = false;
+                                                }else{
+                                                    $options['fb_'.$key] = true;
+                                                }
+                                             }
+                                             if ($options['fb_'.$key]!=$value){
+                                                $new_value[$key] = $options['fb_'.$key];
 
-                    if ($test) {
-                        foreach ($test->widgets as $key=>$value){
-                            if ($value->type == "quick_question"){
-                                $key+=1;
-                                if (!empty($options_as['fb_answer'.$key.'']) && $options_as['fb_answer'.$key.'']!== $value->config->body){
-                                    $dump_value = $value;
-                                    $dump_value->config->body = $options_as['fb_answer'.$key.''];
-                                    $api->updateWidgets($dump_value);
-                                }
-                            }
-                            if ($value->type == 'text'){
-                                if (!empty($options_as['thank_message']) && $options_as['thank_message']!== $value->config->body) {
-                                    $dump_value = $value;
-                                    $dump_value->config->body = $options_as['thank_message'];
-                                    $api->updateWidgets($dump_value);
-
-                                }
-                            }
-                            if ($value->type == 'email'){
-                                if (!empty($options_as['email']) && $options_as['email']!== $value->config->recipient) {
-                                    $dump_value = $value;
-                                    $dump_value->config->recipient = $options_as['email'];
-                                    $api->updateWidgets($dump_value);
-
-                                }
+                                             }
+                                        }
+                                     }
+                                     if (!empty($new_value)){
+                                       $api->updateCustomChatSettings($new_value,$activePage['remote_id']);
+                                     }
+                                 }
+                            $current_language = $api->getLanguage($activePage['remote_id']);
+                            if (!empty($options['fb_sdk_lang']) && $options['fb_sdk_lang'] !== $current_language) {
+                                $api->updateLanguage($options['fb_sdk_lang'], $activePage['remote_id']);
                             }
                         }
-//                        var_dump($options_as = get_option('htcc_as_options'));
-                    }
 
-                    $current_welcome_message = $api->getWelcomeMessage($activePage['remote_id']);
-                    if (!empty($options['fb_welcome_message']) && $options['fb_welcome_message'] !== $current_welcome_message) {
-                        $api->updateWelcomeMessage($options['fb_welcome_message'], $activePage['remote_id']);
-                    }
-                    $current_language = $api->getLanguage($activePage['remote_id']);
-                    if (!empty($options['fb_sdk_lang']) && $options['fb_sdk_lang'] !== $current_language) {
-                        $api->updateLanguage($options['fb_sdk_lang'], $activePage['remote_id']);
-                    }
+				    }else {
+				        echo "<style>.settings-error{display: none}</style>";
+				       $this->api->renderNotice('Your chatbot has been disabled in MobileMonkey. Please reactivate it before making additional edits. Go <a target="_blank" rel="noopener noreferrer" href="https://app.mobilemonkey.com/chatbot-editor/">here</a> to reactivate your chatbot');
+				    }
+
+
                     $fb_connected_area_active_page_settings = [
                         'connected_page' => $activePage,
                         'current_facebook_page_block' => '',
@@ -257,7 +323,10 @@ if (!class_exists('HTCC_Admin')) :
                     HT_CC::view('ht-cc-admin-fb-button-connected', $fb_connected_area_active_page_settings);
 
 				} else {
-
+				    if ($this->internal){
+				        echo "<style>.settings-error{display: none}</style>";
+				        $this->api->renderNotice('Your Facebook page has been disconnected in MobileMonkey. Please connect to a page to reactivate your chatbot.');
+				    }
 					$fb_connected_area_pages_settings = [
 						'pages' => $pages,
 						'logout_path' => add_query_arg([
@@ -329,7 +398,7 @@ if (!class_exists('HTCC_Admin')) :
             <div class="row">
                 <div class="input-field as_state col s12">
                     <label class="switch">
-                    <input id="htcc_fb_as_state" name="htcc_as_options[fb_as_state]" type="checkbox" value="1" <?php checked($htcc_fb_as_state['fb_as_state'], 1); ?>/>
+                    <input id="htcc_fb_as_state" name="htcc_as_options[fb_as_state]" type="checkbox" value="1" <?php isset($htcc_fb_as_state['fb_as_state']) ? checked($htcc_fb_as_state['fb_as_state'], 1) : checked(0); ?>/>
                     <span class="slider round"></span>
                     </label>
                     <p><?php _e('Answering Service is on', 'wp-chatbot') ?></p>
@@ -342,6 +411,7 @@ if (!class_exists('HTCC_Admin')) :
 		public function htcc_fb_welcome_message_cb()
 		{
 			$htcc_fb_welcome_message = get_option('htcc_options');
+			$ref = get_option('htcc_fb_ref');
 			$htcc_fb_app_id = get_option('mobilemonkey_environment');
 			?>
             <div class="row">
@@ -351,7 +421,7 @@ if (!class_exists('HTCC_Admin')) :
                         <div class="fb-send-to-messenger"
                           messenger_app_id="<?php echo $htcc_fb_app_id->fb_app_id; ?>"
                           page_id="<?php echo $this->fb_page_id; ?>"
-                          data-ref="<?php echo $htcc_fb_welcome_message['ref'];; ?>"
+                          data-ref="<?php echo $ref;?>"
                           color="blue"
                           size="large">
                         </div>
@@ -362,8 +432,8 @@ if (!class_exists('HTCC_Admin')) :
                 <a target="_blank" rel="noopener noreferrer" style="display: none" href="https://www.m.me/<?php echo $this->fb_page_id?>" id="messanger" class="button testchat">Open Messenger</a>
                 <h6><?php _e('Welcome message', 'wp-chatbot') ?></h6>
                 <div class="input-field col s12">
-                    <label for="fb_greeting_login"><?php _e('WP-Chatbot will greet your chat users with this message', 'wp-chatbot') ?></label>
-                    <textarea rows="5" cols="100" name="htcc_options[fb_welcome_message]" id="fb_welcome_message"> <?php echo esc_attr($htcc_fb_welcome_message['fb_welcome_message']) ?></textarea>
+                    <label for="fb_greeting_login"><?php _e('WP-Chatbot will greet your chat users with this message.', 'wp-chatbot') ?></label>
+                    <textarea rows="5" style="width:78%" name="htcc_options[fb_welcome_message]" id="fb_welcome_message"> <?php echo esc_attr($htcc_fb_welcome_message['fb_welcome_message']) ?></textarea>
                 </div>
             </div>
 			<?php
@@ -373,9 +443,9 @@ if (!class_exists('HTCC_Admin')) :
 			$htcc_fb_answer1 = get_option('htcc_as_options');
 			?>
             <div class="row as">
-                <div class="input-field col s9">
+                <div class="input-field col l9 s12">
                     <h6><?php _e('Quick Questions', 'wp-chatbot') ?></h6>
-                    <label for="fb_answer1"><?php _e('WP-Chatbot will greet your chat users with this message', 'wp-chatbot') ?></label>
+                    <label for="fb_answer1"><?php _e('WP-Chatbot will ask your chat users a few questions.', 'wp-chatbot') ?></label>
                     <input type="text" name="htcc_as_options[fb_answer1]" id="fb_answer1"
                            value="<?php echo esc_attr($htcc_fb_answer1['fb_answer1']) ?>">
                 </div>
@@ -387,7 +457,7 @@ if (!class_exists('HTCC_Admin')) :
 			$htcc_fb_answer2 = get_option('htcc_as_options');
 			?>
             <div class="row as">
-                <div class="input-field col s9">
+                <div class="input-field col l9 s12">
                     <input type="text" name="htcc_as_options[fb_answer2]" id="fb_answer2"
                            value="<?php echo esc_attr($htcc_fb_answer2['fb_answer2']) ?>">
                 </div>
@@ -399,7 +469,7 @@ if (!class_exists('HTCC_Admin')) :
 			$htcc_fb_answer3 = get_option('htcc_as_options');
 			?>
             <div class="row as">
-                <div class="input-field col s9">
+                <div class="input-field col l9 s12">
                     <input type="text" name="htcc_as_options[fb_answer3]" id="fb_answer3"
                            value="<?php echo esc_attr($htcc_fb_answer3['fb_answer3']) ?>">
                 </div>
@@ -411,9 +481,9 @@ if (!class_exists('HTCC_Admin')) :
 			$htcc_fb_thank_answer = get_option('htcc_as_options');
 			?>
             <div class="row as">
-                <div class="input-field col s9">
+                <div class="input-field col l9 s12">
                     <h6><?php _e('Thank you message', 'wp-chatbot') ?></h6>
-                    <label for="fb_answer1"><?php _e('Thank your users for answering your questions, and let them know you\'ll get back to them', 'wp-chatbot') ?></label>
+                    <label for="fb_answer1"><?php _e('Thank your users for answering your questions, and let them know you\'ll get back to them.', 'wp-chatbot') ?></label>
                     <input type="text" name="htcc_as_options[thank_message]" id="thank_message"
                            value="<?php echo esc_attr($htcc_fb_thank_answer['thank_message']) ?>">
                 </div>
@@ -425,9 +495,9 @@ if (!class_exists('HTCC_Admin')) :
 			$htcc_fb_email_trans = get_option('htcc_as_options');
 			?>
             <div class="row as">
-                <div class="input-field col s9">
+                <div class="input-field col l9 s12">
                     <h6><?php _e('Email to send transcripts to:', 'wp-chatbot') ?></h6>
-                    <label for="htcc_fb_email_trans"><?php _e('When people answer all of the questions below, we can send the answers to an email address of your choice! To disable, simply leave this field blank.', 'wp-chatbot') ?></label>
+                    <label for="htcc_fb_email_trans"><?php _e('When people answer all of the questions below, we can send the answers to an email address of your choice!', 'wp-chatbot') ?></label>
                     <input type="text" name="htcc_as_options[email]" id="email"
                            value="<?php echo esc_attr($htcc_fb_email_trans['email']) ?>">
                 </div>
@@ -447,8 +517,8 @@ if (!class_exists('HTCC_Admin')) :
 			?>
             <div class="row">
                 <div class="input-field col s12">
-                    <input type="text" name="htcc_options[fb_greeting_login]" id="fb_greeting_login"
-                           value="<?php echo esc_attr($htcc_fb_greeting_login['fb_greeting_login']) ?>">
+                    <input type="text" name="htcc_options[fb_logged_in_greeting]" id="fb_greeting_login"
+                           value="<?php echo esc_attr($htcc_fb_greeting_login['fb_logged_in_greeting']) ?>">
                     <label for="fb_greeting_login"><?php _e('Logged in Greetings', 'ht-click') ?></label>
                     <p class="description"><?php _e('Greetings text - If Facebook logged in the current browser, leave empty for default message - ', 'wp-chatbot') ?>
                         <a target="_blank"
@@ -469,8 +539,8 @@ if (!class_exists('HTCC_Admin')) :
 			?>
             <div class="row">
                 <div class="input-field col s12">
-                    <input type="text" name="htcc_options[fb_greeting_logout]" id="fb_greeting_logout"
-                           value="<?php echo esc_attr($htcc_fb_greeting_logout['fb_greeting_logout']) ?>">
+                    <input type="text" name="htcc_options[fb_logged_out_greeting]" id="fb_greeting_logout"
+                           value="<?php echo esc_attr($htcc_fb_greeting_logout['fb_logged_out_greeting']) ?>">
                     <label for="fb_greeting_logout"><?php _e('Logged out Greetings', 'ht-click') ?></label>
                     <p class="description"><?php _e('Greetings text - If Facebook logged out in the current browser, leave empty for default message - ', 'wp-chatbot') ?>
                         <a target="_blank"
@@ -484,9 +554,9 @@ if (!class_exists('HTCC_Admin')) :
 		// sdk lang. / messenger lang
 		public function htcc_fb_sdk_lang_cb()
 		{
-
-			$sdk_lang = get_option('htcc_options');
-			$lang = esc_attr($sdk_lang['fb_sdk_lang']);
+            if ($this->fb_page_id && $this->token && $this->botid){
+			$lang = $this->api->getLanguage($this->fb_page_id);
+			}
 			?>
             <div class="row">
                 <div class="input-field col s12">
@@ -513,16 +583,15 @@ if (!class_exists('HTCC_Admin')) :
 			<?php
 		}
 
-
 		// greeting_dialog_display - since v2.2
 		public function htcc_fb_greeting_dialog_display_cb()
 		{
 			$greeting_dialog_display = get_option('htcc_options');
-			$min_value = esc_attr($greeting_dialog_display['greeting_dialog_display']);
+			$min_value = esc_attr($greeting_dialog_display['fb_greeting_dialog_display']);
 			?>
             <div class="row">
                 <div class="input-field col s12">
-                    <select name="htcc_options[greeting_dialog_display]" class="select-1">
+                    <select name="htcc_options[fb_greeting_dialog_display]" class="select-1">
                         <option value="" <?php echo $min_value == "" ? 'SELECTED' : ''; ?> >Default</option>
                         <option value="show" <?php echo $min_value == "show" ? 'SELECTED' : ''; ?> >Show</option>
                         <option value="fade" <?php echo $min_value == "fade" ? 'SELECTED' : ''; ?> >Fade</option>
@@ -539,42 +608,20 @@ if (!class_exists('HTCC_Admin')) :
             </div>
 			<?php
 		}
-
-		// greeting_dialog_delay - since v2.2
+ 		// greeting_dialog_delay - since v2.2
 		public function htcc_fb_greeting_dialog_delay_cb()
 		{
 			$greeting_dialog_delay = get_option('htcc_options');
-			$delay_time = esc_attr($greeting_dialog_delay['greeting_dialog_delay']);
+			$delay_time = esc_attr($greeting_dialog_delay['fb_greeting_dialog_delay']);
 			?>
             <div class="row">
                 <div class="input-field col s12">
-                    <input type="number" min="0" name="htcc_options[greeting_dialog_delay]" id="greeting_dialog_delay"
+                    <input type="number" min="0" name="htcc_options[fb_greeting_dialog_delay]" id="fb_greeting_dialog_delay"
                            value="<?php echo $delay_time ?>">
-                    <label for="greeting_dialog_delay"><?php _e('Greeting Dialog Delay', 'ht-click') ?></label>
-                    <p class="description"><?php _e('Sets the number of seconds of delay before the greeting dialog is shown after the plugin is loaded - ', 'wp-chatbot') ?>
+                    <label for="fb_greeting_dialog_delay"><?php _e('Greeting Dialog Delay', 'ht-click') ?></label>
+                    <p class="description"><?php _e('Sets the number of seconds of delay before the greeting dialog is shown after the plugin is loaded. Leave blank to disable delay - ', 'wp-chatbot') ?>
                         <a target="_blank"
                            href="https://mobilemonkey.com/wp-chatbot/greeting-dialog-delay/"><?php _e('more info', 'wp-chatbot') ?></a>
-                    </p>
-                </div>
-            </div>
-			<?php
-		}
-
-
-		// ref
-		public function htcc_fb_ref_cb()
-		{
-
-			$reference = get_option('htcc_options');
-			?>
-            <div class="row">
-                <div class="input-field col s12">
-                    <input type="text" name="htcc_options[ref]" id="ref"
-                           value="<?php echo esc_attr($reference['ref']) ?>">
-                    <label for="ref"><?php _e('REF Attribute', 'ht-click') ?></label>
-                    <p class="description"><?php _e('Useful to create Entry Point to your messenger chatbot - ', 'wp-chatbot') ?>
-                        <a target="_blank"
-                           href="https://mobilemonkey.com/wp-chatbot/messenger-ref/"><?php _e('more info', 'wp-chatbot') ?></a>
                     </p>
                 </div>
             </div>
@@ -833,12 +880,12 @@ if (!class_exists('HTCC_Admin')) :
 			$htcc_devices = get_option('htcc_options');
 
 			// Hide on Mobile Devices
-			if (isset($htcc_devices['hideon_mobile'])) {
+			if (isset($htcc_devices['fb_hide_mobile'])) {
 				?>
                 <p>
                     <label>
-                        <input name="htcc_options[hideon_mobile]" type="checkbox"
-                               value="1" <?php checked($htcc_devices['hideon_mobile'], 1); ?> id="hideon_mobile"/>
+                        <input name="htcc_options[fb_hide_mobile]" type="checkbox"
+                               value="1" <?php checked($htcc_devices['fb_hide_mobile'], 1); ?> id="fb_hide_mobile"/>
                         <span><?php _e('Hide on - Mobile Devices', 'wp-chatbot') ?></span>
                     </label>
                 </p>
@@ -847,7 +894,7 @@ if (!class_exists('HTCC_Admin')) :
 				?>
                 <p>
                     <label>
-                        <input name="htcc_options[hideon_mobile]" type="checkbox" value="1" id="hideon_mobile"/>
+                        <input name="htcc_options[fb_hide_mobile]" type="checkbox" value="1" id="fb_hide_mobile"/>
                         <span><?php _e('Hide on - Mobile Devices', 'wp-chatbot') ?></span>
                     </label>
                 </p>
@@ -856,12 +903,12 @@ if (!class_exists('HTCC_Admin')) :
 
 
 			// Hide on Desktop Devices
-			if (isset($htcc_devices['hideon_desktop'])) {
+			if (isset($htcc_devices['fb_hide_desktop'])) {
 				?>
                 <p>
                     <label>
-                        <input name="htcc_options[hideon_desktop]" type="checkbox"
-                               value="1" <?php checked($htcc_devices['hideon_desktop'], 1); ?> id="hideon_desktop"/>
+                        <input name="htcc_options[fb_hide_desktop]" type="checkbox"
+                               value="1" <?php checked($htcc_devices['fb_hide_desktop'], 1); ?> id="fb_hide_desktop"/>
                         <span><?php _e('Hide on - Desktops', 'wp-chatbot') ?></span>
                     </label>
                 </p>
@@ -870,7 +917,7 @@ if (!class_exists('HTCC_Admin')) :
 				?>
                 <p>
                     <label>
-                        <input name="htcc_options[hideon_desktop]" type="checkbox" value="1" id="hideon_desktop"/>
+                        <input name="htcc_options[fb_hide_desktop]" type="checkbox" value="1" id="fb_hide_desktop"/>
                         <span><?php _e('Hide on - Desktops', 'wp-chatbot') ?></span>
                     </label>
                 </p>
@@ -906,83 +953,14 @@ if (!class_exists('HTCC_Admin')) :
 			<?php
 		}
 
-		// page load
-		public function htcc_page_load_cb()
-		{
-			$options = get_option('htcc_options');
-
-			?>
-            <p class="description"><a href="https://mobilemonkey.com/wp-chatbot/call-sdk-after-page-loads/"
-                                      target="_blank">Call SDK after page load</a></p>
-            <p class="description">This feature is in beta stage ( please review these settings at least in the next two
-                versions )</p>
-            <p class="description">Don't enable this features If some other plugins or some other source also calls
-                Facebook SDK.</p>
-            <br>
-
-			<?php
-			// load sdk after page loaded
-			if (isset($options['is_sdk_after_page_load'])) {
-				?>
-                <p>
-                    <label>
-                        <input name="htcc_options[is_sdk_after_page_load]" type="checkbox"
-                               value="1" <?php checked($options['is_sdk_after_page_load'], 1); ?>
-                               id="is_sdk_after_page_load"/>
-                        <span><?php _e('Call SDK after page loads', 'wp-chatbot') ?></span>
-                    </label>
-                </p>
-				<?php
-			} else {
-				?>
-                <p>
-                    <label>
-                        <input name="htcc_options[is_sdk_after_page_load]" type="checkbox" value="1"
-                               id="is_sdk_after_page_load"/>
-                        <span><?php _e('Call SDK after page loads', 'wp-chatbot') ?></span>
-                    </label>
-                </p>
-				<?php
-			}
-			?>
-            <p class="description">Improves user experience. After webpage loaded, call SDK and display messenger</p>
-            <br>
-
-            <!-- <div class="time-delay" style="margin-left: 25px;"> -->
-
-			<?php
-
-			// +4 seconds - load sdk after page loaded
-			if (isset($options['is_sdk_4_seconds'])) {
-				?>
-                <p>
-                    <label>
-                        <input name="htcc_options[is_sdk_4_seconds]" type="checkbox"
-                               value="1" <?php checked($options['is_sdk_4_seconds'], 1); ?> id="is_sdk_4_seconds"/>
-                        <span><?php _e('+4 seconds after page loaded', 'wp-chatbot') ?></span>
-                    </label>
-                </p>
-				<?php
-			} else {
-				?>
-                <p>
-                    <label>
-                        <input name="htcc_options[is_sdk_4_seconds]" type="checkbox" value="1" id="is_sdk_4_seconds"/>
-                        <span><?php _e('+4 seconds after page loaded', 'wp-chatbot') ?></span>
-                    </label>
-                </p>
-				<?php
-			}
-			?>
-            <!-- <p class="description">After webpage loaded and after 4 seconds, call SDK and display Messenger</p> -->
-            <p class="description">Adds benefit at page speed metrics</p>
-			<?php
-		}
 
 
 		public function htcc_options_sanitize($input)
 		{
-
+            $option = get_option('htcc_options');
+            $error=false;
+            $error_delay_lenght =false;
+            $error_delay_value =false;
 			if (!current_user_can('manage_options')) {
 				wp_die('not allowed to modify - please contact admin ');
 			}
@@ -990,30 +968,74 @@ if (!class_exists('HTCC_Admin')) :
 			$new_input = array();
 
 			foreach ($input as $key => $value) {
-				if (isset($input[$key])) {
-					$new_input[$key] = sanitize_text_field($input[$key]);
+			    if ($key == 'fb_welcome_message' && isset($_REQUEST['action']) && $_REQUEST['action']== 'update' && !$this->api->mmOnlyCheck($this->fb_page_id)){
+			        if ($value == '' || ctype_space($value)){
+                        $new_input[$key] = $option[$key];
+                        $error = true;
+                    }else {
+			            $new_input[$key] = sanitize_text_field($input[$key]);
+                    }
+                    }elseif($key == 'fb_greeting_dialog_delay' && $_REQUEST['action']== 'update'){
+                         if (strlen($value) > 9){
+                            $new_input[$key] = $option[$key];
+                            $error_delay_lenght = true;
+                        }else {
+                             if ($value == '0'){
+                                 $error_delay_value = true;
+                                 $new_input[$key] = $option[$key];
+                             }else {
+                                $new_input[$key] = sanitize_text_field($input[$key]);
+                            }
+                    }
+			        }elseif(isset($input[$key])) {
+					    $new_input[$key] = sanitize_text_field($input[$key]);
 				}
 			}
-
-
+			if ($error){
+                $this->api->settingSaveError("welcome_message");
+            }
+			if ($error_delay_lenght){
+                $this->api->settingSaveError("delay_length");
+            }
+			if ($error_delay_value){
+                $this->api->settingSaveError("delay_0");
+            }
 			return $new_input;
 		}
 		public function htcc_as_options_sanitize($input)
 		{
+            $error=false;
+            $error_email=false;
+            $option = get_option('htcc_as_options');
 
 			if (!current_user_can('manage_options')) {
 				wp_die('not allowed to modify - please contact admin ');
 			}
             if ($input){
-			$new_input = array();
+                $new_input = array();
 
-			foreach ($input as $key => $value) {
-				if (isset($input[$key])) {
-					$new_input[$key] = sanitize_text_field($input[$key]);
-				}
-			}
-}
-
+                foreach ($input as $key => $value) {
+                        if ($value == '' || ctype_space($value)){
+                            if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'update'){
+                                    $new_input[$key] = $option[$key];
+                                    $error = true;
+                            }
+                        }elseif (isset($input[$key])) {
+                            if ($key == 'email' && !is_email($value)){
+                                $new_input[$key] = $option[$key];
+                                $error_email = true;
+                            }else {
+                                $new_input[$key] = sanitize_text_field($input[$key]);
+                            }
+                        }
+                }
+            }
+            if ($error){
+                $this->api->settingSaveError("AS");
+            }
+            if ($error_email){
+                $this->api->settingSaveError("email");
+            }
 			return $new_input;
 		}
 

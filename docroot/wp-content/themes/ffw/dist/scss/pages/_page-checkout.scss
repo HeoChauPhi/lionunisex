@@ -1,0 +1,48 @@
+.woocommerce-checkout:not(.woocommerce-order-received) {
+  form.checkout_coupon {
+    .form-row {
+      padding: 0;
+      margin: 0;
+    }
+
+    input.input-text {
+      padding: rem(10px);
+    }
+
+    button.button {
+      @extend %btn;
+      padding: rem(7px 20px 8px);
+    }
+  }
+
+  #customer_details {
+    .col-1 {
+      float: none;
+      width: 100%;
+    }
+
+    .col-2 {
+      display: none !important;
+    }
+
+    @include breakpoint(tablet) {
+      float: left;
+      margin-bottom: rem(50px);
+      padding-right: rem(15px);
+      width: 50%;
+    }
+  }
+
+  @include breakpoint(tablet) {
+    #order_review_heading,
+    table.shop_table {
+      float: right;
+      padding-left: rem(15px);
+      width: 50%;
+    }
+  }
+
+  #payment {
+    clear: both;
+  }
+}

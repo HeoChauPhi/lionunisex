@@ -1,0 +1,42 @@
+<div class="block-gallery block-instagram {{ component_class }}">
+  <div class="block-inner">
+    <div class="gallery-group-title">
+      <h2 class="block-title">{{ block_title }}</h2>
+
+      {% if instagram_name %}
+      <div class="post-tags">
+        <a href="{{ instagram_url }}">#{{ instagram_name }}</a>
+      </div>
+      {% endif %}
+    </div>
+
+    {% if instagram_data %}
+    <div class="images-gallery">
+      <div class="row image-result">
+        {% for item in instagram_data %}
+          {% set data_comment_json = fn('file_get_contents', 'https://api.instagram.com/v1/media/' ~ item.id ~ '/comments?access_token=' ~ instagram_access_tocken) %}
+
+          {% if loop.index < 7 %}
+          {% set item_class = '' %}
+          {% else %}
+          {% set item_class = 'item-show-more' %}
+          {% endif %}
+          <div class="image-gallery-item col-md-4 {{ item_class }}">
+            <div class="image-gallery-item-inner">
+              <div class="image-gallery-media" style="background-image: url({{ item.images.standard_resolution.url }});" title="{{ item.caption.text }}"><img src="{{ item.images.standard_resolution.url }}" alt></div>
+              <a class="icon-fancybox" data-fancybox="image-gallery-component-{{ component_id }}" href="#" data-src="#image-gallery-component-{{ component_id ~ loop.index }}">
+                <span class="instagram-icons">
+                  <span class="instagram-like"><i class="far fa-heart"></i> <span class="instagram-count">{{ item.likes.count }}</span></span>
+                  <span class="instagram-comment"><i class="far fa-comment"></i> <span class="instagram-count">{{ item.comments.count }}</span></span>
+                </span>
+              </a>
+              <div id="image-gallery-component-{{ component_id ~ loop.index }}" style="display: none;">{% include 'instagram-popup.twig' with {'item': item, 'data_comment_json': data_comment_json} only %}</div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="show-more"><a href="#" class="instagram-show-more-link btn" data-showless="{{ pll_e('show less') }}" data-showmore="{{ pll_e('show more') }}">{{ pll_e('show more') }}</a></div>
+    </div>
+    {% endif %}
+  </div>
+</div>

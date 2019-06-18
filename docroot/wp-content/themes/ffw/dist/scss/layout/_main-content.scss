@@ -1,42 +1,68 @@
 .page-wrapper {
   background-color: $bg-body;
+  position: relative;
+  z-index: 99;
+}
+
+.container {
+  width: calc(100% - 130px);
+
+  @include breakpoint(colmdDown) {
+    padding: 0;
+    width: 100%;
+  }
 }
 
 #page-title {
-  font-size: rem(40px);
-  margin: rem(0 0 60px);
+  font-size: rem(42px);
+  margin: rem(0 0 50px);
+
+  @include breakpoint(colmdDown) {
+    margin: rem(0 0 20px);
+  }
 }
 
 main {
+  position: relative;
+  z-index: 1;
+
+  @include breakpoint(colmdDown) {
+    padding-top: 0 !important;
+  }
+
   .main-inner {
     padding: rem(0 15px 35px 15px);
 
     > .row {
       > .col-md-6 {
-        @include breakpoint(colmd) {
-          padding-left: 7%;
-        }
-
         &.main-content {
-          padding-top: rem(30px);
+          padding-top: rem(40px);
 
-          @include breakpoint(colmd) {
+          @include breakpoint(desktop) {
+            padding-left: 4%;
+            padding-right: 4%;
             padding-top: rem(150px);
           }
 
           @include breakpoint(colmdDown) {
-            margin-bottom: rem(30px);
+            padding-left: rem(30px);
+            padding-right: rem(30px);
           }
         }
       }
 
       .col-md-12.main-content {
-        padding-top: rem(30px);
+        padding-top: rem(40px);
 
-        @include breakpoint(colmd) {
+        @include breakpoint(desktop) {
           padding-top: rem(120px);
           padding-left: 7%;
           padding-right: 7%;
+        }
+
+        @include breakpoint(colmdDown) {
+          padding-left: rem(30px);
+          padding-right: rem(30px);
         }
       }
 
@@ -44,18 +70,40 @@ main {
         padding-right: 0;
 
         @include breakpoint(colmdDown) {
+          float: none !important;
           padding-left: 0;
+        }
+
+        .main-media-inner {
+          background-position: center center;
+          background-repeat: no-repeat;
+          background-size: contain;
+
+          img {
+            height: auto;
+            opacity: 0;
+            visibility: hidden;
+            width: 100%;
+          }
         }
       }
     }
 
     .block-content__body {
       margin-bottom: rem(70px);
+
+      @include breakpoint(colmdDown) {
+        margin-bottom: rem(50px);
+      }
     }
   }
 
   .block-title {
     font-size: rem(40px);
+
+    @include breakpoint(colmdDown) {
+      font-size: rem(30px);
+    }
   }
 
   .sidebar-content {
@@ -89,7 +137,11 @@ main {
 // woocommerce page: Shop, Single product, cart, checkout
 body.woocommerce-page {
   .main-inner {
-    padding: rem(120px 15px 65px 15px);
+    padding: rem(40px 15px 35px 15px);
+
+    @include breakpoint(desktop) {
+      padding: rem(120px 15px 65px 15px);
+    }
 
     .main-content[class*='col-md-'] {
       padding-top: 0;

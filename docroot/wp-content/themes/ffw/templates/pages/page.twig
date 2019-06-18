@@ -10,14 +10,14 @@
 
     <div class="row">
       {% if post.get_field('banner_image') %}
-      <div class="{{ block_class }} main-media animation-element" data-animate="fadeIn">
+      <div class="{{ block_class }} pull-right main-media">
         <div class="main-media-inner" style="background-image: url({{ post.get_field('banner_image').url }});" title="{{ post.get_field('banner_image').name }}">
           <img src="{{ post.get_field('banner_image').url }}" title="{{ post.get_field('banner_image').name }}" alt>
         </div>
       </div>
       {% endif %}
 
-      <div class="{{ block_class }} pull-left main-content animation-element" data-animate="fadeIn">
+      <div class="{{ block_class }} main-content">
         {% if fn('is_page') %}
           {% if title_option != "on" %}
             <h1 id="page-title">{{ post.title }}</h1>
@@ -35,6 +35,7 @@
           <a href="{{ shop_link }}" class="shop-link"><i class="fas fa-chevron-left"></i> {{ pll_e('Continue Shopping') }}</a>
           <a href="{{ checkout_link }}" class="btn button checkout-link"><i class="fas fa-shopping-basket"></i> {{ pll_e('Checkout') }}</a>
         </div>
+        <h2 class="cart-form-title hidden">{{ pll_e('My cart') }} ({{ cart_counts }})</h2>
         {% endif %}
 
         {{ post.content|shortcodes }}

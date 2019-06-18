@@ -1,4 +1,10 @@
 .page-product-list {
+  .main-content {
+    main.site-main {
+      padding: 0 !important;
+    }
+  }
+
   #page-title {
     font-size: rem(40px);
     line-height: rem(48px);
@@ -6,12 +12,50 @@
     text-align: center;
   }
 
-  .before-shop-loop {}
+  .sidebar-mobile-filter {
+    border: rem(1px) solid $black;
+    cursor: pointer;
+    font-weight: 700;
+    margin-bottom: rem(30px);
+    padding: rem(7px 10px);
+    text-align: center;
+    text-transform: uppercase;
+    width: 100%;
+  }
+
+  .before-shop-loop {
+    display: inline-block;
+    margin-bottom: rem(50px);
+    width: 100%;
+
+    @include breakpoint(colmdDown) {
+      display: none !important;
+    }
+  }
+
+  .woof_products_top_panel {
+    display: none !important;
+  }
+
+  .woocommerce-ordering {
+    margin-bottom: 0;
+
+    select {
+      border-color: $black;
+      color: $black;
+      padding: rem(6px 7px);
+      width: rem(200px);
+    }
+  }
 
   .product-list {
     clear: both;
 
-    .product-item {}
+    .product-item {
+      margin-bottom: rem(30px);
+      padding-left: rem(30px);
+      padding-right: rem(30px);
+    }
 
     .product-item-inner {
       position: relative;
@@ -19,6 +63,11 @@
       &:hover {
         .product-view-link {
           bottom: 0;
+        }
+
+        .product-image-hide + .product-image-show {
+          @include transition(opacity 0.5s ease);
+          opacity: 0;
         }
       }
     }
@@ -33,9 +82,6 @@
     }
 
     .product-image {
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-size: cover;
       margin-bottom: rem(20px);
       overflow: hidden;
       position: relative;
@@ -47,21 +93,41 @@
       }
     }
 
+    .product-image-show,
+    .product-image-hide {
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      bottom: 0;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      z-index: 1;
+    }
+
+    .product-image-show {
+      @include transition(opacity 0.5s ease);
+      opacity: 1;
+      z-index: 2;
+    }
+
     .product-view-link {
       @include transition(bottom 0.3s ease);
-      background-color: $white;
+      background-color: rgba($white, .8);
       font-weight: 700;
       left: 0;
-      padding: rem(7px 5px);
+      padding: rem(10px 5px);
       position: absolute;
       right: 0;
       text-align: center;
       text-transform: uppercase;
       bottom: -100%;
+      z-index: 2;
     }
 
     .onsale {
-      @include poppins;
+      @include muli-semibold;
       background-color: $black;
       border-radius: 0;
       color: $white;
@@ -80,7 +146,7 @@
     }
 
     .product-price {
-      @include poppins-semibold;
+      @include muli-extra-bold;
       font-size: rem(13px);
     }
 

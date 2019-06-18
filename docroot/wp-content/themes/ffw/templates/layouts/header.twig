@@ -13,6 +13,10 @@
             <div class="header-logo">
               <a href="{{ site.url }}" class="logo">
                 <img alt="{{ site.name }}" src="{{ site_logo }}" alt="{{ site.name }}">
+                <span class="site-info">
+                  <span class="site-name">{{ site.name }}</span>
+                  <span class="site-slogan">{{ site.description }}</span>
+                </span>
               </a>
 
               <div class="menu-responsive hidden-on-desktop">
@@ -37,7 +41,10 @@
               {% endblock %}
 
               {% block header_cart %}
+              <div class="block-user-cart">
+                {% include 'block-user.twig' %}
                 {{ fn('shortcode', '[custom-mini-cart]') }}
+              </div>
               {% endblock %}
             </div>
           </div>

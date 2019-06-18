@@ -28,11 +28,6 @@ class HTCC_Register {
      */
     public static function activate() {
 
-        // check minimum version required to run this plugin
-        if( version_compare( get_bloginfo('version'), HTCC_WP_MIN_VERSION, '<') )  {
-            wp_die( 'please update WordPress' );
-        }
-
         require_once HTCC_PLUGIN_DIR .'inc/class-htcc-db.php';
 
         // update plugin details to wp_options table
@@ -49,6 +44,22 @@ class HTCC_Register {
 
     }
 
+	/**
+	 * After plugin activate this function will call
+	 *
+	 * Redirect to setting page
+	 *
+	 * @since 1.0.0
+	 * @uses activated_plugin
+	 *
+	 * @return void
+	 */
+	public static function activate_plugin( $plugin ){
+		if( $plugin == plugin_basename( HTCC_PLUGIN_FILE ) ) {
+			exit( wp_redirect( admin_url( 'admin.php?page=wp-chatbot' ) ) );
+		}
+	}
+
     /**
      * When plugin deactivate
      * @since 1.0.0
@@ -56,7 +67,14 @@ class HTCC_Register {
      * @return void
      */
     public static function deactivate() {
-
+		$pageid = get_option('mobilemonkey_active_page_id');
+		$test = new MobileMonkeyApi();
+		$test->disconnectPage($pageid);
+		delete_option('mobilemonkey_token');
+		delete_option('mobilemonkey_company_id');
+		delete_option('mobilemonkey_active_page_id');
+		delete_option('mobilemonkey_active_page_remote_id');
+		delete_option('mobilemonkey_active_bot');
     }
 
     /**
@@ -66,7 +84,14 @@ class HTCC_Register {
      * @return void
      */
     public static function uninstall() {
-
+		$pageid = get_option('mobilemonkey_active_page_id');
+		$test = new MobileMonkeyApi();
+		$test->disconnectPage($pageid);
+		delete_option('mobilemonkey_token');
+		delete_option('mobilemonkey_company_id');
+		delete_option('mobilemonkey_active_page_id');
+		delete_option('mobilemonkey_active_page_remote_id');
+		delete_option('mobilemonkey_active_bot');
     }
     
 

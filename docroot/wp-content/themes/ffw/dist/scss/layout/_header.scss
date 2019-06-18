@@ -1,6 +1,24 @@
+#header {
+  @include breakpoint(colmd) {
+    background-color: $bg-body;
+    left: 0;
+    position: fixed;
+    right: 0;
+    z-index: 999;
+  }
+}
+
 .header {
+  .container {
+    @include breakpoint(colmdDown) {
+      padding-left: rem(30px);
+      padding-right: rem(30px);
+    }
+  }
+
   &-navigation-inner {
     padding: rem(25px 0);
+    position: relative;
 
     @include breakpoint(laptop) {
       align-items: center;
@@ -16,19 +34,49 @@
     position: relative;
 
     .logo {
+      align-items: center;
       display: block;
-      max-width: rem(200px);
+      display: flex;
+      max-width: rem(320px);
+      text-decoration: none;
+
+      &:hover {
+        color: $color-base;
+      }
+
+      img {
+        margin-right: rem(20px);
+        max-width: rem(38px);
+      }
     }
 
     @include breakpoint(laptop) {
       border: none;
       margin: 0;
       padding: 0;
-      width: rem(200px);
 
       .logo {
         max-width: none;
       }
+    }
+  }
+
+  .site-info {
+    line-height: rem(19px);
+    white-space: nowrap;
+
+    .site-name {
+      @include muli-black;
+      display: block;
+      font-size: rem(19px);
+      text-transform: uppercase;
+    }
+
+    .site-slogan {
+      display: block;
+      font-size: rem(15px);
+      letter-spacing: rem(2px);
+      word-spacing: rem(2px);
     }
   }
 
@@ -62,8 +110,14 @@
     }
 
     // Block mini cart on header
-    .block-mini-cart {
+    .block-user-cart {
+      align-items: center;
+      display: flex;
       margin-left: rem(40px);
+    }
+
+    .block-mini-cart {
+      margin-left: rem(14px);
     }
   }
 }

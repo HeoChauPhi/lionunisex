@@ -3,10 +3,18 @@
 }
 
 .footer {
-  @include poppins;
+  @include muli-semibold;
+
+  @include breakpoint(colmdDown) {
+    margin-top: rem(5px);
+  }
 
   &-pannel {
     margin-bottom: rem(85px);
+
+    @include breakpoint(colmdDown) {
+      margin-bottom: rem(45px);
+    }
   }
 
   &-inner {
@@ -22,11 +30,15 @@
     font-size: rem(16px);
     margin: rem(0 0 40px);
     text-transform: capitalize;
+
+    @include breakpoint(colmdDown) {
+      margin-bottom: rem(25px);
+    }
   }
 
   .block-newsletter {
     @include breakpoint(colmdDown) {
-      margin-bottom: rem(30px);
+      margin-bottom: rem(80px);
     }
 
     .block-title {
@@ -36,7 +48,7 @@
 
     .sign-up-newsletter {
       label {
-        @include poppins-semibold;
+        @include muli-extra-bold;
         font-size: rem(16px);
         margin: rem(0 0 10px);
       }
@@ -54,12 +66,33 @@
         @include breakpoint(sidewide) {
           width: rem(225px);
         }
+
+        @include breakpoint(mobileonly) {
+          margin-bottom: 10px;
+          text-align: left;
+          width: 100%;
+        }
       }
 
       input[type="submit"] {
         @extend %btn;
         margin-left: rem(7px);
+
+        @include breakpoint(mobileonly) {
+          margin: 0;
+          width: 100%;
+        }
       }
+    }
+  }
+}
+
+.block-footer-pannel {
+  @include breakpoint(colmdDown) {
+    margin-bottom: rem(60px);
+
+    &:last-of-type {
+      margin-bottom: 0;
     }
   }
 }
@@ -84,7 +117,7 @@
 }
 
 .block-copyright {
-  @include poppins-semibold;
+  @include muli-extra-bold;
   font-size: rem(12px);
   letter-spacing: rem(5px);
   margin-bottom: rem(15px);
@@ -99,6 +132,7 @@
   line-height: 0;
   padding: 0 !important;
   width: 60%;
+  height: auto;
 
   a {
     display: block;
@@ -123,6 +157,7 @@
   position: fixed;
   text-indent: -999em;
   width: rem(50px);
+  z-index: 99;
 
   &.btn-show {
     opacity: .4;
@@ -131,4 +166,8 @@
   &:hover {
     opacity: 1;
   }
+}
+
+.fb_customer_chat_bubble_animated_no_badge {
+  z-index: 997 !important;
 }

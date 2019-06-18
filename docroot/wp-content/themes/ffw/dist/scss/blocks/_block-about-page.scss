@@ -1,13 +1,26 @@
 .block-about-page {
   .block-about-contents {
-    align-items: flex-start;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: rem(100px);
+    margin-bottom: rem(50px);
+
+    @include breakpoint(colmd) {
+      align-items: flex-start;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: rem(100px);
+    }
   }
 
   .block-content-item {
-    flex: 1;
+    margin-bottom: rem(50px);
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    @include breakpoint(colmd) {
+      flex: 1;
+      margin-bottom: 0;
+    }
   }
 
   .content-title {
@@ -48,16 +61,18 @@
     }
 
     .form-group {
-      align-items: center;
-      display: flex;
-      justify-content: space-between;
-      margin: rem(0 -10px 0 -10px);
+      @include breakpoint(colmd) {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        margin: rem(0 -10px 0 -10px);
 
-      > .form-item {
-        flex: 1;
-        max-width: 50%;
-        padding-left: rem(10px);
-        padding-right: rem(10px);
+        > .form-item {
+          flex: 1;
+          max-width: 50%;
+          padding-left: rem(10px);
+          padding-right: rem(10px);
+        }
       }
     }
 
@@ -69,18 +84,33 @@
       align-items: center;
       display: flex;
       justify-content: flex-end;
+      position: relative;
 
       > input {
         @extend %btn;
         order: 2;
         padding-left: rem(50px);
         padding-right: rem(50px);
+
+        @include breakpoint(colmdDown) {
+          flex: 1;
+        }
       }
 
       .ajax-loader {
         order: 1;
         margin: rem(0 10px 0 0);
+
+        @include breakpoint(colmdDown) {
+          left: 0;
+          position: absolute;
+        }
       }
+    }
+
+    .wpcf7-response-output {
+      margin-left: 0;
+      margin-right: 0;
     }
   }
 }

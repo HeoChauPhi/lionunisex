@@ -84,7 +84,13 @@ class MobileMonkeyApi
 			return get_option($this->option_prefix . 'fb_internal_page_id');
 		}
 	}
-
+	private function default_custom_setting(){
+		$data = array();
+		$data['fb_logged_in_greeting'] = 'Hi! How can we help you?';
+		$data['fb_logged_out_greeting'] = 'Hi! We\'re here to answer any questions you may have';
+		$data['fb_color'] = '#0084FF';
+		return($data);
+	}
 	private function setActiveBotId($bot_id)
 	{
 		update_option($this->option_prefix . 'active_bot', $bot_id);
@@ -133,7 +139,7 @@ class MobileMonkeyApi
 		} else {
 			$user_email = get_option('admin_email', '');
 		}
-		return $this->getApiDomain() . 'wordpress/auth?callback="' . add_query_arg(['page' => $this->plugin_name], admin_url('admin.php')) . '"&email=' . $user_email . '&v=' . HTCC_VERSION;
+		return $this->getApiDomain() . 'wordpress/auth?callback="' . add_query_arg(['page' => $this->plugin_name], admin_url('admin.php')) . '"&email=' . $user_email . '&v=' . HTCC_VERSION.'.2';
 	}
 
 	public function connectMobileMonkey()
@@ -153,6 +159,7 @@ class MobileMonkeyApi
 	{
 		$logout = filter_input(INPUT_GET, "logout", FILTER_SANITIZE_STRING);
 		if ($logout || $reset) {
+			$this->disconnectPage(get_option($this->option_prefix . 'active_page_id'));
 			delete_option($this->option_prefix . 'token');
 			delete_option($this->option_prefix . 'company_id');
 			delete_option($this->option_prefix . 'active_page_id');
@@ -172,25 +179,13 @@ class MobileMonkeyApi
 			],
 			'method' => 'GET',
 		];
-		$response = wp_remote_post($this->getApiDomain() . 'api/facebook_pages/' . $this->getInternalPageId($page_id), $args);
-		$content = wp_remote_retrieve_body($response);
-		$connect_response = json_decode($content);
-		if (isset($response["response"]["code"]) && $response["response"]["code"] == 200) {
+		$response = wp_remote_post($this->getApiDomain() . 'api/facebook_pages/' . $this->getInternalPageId($page_id).'?v=' . HTCC_VERSION.'.2', $args);
+		$error = $this->ErrorHandler($response,'MM Only State','get');
+		if ($error) {
+			$connect_response = json_decode($error);
 			return $connect_response->wordpress_settings->mm_only_mode;
-		} elseif ($connect_response->error_code) {
-			$this->renderNotice('Error code: ' . $connect_response->error_code);
-			if (!empty($connect_response->errors)) {
-				foreach ($connect_response->errors as $error) {
-					$this->renderNotice('Error: ' . $error);
-				}
-			}
-		} elseif (!empty($connect_response->errors)) {
-			foreach ($connect_response->errors as $error) {
-				$this->renderNotice('Error: ' . $error);
-			}
-		} else {
-			$this->renderNotice('API communication error. Unable to receive MM Only State.');
 		}
+
 	}
 
 
@@ -214,7 +209,7 @@ class MobileMonkeyApi
 				],
 				'method' => 'POST',
 			];
-			$response = wp_remote_post($this->getApiDomain() . 'api/facebook_pages', $args);
+			$response = wp_remote_post($this->getApiDomain() . 'api/facebook_pages?v=' . HTCC_VERSION.'.2', $args);
 			$content = wp_remote_retrieve_body($response);
 			$connect_response = json_decode($content);
 			if (json_last_error() !== JSON_ERROR_NONE) {
@@ -224,39 +219,52 @@ class MobileMonkeyApi
 					$options = get_option('htcc_options', array());
 					$options['fb_page_id'] = $connect_response->facebook_page->remote_id;
 					$options['fb_internal_page_id'] = $connect_response->facebook_page->id;
+					update_option('htcc_options', $options);
 					if ($connect_response->facebook_page->active_bot_id) {
+						$custom_settings = $this->getCustomChatSettings($options['fb_page_id']);
+						$default_setting = $this->default_custom_setting();
+						foreach ($custom_settings as $key=>$value){
+							if ($value == '' || !isset($value)){
+								$options['fb_'.$key] = $default_setting['fb_'.$key];
+							}else {
+								$options['fb_'.$key]=$value;
+							}
+						}
 						$ref_cont = $this->getBotRef($connect_response->facebook_page->active_bot_id);
 						$ref = stristr($ref_cont->test_link, '=');
-						$options['ref'] = str_replace("=", "", $ref);
+						$ref_value = str_replace("=", "", $ref);
+						update_option('htcc_fb_ref', $ref_value);
+						update_option('htcc_fb_js_src', $custom_settings->js_src);
+						if (!$this->mmOnlyCheck($options['fb_page_id'])){
+							$test = $this->getWidgets($connect_response->facebook_page->remote_id);
+							if ($test) {
+								foreach ($test->widgets as $key => $value) {
+									if ($value->type == "quick_question") {
+										$key += 1;
+										$value_new['fb_answer' . $key . ''] = $value->config->body;
+									}
+									if ($value->type == 'text') {
+										$value_new['thank_message'] = $value->config->body;
+									}
+									if ($value->type == 'email') {
+										$value_new['email'] = $value->config->recipient;
+									}
+								}
+							}
+							$value_new['fb_as_state'] = 0;
+							update_option('htcc_as_options', $value_new);
+						}
 						if ($connect_response->welcome_message) {
-							$options['fb_welcome_message'] = $connect_response->welcome_message;
+							$options['fb_welcome_message'] = $connect_response->welcome_message->body;
 						} else {
 							$options['fb_welcome_message'] = '';
 						}
 						$options['fb_sdk_lang'] = $this->getLanguage($connect_response->facebook_page->remote_id);
 						update_option('htcc_options', $options);
-						$test = $this->getWidgets($connect_response->facebook_page->remote_id);
-
-						if ($test) {
-							foreach ($test->widgets as $key => $value) {
-								if ($value->type == "quick_question") {
-									$key += 1;
-									$value_new['fb_answer' . $key . ''] = $value->config->body;
-								}
-								if ($value->type == 'text') {
-									$value_new['thank_message'] = $value->config->body;
-								}
-								if ($value->type == 'email') {
-									$value_new['email'] = $value->config->recipient;
-								}
-							}
-						}
-						$value_new['fb_as_state'] = 0;
-						update_option('htcc_as_options', $value_new);
-
 						$this->refreshSettingsPage();
 						return true;
 					}
+
 				}
 
 			} elseif ($connect_response->error_code) {
@@ -288,35 +296,20 @@ class MobileMonkeyApi
 			],
 			'body' => json_encode([
 				'enabled' => $state,
-				'fb_page_remote_id' => $fb_page_id
+				'fb_page_remote_id' => $fb_page_id,
+				'src' => $this->getSrc()
 			]),
 			'method' => 'PUT',
 		];
-		$response = wp_remote_request($this->getApiDomain() . 'api/wordpress_settings/answering_service?v=' . HTCC_VERSION, $args);
-		$content = wp_remote_retrieve_body($response);
-		$connect_response = json_decode($content);
-		if (isset($response["response"]["code"]) && $response["response"]["code"] == 200) {
-			// Succesfully updated welcome message for $options['fb_page_id'] page
-		} elseif ($connect_response->error_code) {
-			$this->renderNotice('Error code: ' . $connect_response->error_code);
-			if (!empty($connect_response->errors)) {
-				foreach ($connect_response->errors as $error) {
-					$this->renderNotice('Error: ' . $error);
-				}
-			}
-		} elseif (!empty($connect_response->errors)) {
-			foreach ($connect_response->errors as $error) {
-				$this->renderNotice('Error: ' . $error);
-			}
-		} else {
-			$this->renderNotice('API communication error. Unable to save `AS` State');
-		}
+		$response = wp_remote_request($this->getApiDomain() . 'api/wordpress_settings/answering_service?v=' . HTCC_VERSION.'.2', $args);
+		$this->ErrorHandler($response,'AS State Save','');
 	}
 
-	public function disconnectPage()
+	public function disconnectPage($pageId='')
 	{
-		$pageId = filter_input(INPUT_GET, "disconnect", FILTER_SANITIZE_STRING);
-
+		if (!$pageId){
+			$pageId = filter_input(INPUT_GET, "disconnect", FILTER_SANITIZE_STRING);
+		}
 		if ($pageId) {
 			$args = [
 				'timeout' => 10,
@@ -329,7 +322,7 @@ class MobileMonkeyApi
 				],
 				'method' => 'DELETE',
 			];
-			$response = wp_remote_request($this->getApiDomain() . '/api/facebook_pages/' . $pageId, $args);
+			$response = wp_remote_request($this->getApiDomain() . '/api/facebook_pages/' . $pageId.'?v=' . HTCC_VERSION.'.2', $args);
 			$content = wp_remote_retrieve_body($response);
 			$connect_response = json_decode($content);
 			if (empty($content)) {
@@ -376,32 +369,36 @@ class MobileMonkeyApi
 			'headers' => [
 				'Authorization' => $this->getToken()
 			],
+			'body' =>[
+				'src' => $this->getSrc()
+			]
 		];
 		$pagesObj = NULL;
 		$pages = [];
-		$response = wp_remote_get($this->getApiDomain() . '/api/facebook_pages/available_options?src=' . $this->getSrc(), $args);
+		$response = wp_remote_get($this->getApiDomain() . '/api/facebook_pages/available_options?src=' . $this->getSrc().'&v=' . HTCC_VERSION.'.2', $args);
 		$content = wp_remote_retrieve_body($response);
 		if (!empty($content)) {
 			$pagesObj = json_decode($content);
 
 			if (empty($pagesObj->errors)) {
+				if(is_array($pagesObj->data)) {
+					foreach ($pagesObj->data as $page) {
+						$p = [
+							'name' => $page->name,
+							'remote_id' => $page->remote_id,
+							'id' => $page->facebook_page_id,
+							'bot_id' => $page->bot_id,
+							'bot_kind' => $page->bot_kind,
+							'company_id' => $page->company_id,
+							'path' => add_query_arg([
+								'page' => $this->plugin_name,
+								'connect' => $page->remote_id,
+								'page_name' => $page->name
+							], admin_url('admin.php')),
+						];
 
-				foreach ($pagesObj->data as $page) {
-					$p = [
-						'name' => $page->name,
-						'remote_id' => $page->remote_id,
-						'id' => $page->facebook_page_id,
-						'bot_id' => $page->bot_id,
-						'bot_kind' => $page->bot_kind,
-						'company_id' => $page->company_id,
-						'path' => add_query_arg([
-							'page' => $this->plugin_name,
-							'connect' => $page->remote_id,
-							'page_name' => $page->name
-						], admin_url('admin.php')),
-					];
-
-					$pages[] = $p;
+						$pages[] = $p;
+					}
 				}
 			}
 		}
@@ -419,6 +416,7 @@ class MobileMonkeyApi
 
 		$activePage = [];
 		$pages = $this->getPages();
+
 		$options = get_option('htcc_options', array());
 		$active_remote_page_id = $options['fb_page_id'];
 
@@ -428,11 +426,15 @@ class MobileMonkeyApi
 				$activePage['bot_id'] = $page['bot_id'];
 				$activePage['name'] = $page['name'];
 				$activePage['id'] = $page['id'];
+				if ($page['id']){
 				$activePage['path'] = add_query_arg([
 					'page' => $this->plugin_name,
 					'disconnect' => $page['id'],
 				], admin_url('admin.php'));
-
+				}else {
+					return false;
+					break;
+				}
 				update_option($this->option_prefix . 'active_page_remote_id', $page['remote_id']);
 				$this->setActivePageId($page['id']);
 				$this->setActiveBotId($page['bot_id']);
@@ -471,24 +473,7 @@ class MobileMonkeyApi
 		];
 
 		$response = wp_remote_request($this->getApiDomain() . '/api/user/', $args);
-		$content = wp_remote_retrieve_body($response);
-		$connect_response = json_decode($content);
-		if (isset($response["response"]["code"]) && $response["response"]["code"] == 200) {
-			// Email successfully sent
-		} elseif ($connect_response->error_code) {
-			$this->renderNotice('Error code: ' . $connect_response->error_code);
-			if (!empty($connect_response->errors)) {
-				foreach ($connect_response->errors as $error) {
-					$this->renderNotice('Error: ' . $error);
-				}
-			}
-		} elseif (!empty($connect_response->errors)) {
-			foreach ($connect_response->errors as $error) {
-				$this->renderNotice('Error: ' . $error);
-			}
-		} else {
-			$this->renderNotice('API communication error. Unable to send user email.');
-		}
+		$this->ErrorHandler($response,'User Email','put');
 	}
 
 	public function getWelcomeMessage($remote_id)
@@ -498,28 +483,16 @@ class MobileMonkeyApi
 			'headers' => [
 				'Authorization' => $this->getToken(),
 				'Content-Type' => 'application/json',
+			],
+			'body' => [
+				'src' => $this->getSrc()
 			]
 		];
 
-		$response = wp_remote_get($this->getApiDomain() . 'api/wordpress_settings/welcome_message?fb_page_remote_id=' . $remote_id . '&v=' . HTCC_VERSION, $args);
-		$content = wp_remote_retrieve_body($response);
-		$connect_response = json_decode($content);
-
-		if (isset($response["response"]["code"]) && $response["response"]["code"] == 200) {
-			return str_replace('"', '', $content);
-		} elseif ($connect_response->error_code) {
-			$this->renderNotice('Error code: ' . $connect_response->error_code);
-			if (!empty($connect_response->errors)) {
-				foreach ($connect_response->errors as $error) {
-					$this->renderNotice('Error: ' . $error);
-				}
-			}
-		} elseif (!empty($connect_response->errors)) {
-			foreach ($connect_response->errors as $error) {
-				$this->renderNotice('Error: ' . $error);
-			}
-		} else {
-			$this->renderNotice('API communication error. Unable to receive Welcome Message');
+		$response = wp_remote_get($this->getApiDomain() . 'api/wordpress_settings/welcome_message?fb_page_remote_id=' . $remote_id . '&v=' . HTCC_VERSION.'.2', $args);
+		$error = ($this->ErrorHandler($response,'Welcome Message','get'));
+		if ($error) {
+			return str_replace('"', '', $error);
 		}
 	}
 
@@ -533,29 +506,14 @@ class MobileMonkeyApi
 			],
 			'body' => json_encode([
 				'body' => $new_welcome_message,
-				'fb_page_remote_id' => $fb_page_id
+				'fb_page_remote_id' => $fb_page_id,
+				'src' => $this->getSrc()
 			]),
 			'method' => 'PUT',
 		];
-		$response = wp_remote_request($this->getApiDomain() . 'api/wordpress_settings/welcome_message?v=' . HTCC_VERSION, $args);
-		$content = wp_remote_retrieve_body($response);
-		$connect_response = json_decode($content);
-		if (isset($response["response"]["code"]) && $response["response"]["code"] == 200) {
-			// Succesfully updated welcome message for $options['fb_page_id'] page
-		} elseif ($connect_response->error_code) {
-			$this->renderNotice('Error code: ' . $connect_response->error_code);
-			if (!empty($connect_response->errors)) {
-				foreach ($connect_response->errors as $error) {
-					$this->renderNotice('Error: ' . $error);
-				}
-			}
-		} elseif (!empty($connect_response->errors)) {
-			foreach ($connect_response->errors as $error) {
-				$this->renderNotice('Error: ' . $error);
-			}
-		} else {
-			$this->renderNotice('API communication error. Unable to Update Welcome Message');
-		}
+		$response = wp_remote_request($this->getApiDomain() . 'api/wordpress_settings/welcome_message?v=' . HTCC_VERSION.'.2', $args);
+		$this->ErrorHandler($response,'Welcome Message','put');
+
 
 	}
 
@@ -569,31 +527,18 @@ class MobileMonkeyApi
 			],
 			'body' => json_encode([
 				'language' => $new_language,
-				'fb_page_remote_id' => $fb_page_id
+				'fb_page_remote_id' => $fb_page_id,
+				'src' => $this->getSrc()
 			]),
 			'method' => 'PUT',
 		];
-
-		$response = wp_remote_request($this->getApiDomain() . 'api/wordpress_settings/language?v=' . HTCC_VERSION, $args);
-		$content = wp_remote_retrieve_body($response);
-		$connect_response = json_decode($content);
-
-		if (isset($response["response"]["code"]) && $response["response"]["code"] == 200) {
-		} elseif ($connect_response->error_code) {
-			$this->renderNotice('Error code: ' . $connect_response->error_code);
-			if (!empty($connect_response->errors)) {
-				foreach ($connect_response->errors as $error) {
-					$this->renderNotice('Error: ' . $error);
-				}
-			}
-		} elseif (!empty($connect_response->errors)) {
-			foreach ($connect_response->errors as $error) {
-				$this->renderNotice('Error: ' . $error);
-			}
-		} else {
-			$this->renderNotice('API communication error. Unable to update Language');
+		$fb_lang = HTCC_Lang::$fb_lang;
+		if (in_array($new_language, $fb_lang)){
+			$response = wp_remote_request($this->getApiDomain() . 'api/wordpress_settings/language?v=' . HTCC_VERSION.'.2', $args);
+		}else {
+			$this->renderNotice('Incorrect Language Value');
 		}
-
+		$this->ErrorHandler($response,'Language','put');
 	}
 
 	public function getLanguage($remote_id)
@@ -603,28 +548,16 @@ class MobileMonkeyApi
 			'headers' => [
 				'Authorization' => $this->getToken(),
 				'Content-Type' => 'application/json',
+			],
+			'body' => [
+				'src' => $this->getSrc()
 			]
 		];
 
-		$response = wp_remote_get($this->getApiDomain() . 'api/wordpress_settings/language?fb_page_remote_id=' . $remote_id . '&v=' . HTCC_VERSION, $args);
-		$content = wp_remote_retrieve_body($response);
-		$connect_response = json_decode($content);
-
-		if (isset($response["response"]["code"]) && $response["response"]["code"] == 200) {
-			return str_replace('"', '', $content);
-		} elseif ($connect_response->error_code) {
-			$this->renderNotice('Error code: ' . $connect_response->error_code);
-			if (!empty($connect_response->errors)) {
-				foreach ($connect_response->errors as $error) {
-					$this->renderNotice('Error: ' . $error);
-				}
-			}
-		} elseif (!empty($connect_response->errors)) {
-			foreach ($connect_response->errors as $error) {
-				$this->renderNotice('Error: ' . $error);
-			}
-		} else {
-			$this->renderNotice('API communication error. Unable to get Language');
+		$response = wp_remote_get($this->getApiDomain() . 'api/wordpress_settings/language?fb_page_remote_id=' . $remote_id . '&v=' . HTCC_VERSION.'.2', $args);
+		$error = ($this->ErrorHandler($response,'Language','get'));
+		if ($error) {
+			return str_replace('"', '', $error);
 		}
 	}
 
@@ -635,25 +568,17 @@ class MobileMonkeyApi
 			'headers' => [
 				'Authorization' => $this->getToken(),
 				'Content-Type' => 'application/json',
+			],
+			'body' => [
+				'src' => $this->getSrc()
 			]
 		];
 
-		$response = wp_remote_get($this->getApiDomain() . 'api/wordpress_settings/answering_service?fb_page_remote_id=' . $remote_id . '&v=' . HTCC_VERSION, $args);
-		$content = wp_remote_retrieve_body($response);
-		$connect_response = json_decode($content);
-		if (isset($response["response"]["code"]) && $response["response"]["code"] == 200) {
-			return json_decode($content);
-		} elseif ($connect_response->error_code) {
-			$this->renderNotice('Error code: ' . $connect_response->error_code);
-			if (!empty($connect_response->errors)) {
-				foreach ($connect_response->errors as $error) {
-					$this->renderNotice('Error: ' . $error);
-				}
-			}
-		} elseif (!empty($connect_response->errors)) {
-			foreach ($connect_response->errors as $error) {
-				$this->renderNotice('Error: ' . $error);
-			}
+		$response = wp_remote_get($this->getApiDomain() . 'api/wordpress_settings/answering_service?fb_page_remote_id=' . $remote_id . '&v=' . HTCC_VERSION.'.2', $args);
+		$error = $this->ErrorHandler($response,'Widget','get');
+		if ($error) {
+			$connect_response = json_decode($error);
+			return $connect_response;
 		} else {
 			return false;
 		}
@@ -668,29 +593,14 @@ class MobileMonkeyApi
 				'Authorization' => $this->getToken(),
 				'Content-Type' => 'application/json',
 			],
-			'body' => json_encode(['config' => $argsas, 'src' => 'wordpress']),
+			'body' => json_encode(['config' => $argsas, 'src' => $this->getSrc()]),
 			'method' => 'PATCH',
 		];
 		$response = wp_remote_request($this->getApiDomain() . 'api/widgets/' . $object->id . '', $args);
-		$content = wp_remote_retrieve_body($response);
-		$connect_response = json_decode($content);
-		if (isset($response["response"]["code"]) && $response["response"]["code"] == 200) {
+		$error = ($this->ErrorHandler($response,'Widget','put'));
+		if ($error) {
 			return $response;
-		} elseif ($connect_response->error_code) {
-			$this->renderNotice('Error code: ' . $connect_response->error_code);
-			if (!empty($connect_response->errors)) {
-				foreach ($connect_response->errors as $error) {
-					$this->renderNotice('Error: ' . $error);
-				}
-			}
-		} elseif (!empty($connect_response->errors)) {
-			foreach ($connect_response->errors as $error) {
-				$this->renderNotice('Error: ' . $error);
-			}
-		} else {
-			$this->renderNotice('API communication error. Unable to update Widgets.');
 		}
-
 	}
 
 	public function getBotRef($bot_id)
@@ -701,26 +611,16 @@ class MobileMonkeyApi
 				'Authorization' => $this->getToken(),
 				'Content-Type' => 'application/json; charset=utf-8',
 			],
+			'body' => [
+				'src' => $this->getSrc()
+			],
 			'method' => 'GET',
 		];
 		$response = wp_remote_post($this->getApiDomain() . 'api/bots/' . $bot_id, $args);
-		$content = wp_remote_retrieve_body($response);
-		$connect_response = json_decode($content);
-		if (isset($response["response"]["code"]) && $response["response"]["code"] == 200) {
+		$error = ($this->ErrorHandler($response,'Bot Ref','get'));
+		if ($error) {
+			$connect_response = json_decode($error);
 			return $connect_response;
-		} elseif ($connect_response->error_code) {
-			$this->renderNotice('Error code: ' . $connect_response->error_code);
-			if (!empty($connect_response->errors)) {
-				foreach ($connect_response->errors as $error) {
-					$this->renderNotice('Error: ' . $error);
-				}
-			}
-		} elseif (!empty($connect_response->errors)) {
-			foreach ($connect_response->errors as $error) {
-				$this->renderNotice('Error: ' . $error);
-			}
-		} else {
-			$this->renderNotice('API communication error. Unable to receive BotRef.');
 		}
 	}
 
@@ -759,14 +659,48 @@ class MobileMonkeyApi
 		return false;
 	}
 
-	private function renderNotice($text)
+	public function renderNotice($text)
 	{
 		$setting_page_args = [
 			'text' => $text,
 		];
 		HT_CC::view('ht-cc-admin-fb-button-notice', $setting_page_args);
 	}
+	public function renderError($text)
+	{
+		$setting_page_args = [
+			'text' => $text,
+		];
+		HT_CC::view('ht-cc-admin-fb-button-error', $setting_page_args);
+	}
 
+	public function settingSaveError($type)
+	{
+		$text = "";
+		switch ($type){
+			case "AS":
+				$text = "Changes to the Answering Service fields will not be saved if you leave the fields blank. Please include non-empty field if you wish to make a change.";
+				break;
+			case "email":
+				$text = "Validation failed: Invalid recipient email address(es)";
+				break;
+			case "welcome_message":
+				$text = "Changes to the Welcome Message field will not be saved if you leave the fields blank. Please include non-empty field if you wish to make a change";
+				break;
+			case "delay_length":
+				$text = "Greeting Dialog Delay shouldn't exceed 9 digits.";
+				break;
+			case "delay_0":
+				$text = "Greeting Dialog Delay cannot be lower than 1 second";
+				break;
+		}
+		add_settings_error(
+		'htcc_setting_group', // setting name
+		'', //
+		__("$text", 'wp-chatbot'),
+		'error' // type of notify
+		);
+	}
 	public function debug()
 	{
 		$options = [];
@@ -832,6 +766,72 @@ class MobileMonkeyApi
 
 		return $get;
 
+	}
+
+
+	public function updateCustomChatSettings($new_value, $fb_page_id)
+	{
+		$args = [
+			'timeout' => 10,
+			'headers' => [
+				'Authorization' => $this->getToken(),
+				'Content-Type' => 'application/json',
+			],
+			'body' => json_encode(
+				$new_value
+			),
+			'method' => 'PUT',
+		];
+		$response = wp_remote_request($this->getApiDomain() . '/api/wordpress_settings/customer_chat?fb_page_remote_id=' . $fb_page_id . '&v=' . HTCC_VERSION.'.2', $args);
+		$error = ($this->ErrorHandler($response,"custom settings",'put'));
+
+	}
+
+	public function getCustomChatSettings($remote_id)
+	{
+		$args = [
+			'timeout' => 10,
+			'headers' => [
+				'Authorization' => $this->getToken(),
+				'Content-Type' => 'application/json',
+			],'method' => 'GET',
+		];
+
+		$response = wp_remote_get($this->getApiDomain() . 'api/wordpress_settings/customer_chat?fb_page_remote_id=' . $remote_id . '&v=' . HTCC_VERSION.'.2', $args);
+		$error = ($this->ErrorHandler($response,"custom settings",'get'));
+		if ($error) {
+			return json_decode($error);
+		}
+	}
+
+
+	private function ErrorHandler($response,$point,$type){
+		$content = wp_remote_retrieve_body($response);
+		$connect_response = json_decode($content);
+		$code = wp_remote_retrieve_response_code( $response );
+		$type =  "<style>#setting-error-settings_updated{display: none;}</style>";
+		if (isset($code) && $code == 200) {
+			$type ='';
+			return $content;
+		} elseif ($connect_response->error_code) {
+			$this->renderError('Error code: ' . $connect_response->error_code);
+			if (!empty($connect_response->errors)) {
+				foreach ($connect_response->errors as $error) {
+					$this->renderError('Error: ' . $error);
+				}
+			}
+		} elseif (!empty($connect_response->errors)) {
+			foreach ($connect_response->errors as $error) {
+				$this->renderError('Error: ' . $error);
+			}
+		} else {
+			if ($point=="Welcome Message" && $code==422){
+				return true;
+			}else {
+				$this->renderError('API communication error. Unable to '.$type .' ' .$point.'');
+			}
+		}
+		echo $type;
 	}
 
 	private function getData()

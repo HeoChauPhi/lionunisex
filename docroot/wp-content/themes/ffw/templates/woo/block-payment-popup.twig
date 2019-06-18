@@ -1,0 +1,20 @@
+<div class="block-payment-popup" data-length={{ products|length }}>
+{% for product in products %}
+  <div class="user-payment-item">
+    <a href="#" class="close-payment-popup close-popup-payment-popup"><i class="far fa-times-circle"></i></a>
+    <div class="user-payment-notice">{{ pll_e('User ID') }} <strong>#</strong><span class="user-payment-id"></span> {{ pll_e('paymented product:') }}</div>
+    <div class="product-item">
+      <div class="product-image">
+        <a href="{{ product.link }}">
+          {% if product.thumbnail.src('shop_single') %}
+          <img src="{{ product.thumbnail.src('shop_single') }}" alt>
+          {% else %}
+          <img src="{{ fn('wc_placeholder_img_src') }}" alt>
+          {% endif %}
+        </a>
+      </div>
+      <a href="{{ product.link }}" class="product-title">{{ product.title }}</a>
+    </div>
+  </div>
+{% endfor %}
+</div>

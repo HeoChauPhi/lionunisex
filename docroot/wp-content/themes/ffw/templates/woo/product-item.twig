@@ -1,12 +1,14 @@
+{% if product.thumbnail.src('shop_single') %}
+{% set product_img_url = product.thumbnail.src('shop_single') %}
+{% else %}
+{% set product_img_url = fn('wc_placeholder_img_src') %}
+{% endif %}
+
 <div class="product-item {% if product_class %}{{ product_class }}{% endif %}">
   <div class="product-item-inner">
     <a class="product-link" href="{{ product.link }}"></a>
-    <div class="product-image">
-      {% if product.thumbnail.src('shop_single') %}
-      <img src="{{ product.thumbnail.src('shop_single') }}" alt>
-      {% else %}
-      <img src="{{ fn('wc_placeholder_img_src') }}" alt>
-      {% endif %}
+    <div class="product-image" style="background-image: url({{ product_img_url }});">
+      <img src="{{ product_img_url }}" alt>
     </div>
     <div class="product-info">
       {#{ fn('wc_get_product', product.ID)|print_r }#}

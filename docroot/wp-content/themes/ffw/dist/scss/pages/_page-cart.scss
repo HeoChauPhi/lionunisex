@@ -30,6 +30,7 @@
   table.shop_table {
     border: none;
     font-weight: 700;
+    position: relative;
 
     th,
     td {
@@ -51,6 +52,33 @@
         &:last-of-type {
           padding-right: 0;
         }
+
+        @include breakpoint(tablet) {
+          &.product-remove {
+            height: 0;
+            padding: 0;
+            position: absolute;
+            visibility: hidden;
+            width: 0;
+            z-index: -1;
+          }
+
+          &.product-thumbnail {
+            padding-left: 0;
+            padding-right: 0;
+
+            .cart-form-title {
+              font-size: rem(21px);
+              font-weight: 700;
+              margin: 0;
+              white-space: nowrap;
+            }
+          }
+
+          &.product-name {
+            text-indent: -999em;
+          }
+        }
       }
 
       tbody {
@@ -66,7 +94,40 @@
             padding-right: 0;
           }
 
+          &.product-remove {
+            @include breakpoint(tablet) {
+              border: none;
+              bottom: rem(45px);
+              left: rem(150px);
+              padding: 0;
+              position: absolute;
+            }
+
+            a.remove {
+              @extend .fas;
+              color: $color-base !important;
+              text-align: center;
+              text-indent: -999em;
+
+              &:before {
+                @extend .fa-trash-alt;
+                float: left;
+                font-size: rem(16px);
+                height: 100%;
+                line-height: rem(25px);
+                text-indent: 0;
+                width: 100%;
+              }
+
+              &:hover {
+                background: none;
+                color: $color-base !important;
+              }
+            }
+          }
+
           &.product-thumbnail {
+            padding-left: 0;
             width: rem(120px);
 
             a {
@@ -81,6 +142,10 @@
               }
             }
           }
+
+          &.actions {
+            padding: rem(34px 0);
+          }
         }
       }
 
@@ -89,19 +154,92 @@
       }
 
       .coupon {
+        float: none !important;
+
         input[type="text"] {
           @extend input[type="text"];
-          padding: rem(6px 10px);
+          display: none;
+          margin: 0;
+          padding: rem(10px);
+          width: 100%;
+
+          @include breakpoint(848px) {
+            width: rem(252px);
+          }
+        }
+
+        label {
+          cursor: pointer;
+          display: block !important;
+          font-size: rem(16px);
+          margin-bottom: rem(10px);
+          text-align: left;
+
+          &:before {
+            @extend .fas;
+            @extend .fa-tag;
+            margin-right: rem(10px);
+          }
         }
 
         button {
           @extend %btn;
+          background: none;
+          border-width: rem(1px);
+          color: $black;
+          display: none;
+          margin-top: rem(5px);
+          padding: rem(14px 10px);
+          width: 100% !important;
+
+          @include breakpoint(848px) {
+            margin: 0;
+            width: auto !important;
+          }
         }
+
+        &.coupon-show-form {
+          input[type="text"], 
+          button {
+            display: inline-block;
+          }
+        }
+      }
+    }
+
+    @include breakpoint(tablet) {
+      td.actions {
+        border: none;
+        float: left;
+        max-width: 50%;
+        min-width: 44%;
+        position: absolute;
+        top: 100%;
+      }
+    }
+
+    button[name="update_cart"] {
+      @extend %btn;
+      clear: both;
+      color: $white !important;
+      font-weight: 400;
+      margin: rem(26px 0 10px 0);
+      padding: rem(8px 10px 9px) !important;
+      width: 100%;
+
+      &:hover {
+        color: $black !important;
       }
     }
   }
 
   .cart-collaterals {
+    .cart_totals {
+      > h2 {
+        display: none;
+      }
+    }
+
     table.shop_table {
       td {
         text-align: right;

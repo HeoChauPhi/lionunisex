@@ -25,6 +25,12 @@
   .product-item {
     width: 100%;
 
+    &:nth-of-type(3n+3) {
+      .product-image {
+        border: rem(5px) solid $black;
+      }
+    }
+
     @include breakpoint(colmdDown) {
       position: static !important;
     }
@@ -57,7 +63,7 @@
     }
 
     .product-price {
-      @include poppins-semibold;
+      @include muli-extra-bold;
       font-size: rem(14px);
     }
 
@@ -69,9 +75,10 @@
   }
 
   .js-masonry-item {
-    margin-bottom: rem(65px);
+    margin-bottom: rem(30px);
 
     @include breakpoint(colmd) {
+      margin-bottom: rem(65px);
       width: 33.5555%;
 
       &:nth-of-type(3n+1) {

@@ -1,9 +1,31 @@
 .single-product {
+  &.woocommerce-page {
+    .main-inner {
+      padding-top: rem(40px);
+
+      @include breakpoint(desktop) {
+        padding-top: rem(80px);
+      }
+    }
+  }
+
+  .zoomContainer {
+    z-index: 997 !important;
+
+    @include breakpoint(colmdDown) {
+      display: none !important;
+    }
+  }
+
   .single-product-image {
     position: relative;
 
+    @include breakpoint(colmdDown) {
+      margin-bottom: rem(45px);
+    }
+
     .onsale {
-      @include poppins;
+      @include muli-semibold;
       background-color: $black;
       border-radius: 0;
       color: $white;
@@ -85,11 +107,15 @@
 
   .product_title {
     font-size: rem(20px);
-    margin: rem(0 0 6px);
+    margin: rem(0 0 3px);
   }
 
   .product-sku {
-    margin-bottom: rem(30px);
+    margin-bottom: rem(20px);
+
+    @include breakpoint(colmdDown) {
+      margin-bottom: rem(3px);
+    }
 
     label {
       margin: 0;
@@ -98,8 +124,8 @@
   }
 
   .price {
-    @include poppins-semibold;
-    margin-bottom: rem(30px);
+    @include muli-extra-bold;
+    margin-bottom: rem(20px);
 
     del {
       color: $color-link-hover;
@@ -128,7 +154,13 @@
     }
 
     tr {
-      padding-bottom: rem(40px);
+      padding-bottom: rem(25px);
+      position: relative;
+
+      @include breakpoint(colmdDown) {
+        padding-bottom: rem(20px);
+        position: relative;
+      }
     }
 
     label {
@@ -136,8 +168,49 @@
       display: block;
       font-size: rem(14px);
       font-weight: 400;
-      margin: rem(0 0 20px);
+      margin: rem(0 0 10px);
       text-align: left;
+    }
+
+    select {
+      font-weight: 400;
+      padding: rem(12px 7px);
+      width: 100%;
+    }
+  }
+
+  .reset_variations {
+    clear: both;
+
+    &[style*="visibility: hidden"] {
+      display: none !important;
+    }
+  }
+
+  #pa_color {
+    display: none;
+  }
+
+  .form-color-wrapper {
+    align-item: center;
+    display: flex;
+
+    .color-attribute {
+      display: none;
+    }
+
+    .label-color-attribute {
+      border-radius: rem(500px);
+      border: rem(3px) solid $white;
+      cursor: pointer;
+      height: rem(21px);
+      margin: rem(0 7px 0 0);
+      text-indent: -999em;
+      width: rem(21px);
+
+      &.label-color-attribute-checked {
+        @include box-shadow(rem(0px 0px 1px 0px) $black);
+      }
     }
   }
 
@@ -221,6 +294,16 @@
             color: #47C7F2;
           }
         }
+      }
+    }
+  }
+
+  .single-product-fullcontent {
+    @include breakpoint(colmdDown) {
+      .product_title,
+      .product-sku,
+      .price {
+        display: none !important;
       }
     }
   }

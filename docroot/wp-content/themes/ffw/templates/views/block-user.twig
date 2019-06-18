@@ -1,21 +1,38 @@
+{% block user %}
 {% set current_link = fn('get_permalink') %}
 
 <div class="block-user-login">
-  <ul>
-    {% if fn('is_user_logged_in') %}
-      {% set current_user = fn('wp_get_current_user') %}
-      {% if current_user.data.display_name %}
-        {% set user_name = current_user.data.display_name %}
-      {% elseif current_user.data.user_nicename %}
-        {% set user_name = current_user.data.user_nicename %}
-      {% else %}
-        {% set user_name = current_user.data.user_login %}
-      {% endif %}
-      <li><a href="{{ fn('wp_logout_url', current_link) }}">{{ pll_e('logout') }}</a></li>
-      <li>{{ pll_e('hello') }} <a href="{{ fn('get_edit_profile_url') }}">{{ user_name }}</a>!</li>
+  <a href="#" class="user-login-icon"><i class="fas fa-user"></i></a>
+
+  {% if fn('is_user_logged_in') %}
+  <ul class="user-login-content">
+    {% set current_user = fn('wp_get_current_user') %}
+    
+    {% if current_user.data.display_name %}
+      {% set user_name = current_user.data.display_name %}
+    {% elseif current_user.data.user_nicename %}
+      {% set user_name = current_user.data.user_nicename %}
     {% else %}
-      <li><a href="{{ fn('wp_login_url', current_link) }}">{{ pll_e('login') }}</a></li>
-      <li><a href="{{ fn('wp_registration_url') }}&#38;redirect_to={{ current_link }}">{{ pll_e('register') }}</a></li>
+      {% set user_name = current_user.data.user_login %}
     {% endif %}
+
+    {% if fn('get_user_meta', current_user.ID, '_fb_user_id', true) %}
+      {% set user_fb_id = fn('get_user_meta', current_user.ID, '_fb_user_id', true) %}
+      {% set user_avata = 'https://graph.facebook.com/' ~ user_fb_id ~ '/picture?width=192&height=192' %}
+    {% else %}
+      {% set user_avata = fn('get_avatar_url', current_user.data.ID) %}
+    {% endif %}
+    <li class="user-data"><span class="user-avatar"><img src="{{ user_avata }}" alt="{{ user_name }}"></span><a href="{{ fn('get_edit_profile_url') }}" class="user-name">{{ user_name }}</a>!</li>
+    <li class="user-logout"><a href="{{ fn('wp_logout_url', current_link) }}">{{ pll_e('logout') }}</a></li>
   </ul>
+  {% else %}
+  <div class="user-login-content">
+    {{ fn('wp_login_form') }}
+    <ul class="user-login-register">
+      <li class="user-register"><a href="{{ fn('wp_registration_url') }}&#38;redirect_to={{ current_link }}">{{ pll_e('register') }}</a><br />{{ pll_e('or') }}</li>
+      <li class="user-facebook-login">{{ fn('do_shortcode', '[fbl_login_button redirect="" hide_if_logged="" size="large" type="continue_with" show_face="true"]') }}</li>
+    </ul>
+  </div>
+  {% endif %}
 </div>
+{% endblock %}

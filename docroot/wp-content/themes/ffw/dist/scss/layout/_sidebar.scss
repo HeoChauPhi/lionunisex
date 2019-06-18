@@ -16,6 +16,26 @@
 
 .page-product-list {
   #sidebar {
+
+    @include breakpoint(colmdDown) {
+      @include transition(all 0.3s ease);
+      background: $white;
+      bottom: 0;
+      left: auto;
+      overflow-y: auto;
+      padding: rem(50px 15px);
+      position: fixed;
+      right: -100%;
+      top: 0;
+      width: 100%;
+      z-index: 9;
+
+      &.side-filter-show {
+        @include transition(all 0.3s ease);
+        right: 0 !important;
+      }
+    }
+
     ul {
       list-style: none;
       margin: 0;
@@ -29,6 +49,7 @@
     .sidebar-title {
       border-bottom: rem(1px) solid $color-line;
       font-size: rem(26px);
+      font-weight: 800;
       line-height: 1.2;
       margin: 0;
       padding-bottom: rem(20px);
@@ -66,6 +87,33 @@
     #min_price,
     #max_price {
       display: none;
+    }
+
+    .price_slider_amount {
+      button.button {
+        display: none;
+      }
+
+      .price_label {
+        font-size: rem(14px);
+        font-weight: 700;
+        text-align: initial;
+        text-indent: -9999em;
+        width: 100%;
+
+        .from,
+        .to {
+          text-indent: 0;
+        }
+
+        .from {
+          float: left;
+        }
+
+        .to {
+          float: right;
+        }
+      }
     }
   }
 }
@@ -106,6 +154,194 @@
         display: block;
         height: rem(18px);
         width: rem(18px);
+      }
+    }
+  }
+}
+
+/* Sidebar use WOOF_Widget */
+.page-product-list {
+  #sidebar {
+    .WOOF_Widget {
+      .widget-title {
+        border-bottom: rem(1px) solid $color-line;
+        font-size: rem(26px);
+        line-height: 1.2;
+        margin: 0;
+        padding-bottom: rem(20px);
+
+        + * {
+          margin-top: 0 !important;
+        }
+
+        @include breakpoint(colmdDown) {
+          align-items: center;
+          display: flex;
+          font-weight: 800;
+          justify-content: space-between;
+
+          &:after {
+            background-image: url(../images/icons/close.svg);
+            content: "";
+            cursor: pointer;
+            height: rem(24px);
+            width: rem(24px);
+          }
+        }
+      }
+    }
+  }
+
+  .WOOF_Widget {
+    .woof_container {
+      border-bottom: rem(1px) solid $color-line;
+      margin: 0;
+      padding: rem(30px 0);
+
+      .woocommerce {
+        border: none;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    .woof_container_inner {
+      h4 {
+        font-size: rem(16px);
+        margin: 0;
+
+        @include breakpoint(colmdDown) {
+          font-weight: 800;
+        }
+
+        + * {
+          margin-top: rem(15px) !important;
+        }
+      }
+
+      .widget_price_filter {
+        form {
+          display: none;
+          margin-top: rem(35px) !important;
+        }
+      }
+    }
+
+    .woof_list_checkbox {
+      li {
+        align-items: center;
+        display: flex;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      input[type="checkbox"] {
+        background-color: $white;
+        border-radius: 0;
+        border: rem(1px) solid $color-line;
+        margin: 0;      }
+
+      .woof_checkbox_label {
+        margin: rem(0 0 0 10px);
+        padding: 0;
+
+        &.woof_checkbox_label_selected,
+        &:hover {
+          color: $color-link-hover;
+        }
+      }
+    }
+
+    .woof_container_product_cat,
+    .woof_container_pa_color {
+      ul.woof_list_checkbox {
+        input[type="checkbox"] {
+          display: none;
+        }
+
+        .woof_checkbox_label {
+          margin: 0;
+        }
+      }
+    }
+
+    .woof_container_pa_color {
+      ul.woof_list_checkbox {
+        align-items: center;
+        display: flex;
+
+        li {
+          margin-right: rem(5px) !important;
+        }
+      }
+
+      .woof_checkbox_label {
+        border-radius: rem(500px);
+        border: rem(3px) solid $white;
+        height: rem(21px);
+        text-indent: -999em;
+        width: rem(21px);
+
+        &:hover {
+          opacity: 0.8;
+        }
+
+        &.woof_checkbox_label_selected {
+          @include box-shadow(rem(0px 0px 1px 0px) $black);
+        }
+      }
+    }
+
+    .woof_front_toggle {
+      text-decoration: none;
+      text-indent: -999em;
+
+      &:before {
+        content: "";
+        float: right;
+        text-indent: 0;
+      }
+
+      &.woof_front_toggle_closed {
+        &:before {
+          content: "+";
+        }
+      }
+
+      &.woof_front_toggle_opened {
+        &:before {
+          content: "-";
+        }
+      }
+    }
+
+    .woof_submit_search_form_container {
+      margin: rem(30px 0);
+
+      .woof_submit_search_form {
+        display: none !important;
+      }
+
+      .woof_reset_search_form {
+        background: none;
+        color: $black;
+        padding: 0;
+
+        &:hover {
+          background: none;
+          color: $color-link-hover;
+        }
+
+        @include breakpoint(colmdDown) {
+          border-radius: 0;
+          border: rem(1px) solid $black;
+          color: $color-link-hover;
+          padding: rem(20px 50px);
+
+          &:hover {
+            color: $black;
+          }
+        }
       }
     }
   }

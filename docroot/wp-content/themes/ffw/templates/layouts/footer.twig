@@ -31,6 +31,7 @@
     </div>
 
     <div class="back-to-top js-back-top">{{ __('Back to Top', 'ffw_theme') }}</div>
+    {{ fn('do_shortcode', '[custom_payment_popup]') }}
 
     {% if popup_banner_image and fn('is_front_page') %}
     <div class="popup-banner">      

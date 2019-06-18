@@ -134,6 +134,7 @@ class HT_CC {
         // $this->define( 'HTCC_VERSION', $this->version );
 
         $this->define( 'HTCC_WP_MIN_VERSION', '4.6' );
+        $this->define( 'HTCC_PHP_MIN_VERSION', '5.4' );
 
         $this->define( 'HTCC_PLUGIN_DIR', plugin_dir_path( HTCC_PLUGIN_FILE ) );
         $this->define( 'HTCC_PLUGIN_BASENAME', plugin_basename( HTCC_PLUGIN_FILE ) );
@@ -200,11 +201,13 @@ class HT_CC {
      * 
      * plugins_loaded  - Check Diff - uses when plugin updates.
      */
+
     private function hooks() {
 
-        register_activation_hook( __FILE__, array( 'HTCC_Register', 'activate' )  );
-        register_deactivation_hook( __FILE__, array( 'HTCC_Register', 'deactivate' )  );
-        register_uninstall_hook(__FILE__, array( 'HTCC_Register', 'uninstall' ) );
+        register_activation_hook( HTCC_PLUGIN_FILE, array( 'HTCC_Register', 'activate' )  );
+        register_deactivation_hook( HTCC_PLUGIN_FILE, array( 'HTCC_Register', 'deactivate' )  );
+        register_uninstall_hook(HTCC_PLUGIN_FILE, array( 'HTCC_Register', 'uninstall' ) );
+		    add_action( 'activated_plugin', array( 'HTCC_Register', 'activate_plugin' ) );
 
 
         // initilaze classes
@@ -219,6 +222,7 @@ class HT_CC {
         add_action('plugins_loaded', array( 'HTCC_Register', 'plugin_update' ) );
 
     }
+
 
     public static function view($name, array $args = [])
     {

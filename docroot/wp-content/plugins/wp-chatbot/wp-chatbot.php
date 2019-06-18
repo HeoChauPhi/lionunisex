@@ -3,7 +3,7 @@
 Plugin Name: WP Chatbot
 Plugin URI:  https://mobilemonkey.com/wp-chatbot/
 Description: Add Messenger to your website, Chatbot or live Chat using Facebook Messenger
-Version:     4.0.9
+Version:     4.1.2
 Author:      MobileMonkey
 Author URI:  https://mobilemonkey.com/wp-chatbot/
 License:     GPL2
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Version - define HTCC_VERSION
 if ( ! defined( 'HTCC_VERSION' ) ) {
-	define( 'HTCC_VERSION', '4.0.9' );
+	define( 'HTCC_VERSION', '4.1.2' );
 }
 
 

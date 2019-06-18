@@ -1,6 +1,6 @@
 .block-navigation {
-  @include poppins-semibold;
-  font-size: rem(15px);
+  @include muli-extra-bold;
+  font-size: rem(18px);
 
   .main-menu {
     ul {
@@ -80,6 +80,14 @@
   margin-bottom: rem(65px);
   text-transform: capitalize;
 
+  @include breakpoint(colmdDown) {
+    margin-bottom: rem(20px);
+
+    .breadcrumb-wrapper {
+      display: none !important;
+    }
+  }
+
   .breadcrumb {
     background: none;
     margin: 0;
@@ -96,6 +104,10 @@
     align-items: center;
     display: flex;
     justify-content: center;
+
+    @include breakpoint(colmdDown) {
+      display: none !important;
+    }
 
     .nav-seperate {
       margin: rem(0 10px);
@@ -122,6 +134,21 @@
       margin-left: rem(5px);
     }
   }
+
+  .back-top-shop-link {
+    > a {
+      align-items: center;
+      display: flex;
+
+      &:before {
+        background-image: url(../images/icons/chevron-left.svg);
+        content: "";
+        height: rem(16px);
+        margin-right: rem(5px);
+        width: rem(16px);
+      }
+    }
+  }
 }
 
 .menu-responsive {
@@ -132,7 +159,7 @@
   right: 0;
   top: 0;
   width: rem(50px);
-  z-index: 99;
+  z-index: 1;
 
   &-inner {
     @include transform(rotate(0deg));
@@ -196,6 +223,63 @@
 
     @include breakpoint(laptop) {
       padding-top: 0;
+    }
+  }
+}
+
+// Pagination
+ul.pager {
+  align-items: center;
+  display: flex;
+  font-weight: 700;
+  justify-content: center;
+
+  > li {
+    margin: rem(0 10px);
+
+    a {
+      border: none;
+      padding: 0;
+
+      &:hover {
+        background: none;
+      }
+    }
+
+    &.current {
+      font-weight: 400;
+    }
+
+    &.prev,
+    &.next {
+      text-indent: -999em;
+
+      a {
+        line-height: 0;
+        text-indent: -999em;
+
+        &:before {
+          content: "";
+          float: left;
+          height: rem(16px);
+          text-indent: 0;
+          width: rem(16px);
+        }
+      }
+    }
+
+    &.prev a {
+      &:before {
+        content: "";
+        background-image: url(../images/icons/chevron-left.svg);
+      }
+    }
+
+    &.next a {
+      &:before {
+        content: "";
+        background-image: url(../images/icons/chevron-right.svg);
+      }
     }
   }
 }

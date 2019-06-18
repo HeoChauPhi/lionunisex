@@ -1,11 +1,11 @@
 html {
-  @include poppins-extralight;
+  @include muli;
   font-size: $base-font-size;
   line-height: 1.5;
 }
 
 body {
-  @include poppins-extralight;
+  @include muli;
   color: $color-base;
   font-size: inherit;
   line-height: inherit;
@@ -19,28 +19,45 @@ a {
     cursor: pointer;
     text-decoration: none;
   }
+
+  &:focus,
+  &:active {
+    outline: none !important;
+    text-decoration: none;
+  }
 }
 
-img {
+img,
+video {
   height: auto;
   max-width: 100%;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  @include poppins-semibold;
+  @include muli-black;
 }
 
 select,
 input[type="text"],
+input[type="password"],
 input[type="email"],
 input[type="tel"],
+input[type="number"],
 textarea {
   background-color: $white;
-  border: rem(1px) solid $black;
-  color: $black;
+  border: rem(1px) solid $color-line;
+  color: $color-link-hover;
   font-size: rem(15px);
   max-width: 100%;
   padding: rem(4px 10px 5px 10px);
+
+  &:focus,
+  &:hover,
+  &:active,
+  &:-internal-autofill-selected {
+    background-color: $white !important;
+    border: rem(1px) solid rgba($black, .1);
+  }
 }
 
 select {

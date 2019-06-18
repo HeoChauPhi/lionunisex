@@ -28,8 +28,11 @@ if (!defined('ABSPATH')) exit;
                 </div>
         </div>
 		<?php
-		submit_button('Save Changes');
-		?>
+        if ($this->stepdis == "open"){
+		    submit_button('Save Changes');
+		}
+        ?>
+
     </div>
     </form>
 </div>

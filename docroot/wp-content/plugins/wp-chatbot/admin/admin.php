@@ -25,6 +25,10 @@ require_once('class-htcc-enqueue.php');
 $admin = new HTCC_Admin();
 add_action('admin_menu',  array( $admin, 'htcc_options_page') );
 add_action( 'admin_init', array( $admin, 'htcc_custom_settings' ) );
+add_action( 'admin_init', array( $admin, 'htcc_incomplete_setup' ) );
+add_action('admin_init', 'htcc_admin_notice');
+add_action('admin_notices', array( $admin, 'example_admin_notice'));
+
 
 
 
@@ -35,7 +39,25 @@ if ( 'true' == HTCC_PRO ) {
 }
 
 
+function htcc_admin_notice(){
 
+	if (isset($_GET['activate'])&&($_GET['activate'])) {
+		if( version_compare( get_bloginfo('version'), HTCC_WP_MIN_VERSION, '<') )  {
+			echo '<style>.update-nag, .updated, .error, .is-dismissible ,.settings{ display: none; }</style>';
+			echo '<style>.settings{ display: block; }</style><div class="updated error is-dismissible" style="display: block">
+					 <p>Please update to WordPress '.HTCC_WP_MIN_VERSION.' or higher in order to be compatible with this plugin</p>
+				 </div>';
+			deactivate_plugins(HTCC_PLUGIN_FILE);
+		}
+		if( version_compare(PHP_VERSION, HTCC_PHP_MIN_VERSION, '<') )  {
+			echo '<style>.update-nag, .updated, .error, .is-dismissible ,.settings{ display: none; }</style>';
+			echo '<style>.settings{ display: block; }</style><div class="updated error is-dismissible" style="display: block">
+					 <p>Please update to PHP '.HTCC_WP_MIN_VERSION.' or higher in order to be compatible with this plugin</p>
+				 </div>';
+			deactivate_plugins(HTCC_PLUGIN_FILE);
+		}
+	}
+}
 
 /**
  * ht_cc_service_content  -  by default there is no option .. 

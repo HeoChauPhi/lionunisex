@@ -52,14 +52,18 @@ function create_custom_mini_cart($attrs) {
 add_shortcode( 'custom_online_payment', 'create_custom_online_payment' );
 function create_custom_online_payment($attrs) {
   extract(shortcode_atts (array(
-    'title' => ''
+    'people_online' => '',
+    'title' => '',
+    'min'   => '',
+    'max'   => '',
+    'user_payment' => ''
   ), $attrs));
   ob_start();
     $context = Timber::get_context();
 
     // Range online count
     $context['online_title'] = $title;
-    $context['online_count'] = rand(1500,2000);
+    $context['online_count'] = rand($min, $max);
 
     $args = array(
       'post_type'       => 'product',
@@ -70,6 +74,29 @@ function create_custom_online_payment($attrs) {
     $context['products'] = $posts;
 
     Timber::render( array( 'woo/block-online-payment.twig'), $context );
+  $content = ob_get_contents();
+  ob_end_clean();
+  return $content;
+}
+
+// --> Custom online payment popup
+add_shortcode( 'custom_payment_popup', 'create_custom_payment_popup' );
+function create_custom_payment_popup($attrs) {
+  extract(shortcode_atts (array(
+    'title' => ''
+  ), $attrs));
+  ob_start();
+    $context = Timber::get_context();
+
+    $args = array(
+      'post_type'       => 'product',
+      'posts_per_page'  => -1,
+      'post_status'     => 'publish',
+    );
+    $posts = Timber::get_posts($args);
+    $context['products'] = $posts;
+
+    Timber::render( array( 'woo/block-payment-popup.twig'), $context );
   $content = ob_get_contents();
   ob_end_clean();
   return $content;

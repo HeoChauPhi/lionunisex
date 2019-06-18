@@ -3,7 +3,7 @@ Requires at least: 4.6
 Tested up to: 5.2
 Requires PHP: 5.6
 Contributors: larrykim, yankovski
-Stable tag: 4.0.9
+Stable tag: 4.1.2
 Tags: messenger, customer chat plugin, customer chat, facebook customer chat, facebook chat, chatbot, messenger chatbot, messenger customer chat, facebook live chat, live chat, messenger live chat, facebook, facebook messenger, mobilemonkey
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -17,6 +17,7 @@ WP-Chatbot adds a Facebook Messenger chat widget to your website. The Messenger 
 - Single inbox for all incoming messages
 - Zero-hassle integration with powerful chatbot features
 - 100% integration with your Facebook Business page and Facebook Messenger
+
 
 == Screenshots ==
 

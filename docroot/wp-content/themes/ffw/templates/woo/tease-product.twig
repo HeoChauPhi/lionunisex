@@ -10,7 +10,8 @@
     {% set post_thumb_url = fn('wc_placeholder_img_src') %}
     {% endif %}
 
-    <div class="product-image" style="background-image: url({{ post_thumb_url|resize(303, 303) }});">
+    <div class="product-image">
+
       {% if showthumb %}
         <div class="media-figure {% if not post.thumbnail %}placeholder{% endif %}">
           <a href="{{ post.link }}">
@@ -24,7 +25,12 @@
       {% endif %}
 
       {% do action('woocommerce_before_shop_loop_item_title') %}
-      <img src="{{ post_thumb_url|resize(303, 303) }}" alt>
+      <img src="{{ post_thumb_url|resize(600, 600) }}" alt>
+      {% if post._product_image_gallery and (post._product_image_gallery != '') %}
+        {% set gallery_ids = post._product_image_gallery|split(',') %}
+        <div class="product-image-hide" style="background-image: url({{ fn('wp_get_attachment_url', gallery_ids[1])|resize(600, 600) }});"></div>
+      {% endif %}
+      <div class="product-image-show" style="background-image: url({{ post_thumb_url|resize(600, 600) }});"></div>
       <div class="product-view-link">{{ pll_e('View product') }}</div>
     </div>
 

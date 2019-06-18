@@ -39,7 +39,7 @@
 
 %btn,
 .btn {
-  @include poppins-semibold;
+  @include muli-extra-bold;
   @include transition(all 0.3s ease);
   background-color: $black;
   border-radius: 0;

@@ -1,5 +1,7 @@
 .block-feature {
-  margin-bottom: rem(110px);
+  @include breakpoint(colmd) {
+    margin-bottom: rem(110px);
+  }
 
   .feature-content {
     @include breakpoint(colmd) {
@@ -9,6 +11,22 @@
 
   .feature-content-inner {
     padding: rem(115px) 17% 0 17%;
+
+    @include breakpoint(colmdDown) {
+      display: flex;
+      flex-direction: column;
+      padding: rem(40px 30px);
+
+      .feature-image-small {
+        order: 2;
+        margin-bottom: rem(30px);
+      }
+
+      .feature-link {
+        margin-bottom: 0;
+        order: 3;
+      }
+    }
   }
 
   .block-title {
@@ -23,11 +41,14 @@
     @include breakpoint(colmd) {
       padding: 0;
     }
+
+    @include breakpoint(colmdDown) {
+      float: none !important;
+      padding: 0;
+    }
   }
 
   .feature-banner-inner {
-    background: none;
-
     @include breakpoint(colmd) {
       background-position: center center;
       background-repeat: no-repeat;
@@ -37,6 +58,15 @@
       img {
         visibility: hidden;
         opacity: 0;
+      }
+    }
+
+    @include breakpoint(colmdDown) {
+      background-image: none !important;
+
+      img {
+        height: auto;
+        width: 100%;
       }
     }
   }

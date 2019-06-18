@@ -17,7 +17,6 @@ $logout_button = [
 ];
 
 HT_CC::view('ht-cc-admin-logout-button', $logout_button);
-
 ?>
 
 <h5>Connected Facebook page</h5>

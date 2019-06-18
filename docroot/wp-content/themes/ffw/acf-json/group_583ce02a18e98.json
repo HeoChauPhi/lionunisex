@@ -292,6 +292,73 @@
                     "min": "",
                     "max": ""
                 },
+                "layout_5d00da1a3a6dd": {
+                    "key": "layout_5d00da1a3a6dd",
+                    "name": "block_instagram",
+                    "label": "Block Instagram",
+                    "display": "row",
+                    "sub_fields": [
+                        {
+                            "key": "field_5d00da1a3a6de",
+                            "label": "Block Title",
+                            "name": "block_title",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        },
+                        {
+                            "key": "field_5d00da1a3a6e0",
+                            "label": "Instagram Access Tocken",
+                            "name": "instagram_access_tocken",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        },
+                        {
+                            "key": "field_5d00da1a3a6e1",
+                            "label": "Component Class",
+                            "name": "component_class",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
                 "layout_5b8372f2dae72": {
                     "key": "layout_5b8372f2dae72",
                     "name": "block_icon_content",
@@ -622,5 +689,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1559934184
+    "modified": 1560337151
 }

@@ -17,28 +17,48 @@ $mobile: 480px;
 
 // Set the proper directory for the Bootstrap Glyphicon font.
 $icon-font-path: '../bootstrap/assets/fonts/bootstrap/';
-$screen-md: 1200px !default;
+$screen-md: 1024px !default;
 $screen-lg: 1709px !default;
-$container-desktop: 1173px !default;
+$container-desktop: 1188px !default;
 $container-lg: $screen-lg !default;
 
 // Fonts.
-@mixin poppins-semibold {
-  font-family: 'Poppins', sans-serif;
+@mixin muli-black {
+  font-family: 'Muli', sans-serif;
+  font-weight: 900;
+}
+
+@mixin muli-extra-bold {
+  font-family: 'Muli', sans-serif;
+  font-weight: 800;
+}
+
+@mixin muli-bold {
+  font-family: 'Muli', sans-serif;
+  font-weight: 700;
+}
+
+@mixin muli-semibold {
+  font-family: 'Muli', sans-serif;
   font-weight: 600;
 }
 
-@mixin poppins {
-  font-family: 'Poppins', sans-serif;
+@mixin muli {
+  font-family: 'Muli', sans-serif;
   font-weight: 400;
 }
 
-@mixin poppins-extralight {
-  font-family: 'Poppins', sans-serif;
+@mixin muli-light {
+  font-family: 'Muli', sans-serif;
+  font-weight: 300;
+}
+
+@mixin muli-extralight {
+  font-family: 'Muli', sans-serif;
   font-weight: 200;
 }
 
-$base-font-size: 14px;
+$base-font-size: 16px;
 
 // Color.
 $orange: #D47B60;

@@ -50,12 +50,21 @@ class HTCC_db {
          * greeting_dialog_delay  -  number in seconds with in quotes
          * 
          * 
-         *  sdk_load_time - set time when to load sdk after page load..
+
          * 
          * checkbox
          *  is_sdk_after_page_load - if checked sdk will load after page load
          *  is_sdk_4_seconds  - if both checked - after page loaded, load sdk after 4 seconds
          */
+		$defpage_value =array (
+			'mobilemonkey_company_id' =>'',
+			'mobilemonkey_active_page_remote_id' =>'',
+			'mobilemonkey_active_page_id' =>'',
+			'mobilemonkey_active_bot' =>'',
+			'mobilemonkey_token' =>'',
+			'htcc_fb_js_src' =>''
+		);
+
         $values = array(
             // 'enable' => '1', Deprecated
             'fb_page_id' => '',
@@ -70,17 +79,17 @@ class HTCC_db {
             'list_hideon_pages' => '',
             'list_hideon_cat' => '',
             'shortcode' => 'chatbot',
-
-            'greeting_dialog_display' => '',
-            'greeting_dialog_delay' => '',
-            'ref' => '',
-
-            'sdk_load_time' => '4',
+			'greeting_dialog_display' => '',
+			'greeting_dialog_delay' => '',
+			'ref' => '',
         );
 
         $db_values = get_option( 'htcc_options', array() );
         $update_values = array_merge($values, $db_values);
         update_option('htcc_options', $update_values);
+		foreach ($defpage_value as $key=>$value){
+			update_option($key, $value);
+		}
     }
 
 

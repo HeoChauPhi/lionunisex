@@ -1,0 +1,48 @@
+.woocommerce-notices-wrapper,
+.woocommerce-form-coupon-toggle,
+.woocommerce-NoticeGroup {
+  bottom: 0;
+  left: 0;
+  margin: 0 auto;
+  max-width: 100%;
+  position: fixed;
+  right: 0;
+  width: 40%;
+  z-index: 999;
+
+  .woocommerce-error,
+  .woocommerce-info,
+  .woocommerce-message {
+    @include box-shadow(rem(0 0 5px 1px) $color-line);
+    margin-bottom: 0 !important;
+  }
+
+  .remove-wc-notice {
+    align-items: center;
+    bottom: 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: rem(40px);
+    z-index: 9;
+  }
+
+  &.wc-notice-hide {
+    bottom: auto;
+    top: 100%;
+
+    .remove-wc-notice {
+      bottom: 100%;
+      height: rem(10px);
+      left: 0;
+      right: 0;
+      text-align: center;
+      top: auto;
+      transform: rotate(180deg);
+      width: auto;
+    }
+  }
+}

@@ -22,7 +22,7 @@
 
   .post-tags {
     a {
-      @include poppins-semibold;
+      @include muli-extra-bold;
       font-size: rem(20px);
     }
   }
@@ -58,6 +58,10 @@
 
   .image-gallery-item {
     margin-bottom: rem(30px);
+
+    &.item-show-more {
+      display: none;
+    }
 
     &-inner {
       background-color: $black;
@@ -108,14 +112,88 @@
     text-align: center;
   }
 
-  .show-more-link {
+  .show-more-link,
+  .instagram-show-more-link {
     background-color: $white;
     border: rem(2px) solid $black;
+    border-bottom-color: transparent;
     color: $black;
 
     &:hover {
       background-color: $black;
       color: $white;
     }
+  }
+}
+
+.instagram-wrapper {
+  .instagram-header {
+    align-items: center;
+    border-bottom: rem(1px) solid $color-line;
+    display: flex;
+    margin-bottom: rem(25px);
+    padding-bottom: rem(25px);
+    position: relative;
+  }
+
+  .instagram-picture {
+    border-radius: rem(500px);
+    height: rem(33px);
+    margin-right: rem(10px);
+    overflow: hidden;
+    width: rem(33px);
+
+    img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .instagram-username {
+    font-size: rem(16px);
+    margin: rem(0 0 5px 0);
+  }
+
+  .instagram-link {
+    position: absolute;
+    right: 0;
+  }
+
+  .instagram-active {
+    margin-bottom: rem(30px);
+  }
+
+  .instagram-comments {
+    .comment-username {
+      font-weight: 900;
+      margin-right: rem(10px);
+    }
+  }
+}
+
+.instagram-icons {
+  font-size: rem(16px);
+
+  .instagram-like {
+    margin-right: rem(10px);
+  }
+
+  .instagram-count {
+    font-weight: 900;
+  }
+}
+
+.fancybox-slide--html {
+  .instagram-wrapper {
+    @include transform(translateY(-50%));
+    margin: 0 auto;
+    max-width: 80%;
+    position: relative;
+    top: 50%;
+  }
+
+  .instagram-comments {
+    max-height: rem(400px);
+    overflow-y: auto;
   }
 }

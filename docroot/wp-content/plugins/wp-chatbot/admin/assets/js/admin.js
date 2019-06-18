@@ -18,6 +18,14 @@ var cc_g_position = document.querySelectorAll('.cc_g_position');
 
 var cc_i_position_mobile = document.querySelectorAll('.cc_i_position-mobile');
 var cc_g_position_mobile = document.querySelectorAll('.cc_g_position-mobile');
+$("#fb_greeting_dialog_delay").on("keypress", function( event ) {
+  var key = event.charCode ? event.charCode : event.keyCode;
+  if (key > 31 && (key < 48 || key > 57))
+  {
+    event.preventDefault();
+    return false;
+  }
+});
 
 //  incase display-block is added remove it ..
 var cc_i_remove = function cc_i_remove() {

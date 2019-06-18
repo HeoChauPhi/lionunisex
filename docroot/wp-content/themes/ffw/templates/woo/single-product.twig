@@ -1,7 +1,7 @@
 {% extends "layout.twig" %}
 
 {% block content %}
-  <div class="page-container-inner animation-element" data-animate="fadeIn">
+  <div class="page-container-inner">
 
   {% include 'breadcrumb.twig' %}
 
@@ -9,6 +9,12 @@
 
   <article itemscope itemtype="http://schema.org/Product" class="single-product-details {{ post.class }}">
     <div class="row">
+      <div class="col-md-12 hidden-on-desktop product-header-mobile">
+        <h1 class="product_title entry-title">{{ post.title }}</h1>
+        <div class="product-sku"><label>{{ pll_e('sku') }}:</label> {{ fn('wc_get_product').get_sku }}</div>
+        <div class="price">{{ fn('wc_get_product').get_price_html }}</div>
+      </div>
+
       <div class="single-product-image entry-images col-md-7">
         {% do action('woocommerce_before_single_product_summary') %}
         <div class="product-description">{{ fn('wc_get_product').get_short_description }}</div>

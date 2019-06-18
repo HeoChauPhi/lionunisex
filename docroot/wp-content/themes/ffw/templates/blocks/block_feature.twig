@@ -1,5 +1,11 @@
 <div class="block-feature {{ component_class }}">
   <div class="row">
+    <div class="col-md-6 pull-right feature-banner">
+      <div class="feature-banner-inner" style="background-image: url({{ feature_image_large.url }});" title="{{ feature_image_large.name }}">
+        <img src="{{ feature_image_large.url }}" title="{{ feature_image_large.name }}" alt>
+      </div>
+    </div>
+
     <div class="col-md-6 feature-content">
       <div class="feature-content-inner">
         <h2 class="block-title">{{ block_title }}</h2>
@@ -9,12 +15,6 @@
         <div class="feature-image-small">
           <img src="{{ feature_image_small.url }}" title="{{ feature_image_small.name }}" alt>
         </div>
-      </div>
-    </div>
-
-    <div class="col-md-6 feature-banner">
-      <div class="feature-banner-inner" style="background-image: url({{ feature_image_large.url }});" title="{{ feature_image_large.name }}">
-        <img src="{{ feature_image_large.url }}" title="{{ feature_image_large.name }}" alt>
       </div>
     </div>
   </div>

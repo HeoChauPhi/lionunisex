@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-05-30 01:44:05+0000\n"
+"PO-Revision-Date: 2019-06-10 02:29:26+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -56,6 +56,10 @@ msgstr "Đã tạo tài khoản thành công và mật khẩu đã được gử
 #: includes/class-wc-ajax.php:1541
 msgid "Stock: %d"
 msgstr "Kho: %d"
+
+#: includes/class-wc-ajax.php:1232
+msgid "Invalid items"
+msgstr "Món hàng không tồn tại"
 
 #: includes/admin/views/html-notice-update.php:36
 msgid "Learn more about updates"
@@ -129,6 +133,11 @@ msgstr "Tra cứu đơn hàng "
 #: includes/admin/settings/class-wc-settings-advanced.php:44
 msgid "WooCommerce.com"
 msgstr "WooCommerce.com"
+
+#: includes/admin/marketplace-suggestions/class-wc-marketplace-suggestions.php:49
+msgctxt "Marketplace suggestions"
+msgid "Get more options"
+msgstr "Lựa chọn khác"
 
 #: includes/admin/marketplace-suggestions/templates/html-product-data-extensions.php:26
 msgid "Browse the Marketplace"
@@ -277,6 +286,10 @@ msgstr "Đây là thông báo đơn hàng #%1$s của %2$s đã bị hủy:"
 msgid "We have finished processing your order."
 msgstr "Chúng tôi đã xử lý xong đơn hàng của bạn."
 
+#: templates/loop/orderby.php:24
+msgid "Shop order"
+msgstr "Đơn hàng của cửa hàng"
+
 #: templates/cart/cart-shipping.php:54
 msgid "Shipping options will be updated during checkout."
 msgstr "Tùy chọn giao hàng sẽ được cập nhật trong quá trình thanh toán."
@@ -286,11 +299,20 @@ msgstr "Tùy chọn giao hàng sẽ được cập nhật trong quá trình than
 msgid "Shipping to %s."
 msgstr "Vận chuyển đến %s."
 
+#. translators: %s: error message
+#: includes/wc-rest-functions.php:114
+msgid "Invalid image: %s"
+msgstr "Ảnh không hợp lệ: %s"
+
 #. translators: %s: Order number
 #: templates/emails/customer-processing-order.php:30
 #: templates/emails/plain/customer-processing-order.php:27
 msgid "Just to let you know &mdash; we've received your order #%s, and it is now being processed:"
 msgstr "Đơn hàng #%s đã được đặt thành công và chúng tôi đang xử lý"
+
+#: includes/api/v1/class-wc-rest-webhooks-controller.php:411
+msgid "Webhook status must be valid."
+msgstr "Trạng thái Webhook không hợp lệ."
 
 #: includes/admin/settings/class-wc-settings-accounts.php:34
 msgid "account erasure request"
@@ -400,10 +422,20 @@ msgstr "Đơn hàng của bạn trên %s đã được hoàn tiền một phần
 msgid "Thanks!"
 msgstr "Cám ơn!"
 
+#: templates/emails/customer-on-hold-order.php:54
+#: templates/emails/plain/customer-on-hold-order.php:51
+msgid "We look forward to fulfilling your order soon."
+msgstr "Chúng tôi đang tiến hành hoàn thiện đơn đặt hàng của bạn"
+
 #: templates/emails/customer-on-hold-order.php:29
 #: templates/emails/plain/customer-on-hold-order.php:26
 msgid "Thanks for your order. It’s on-hold until we confirm that payment has been received. In the meantime, here’s a reminder of what you ordered:"
 msgstr "Cảm ơn đã đặt hàng. Đơn hàng sẽ bị tạm giữ cho đến khi chúng tôi xác nhận thanh toán hoàn thành. Trong thời gian chờ đợi, đây là lời nhắc về những gì bạn đã đặt hàng:"
+
+#: templates/emails/customer-note.php:33
+#: templates/emails/plain/customer-note.php:35
+msgid "As a reminder, here are your order details:"
+msgstr "Vui lòng kiểm tra lại nội dung chi tiết đơn hàng của bạn :"
 
 #: templates/emails/customer-note.php:29
 #: templates/emails/plain/customer-note.php:27
@@ -476,6 +508,11 @@ msgstr "Cảm ơn đã đọc."
 #: templates/cart/cart-shipping.php:67
 msgid "Enter a different address"
 msgstr "Điền một địa chỉ khác"
+
+#. Translators: $s shipping destination.
+#: templates/cart/cart-shipping.php:66
+msgid "No shipping options were found for %s."
+msgstr "Không có lựa chọn vận chuyển nào khả dụng cho %s."
 
 #: templates/cart/cart-shipping.php:61
 msgid "Enter your address to view shipping options."
@@ -897,6 +934,10 @@ msgstr "Đơn hàng đã hủy: #{order_number}"
 msgid "WooCommerce Customer Orders"
 msgstr "WooCommerce Customer Orders"
 
+#: includes/class-wc-privacy.php:42 includes/class-wc-privacy.php:48
+msgid "WooCommerce Customer Data"
+msgstr "Tải dữ liệu của khách hàng "
+
 #: includes/api/class-wc-rest-reports-controller.php:67
 msgid "Attributes totals."
 msgstr "Tổng số các thuộc tính."
@@ -929,6 +970,14 @@ msgstr "Tổng số các sản phẩm."
 msgid "Orders totals."
 msgstr "Tổng số các đơn hàng."
 
+#: includes/api/class-wc-rest-report-products-totals-controller.php:123
+msgid "Amount of products."
+msgstr "Số lượng sản phẩm"
+
+#: includes/api/class-wc-rest-report-products-totals-controller.php:117
+msgid "Product type name."
+msgstr "Tên loại sản phẩm"
+
 #: includes/api/class-wc-rest-report-orders-totals-controller.php:117
 msgid "Amount of orders."
 msgstr "Số lượng đơn hàng."
@@ -936,6 +985,18 @@ msgstr "Số lượng đơn hàng."
 #: includes/api/class-wc-rest-report-orders-totals-controller.php:111
 msgid "Order status name."
 msgstr "Tên trạng thái đơn hàng."
+
+#: includes/api/class-wc-rest-report-customers-totals-controller.php:144
+msgid "Amount of customers."
+msgstr "Số lượng khách hàng"
+
+#: includes/api/class-wc-rest-report-customers-totals-controller.php:138
+msgid "Customer type name."
+msgstr "Tên loại khách hàng"
+
+#: includes/api/class-wc-rest-report-customers-totals-controller.php:79
+msgid "Non-paying customer"
+msgstr "Khách hàng chưa thanh toán"
 
 #: includes/api/class-wc-rest-report-customers-totals-controller.php:74
 msgid "Paying customer"
@@ -1110,6 +1171,11 @@ msgstr "Icon ShipStation"
 #: includes/admin/class-wc-admin-setup-wizard.php:995
 msgid "WooCommerce Services icon"
 msgstr "Biểu tượng WooCommerce Services"
+
+#. translators: %s: country name including the 'the' prefix if needed
+#: includes/admin/class-wc-admin-setup-wizard.php:906
+msgid "We've created two Shipping Zones - for %s and for the rest of the world. Below you can set Flat Rate shipping costs for these Zones or offer Free Shipping."
+msgstr "Chúng tôi đã tạo 2 Vùng Vận Chuyển - cho %s và cho vùng còn lại trên thế giới . Dưới đây bạn của thể cài đặt chi phí vận chuyển Flat Rate cho những vùng này hoặc cung cấp hình thức Giao Hàng Miễn phí "
 
 #: includes/admin/class-wc-admin-setup-wizard.php:882
 msgid "Millimeters"
@@ -1487,16 +1553,76 @@ msgstr "Đã xóa thông tin cá nhân từ đơn hàng %s."
 msgid "Removed customer \"%s\""
 msgstr "Đã xóa khách hàng \"%s\""
 
+#: includes/class-wc-privacy-exporters.php:198
+#: includes/class-wc-privacy-erasers.php:63
+msgid "Shipping Country"
+msgstr "Vận Chuyển Đến Quốc Gia"
+
+#: includes/class-wc-privacy-exporters.php:197
+#: includes/class-wc-privacy-erasers.php:62
+msgid "Shipping State"
+msgstr "Vận Chuyển Đến Bang"
+
+#: includes/class-wc-privacy-exporters.php:196
+#: includes/class-wc-privacy-erasers.php:61
+msgid "Shipping Postal/Zip Code"
+msgstr "Vận Chuyển Đến Nơi Có Mã Bưu Chính / Mã Zip"
+
+#: includes/class-wc-privacy-exporters.php:195
+#: includes/class-wc-privacy-erasers.php:60
+msgid "Shipping City"
+msgstr "Vận Chuyển Đến Thành Phố"
+
 #: includes/class-wc-privacy-exporters.php:192
 #: includes/class-wc-privacy-erasers.php:57
 msgid "Shipping Company"
 msgstr "Công ty vận chuyển"
+
+#: includes/class-wc-privacy-exporters.php:191
+#: includes/class-wc-privacy-erasers.php:56
+msgid "Shipping Last Name"
+msgstr "Họ Người Nhận Hàng"
+
+#: includes/class-wc-privacy-exporters.php:190
+#: includes/class-wc-privacy-erasers.php:55
+msgid "Shipping First Name"
+msgstr "Tên Người Nhận Hàng"
 
 #: includes/class-wc-privacy-exporters.php:188
 #: includes/class-wc-privacy-exporters.php:248
 #: includes/class-wc-privacy-erasers.php:53
 msgid "Phone Number"
 msgstr "Số điện thoại"
+
+#: includes/class-wc-privacy-exporters.php:187
+#: includes/class-wc-privacy-erasers.php:52
+msgid "Billing Country"
+msgstr "Quốc Gia Của Người Thanh Toán"
+
+#: includes/class-wc-privacy-exporters.php:186
+#: includes/class-wc-privacy-erasers.php:51
+msgid "Billing State"
+msgstr "Bang Của Người Thanh Toán"
+
+#: includes/class-wc-privacy-exporters.php:185
+#: includes/class-wc-privacy-erasers.php:50
+msgid "Billing Postal/Zip Code"
+msgstr "Mã Bưu Điện/Mã Zip Của Người Thanh Toán"
+
+#: includes/class-wc-privacy-exporters.php:184
+#: includes/class-wc-privacy-erasers.php:49
+msgid "Billing City"
+msgstr "Thành Phố Của Người Thanh Toán"
+
+#: includes/class-wc-privacy-exporters.php:181
+#: includes/class-wc-privacy-erasers.php:46
+msgid "Billing Company"
+msgstr "Công Ty Người Thanh Toán"
+
+#: includes/class-wc-privacy-exporters.php:180
+#: includes/class-wc-privacy-erasers.php:45
+msgid "Billing Last Name"
+msgstr "Họ Người Thanh Toán"
 
 #: includes/class-wc-order.php:239
 msgid "Error saving order."
@@ -2815,6 +2941,11 @@ msgstr "Sản phẩm đã có khớp ID hoặc mã sản phẩm sẽ được c�
 msgid "<a href=\"%s\">Connect your store</a> to WooCommerce.com to receive extensions updates and support."
 msgstr "<a href=\"%s\">Kết nối cửa hàng</a> tới WooCommerce.com để nhận cập nhật các ứng dụng bổ sung và hỗ trợ."
 
+#. translators: 1: subscriptions docs 2: subscriptions docs
+#: includes/admin/helper/class-wc-helper.php:320
+msgid "To receive updates and support for this extension, you need to <strong>purchase</strong> a new subscription or consolidate your extensions to one connected account by <strong><a href=\"%1$s\" title=\"Sharing Docs\">sharing</a> or <a href=\"%2$s\" title=\"Transferring Docs\">transferring</a></strong> this extension to this connected account."
+msgstr "Để nhận cập nhật và hỗ trợ cho extension này, bạn cần <strong>mua</strong> một gói dịch vụ mới hoặc hợp nhất các extensions của mình vào một tài khoản được kết nối bởi <strong><a href=\"%1$s\" title=\"Tài liệu về chia sẻ tài khoản\">chia sẻ</a> hoặc <a href=\"%2$s\" title=\"Tài liệu về chuyển quyền extension\">chuyển quyền</a></strong> extension này tới một tài khoản được kết nối."
+
 #: includes/admin/helper/class-wc-helper-compat.php:159
 msgid "The WooCommerce Helper plugin is no longer needed. <a href=\"%s\">Manage subscriptions</a> from the extensions tab instead."
 msgstr "Bạn không cần tới plugin WooCommerce Helper nữa. Thay vào đó, hãy <a href=\"%s\">Quản lý các gói dịch vụ</a> từ tab extension."
@@ -3499,6 +3630,12 @@ msgstr "Chưa kiểm tra với phiên bản hiện tại của WooCommerce"
 #: includes/admin/views/html-admin-page-status-report.php:503
 msgid "Post Type Counts"
 msgstr "Post Type Counts"
+
+#. Translators: %1$f: Table size, %2$f: Index size.
+#: includes/admin/views/html-admin-page-status-report.php:479
+#: includes/admin/views/html-admin-page-status-report.php:493
+msgid "Data: %1$.2fMB + Index: %2$.2fMB"
+msgstr "Dữ liệu: %1$.2fMB + Lập chỉ mục: %2$.2fMB"
 
 #: includes/admin/views/html-admin-page-status-report.php:464
 msgid "Database Index Size"
@@ -4374,6 +4511,10 @@ msgstr "Ẩn tùy chọn nâng cao"
 #: includes/admin/importers/views/html-product-csv-import-form.php:74
 msgid "CSV Delimiter"
 msgstr "Dấu phân cách CSV"
+
+#: includes/admin/importers/views/html-product-csv-import-form.php:65
+msgid "Alternatively, enter the path to a CSV file on your server:"
+msgstr "Cách khác, là nhập đường dẫn đến tệp CSV trên máy chủ của bạn:"
 
 #: includes/admin/importers/views/html-product-csv-import-form.php:56
 msgid "Update existing products"
@@ -6684,6 +6825,11 @@ msgstr "Kết nối bảo mật (HTTPS)"
 #: includes/admin/views/html-admin-page-status-report.php:523
 msgid "Security"
 msgstr "Bảo mật"
+
+#. Translators: %1$s: Library url, %2$s: install path.
+#: includes/admin/views/html-admin-page-status-report.php:444
+msgid "The MaxMind GeoIP Database does not exist - Geolocation will not function. You can download and install it manually from %1$s to the path: %2$s. Scroll down to \"Downloads\" and download the \"MaxMind DB binary, gzipped\" file next to \"GeoLite2 Country\". Please remember to uncompress GeoLite2-Country_xxxxxxxx.tar.gz and upload the GeoLite2-Country.mmdb file only."
+msgstr "Cơ sở dữ liệu GeoIP MaxMind không tồn tại - Geolocation sẽ không hoạt động. Bạn có thể tải xuống và cài đặt nó bằng tay từ %1$s đến đường dẫn: %2$s. Cuộn xuống mục \"Tải xuống\" và tải xuống tệp \"MaxMind DB binary, gzipped\" bên cạnh \"GeoLite2 Country\". Vui lòng giải nén GeoLite2-Country_xxxxxxxx.tar.gz và chỉ tải lên tệp GeoLite2-Country.mmdb."
 
 #. Translators: %1$s: Database prefix, %2$s: Docs link.
 #: includes/admin/views/html-admin-page-status-report.php:424
@@ -12472,6 +12618,11 @@ msgstr "Cảm ơn bạn. Đơn hàng của bạn đã được nhận."
 msgid "Update totals"
 msgstr "Cập nhật tổng"
 
+#. translators: $1 and $2 opening and closing emphasis tags respectively
+#: templates/checkout/payment.php:42
+msgid "Since your browser does not support JavaScript, or it is disabled, please ensure you click the %1$sUpdate Totals%2$s button before placing your order. You may be charged more than the amount stated above if you fail to do so."
+msgstr "Trình duyệt của bạn không hỗ trợ JavaScript, hoặc nó bị vô hiệu hóa, hãy đảm bảo bạn nhấp vào %1$sCập nhật giỏ hàng%2$s trước khi bạn thanh toán. Bạn có thể phải trả nhiều hơn số tiền đã nói ở trên, nếu bạn không làm như vậy."
+
 #: templates/checkout/payment.php:33
 msgid "Sorry, it seems that there are no available payment methods for your state. Please contact us if you require assistance or wish to make alternate arrangements."
 msgstr "Xin lỗi, có vẻ như không có phương thức thanh toán nào phù hợp với khu vực bang hiện tại của bạn. Vui lòng liên hệ với chúng tôi nếu bạn cần hỗ trợ hoặc muốn sắp xếp phương án thay thế."
@@ -12589,11 +12740,11 @@ msgstr "Số lượng"
 #: templates/cart/cart-totals.php:32 templates/cart/cart-totals.php:33
 #: templates/cart/mini-cart.php:70 templates/checkout/review-order.php:58
 msgid "Subtotal"
-msgstr "Tổng phụ"
+msgstr "Tạm tính"
 
 #: templates/cart/cart-totals.php:27
 msgid "Cart totals"
-msgstr "Tổng số lượng"
+msgstr "Cộng giỏ hàng"
 
 #. translators: %s: field name
 #: includes/class-wc-checkout.php:714
@@ -19034,6 +19185,10 @@ msgstr "Kiểu hiển thị"
 msgid "Delete WooCommerce tax rates"
 msgstr "Xóa toàn bộ các mức thuế của WooCommerce"
 
+#: includes/admin/views/html-notice-wc-admin.php:32
+msgid "Install WooCommerce Admin"
+msgstr "Cài đặt các trang WooCommerce"
+
 #: includes/api/v2/class-wc-rest-system-status-tools-v2-controller.php:159
 msgid "This tool will reset the admin, customer and shop_manager roles to default. Use this if your users cannot access all of the WooCommerce admin pages."
 msgstr "Công cụ này sẽ thiết lập lại các vai trò của admin, khách hàng và shop_manager về mặc định. Sử dụng công cụ này nếu người dùng của bạn không thể truy cập vào tất cả các trang quản trị WooCommerce."
@@ -20969,7 +21124,7 @@ msgstr "Đọc tiếp"
 #: includes/class-wc-product-simple.php:53
 #: includes/abstracts/abstract-wc-product.php:1802
 msgid "Add to cart"
-msgstr "Thêm vào giỏ"
+msgstr "Mua hàng"
 
 #: includes/gateways/class-wc-payment-gateway-cc.php:62
 msgid "CVC"

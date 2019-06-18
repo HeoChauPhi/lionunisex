@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin  - enqueue sytle, scripts
+ * Admin  - enqueue sytle, script
  */
 
 
@@ -12,11 +12,11 @@ class HTCC_Enqueue {
 
 
     function enqueue( $hook ) {
-        
+
         // echo $hook;
         if( 'toplevel_page_wp-chatbot' == $hook || 'wp-chatbot_page_wp-chatbot-features' == $hook || 'wp-chatbot_page_wp-chatbot-actions' == $hook || 'wp-chatbot_page_wp-chatbot-pro-woo' == $hook ) {
-            
-            
+
+
             // color picker..
             // wp_enqueue_style( 'htcc_admin_color_picker_styles', plugins_url( 'admin/assets/color/colors.css', HTCC_PLUGIN_FILE ), '', HTCC_VERSION );
             // wp_enqueue_script( 'htcc_admin_color_picker_js', plugins_url( 'admin/assets/color/colors.js', HTCC_PLUGIN_FILE ), array( 'jquery', 'wp-color-picker', 'htcc_admin_md_js' ), HTCC_VERSION );
@@ -31,11 +31,11 @@ class HTCC_Enqueue {
 
             wp_enqueue_style( 'htcc_admin_styles', plugins_url( 'admin/assets/css/admin-styles.css', HTCC_PLUGIN_FILE ), '', HTCC_VERSION );
             wp_enqueue_style( 'htcc_admin_md_styles', plugins_url( 'admin/assets/css/materialize.min.css', HTCC_PLUGIN_FILE ), '', HTCC_VERSION );
-            
+
             wp_enqueue_style( 'wp-color-picker' );
             wp_enqueue_script( 'wp-color-picker');
 
-            
+
             wp_enqueue_script( 'htcc_admin_js', plugins_url( 'admin/assets/js/admin.js', HTCC_PLUGIN_FILE ), array( 'wp-color-picker', 'jquery' ), HTCC_VERSION, true );
             wp_enqueue_script( 'htcc_admin_md_js', plugins_url( 'admin/assets/js/materialize.min.js', HTCC_PLUGIN_FILE ), array('wp-color-picker',  'jquery' ), HTCC_VERSION, true );
 
