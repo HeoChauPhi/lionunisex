@@ -74,7 +74,7 @@ function ffw_move_comment_form_below( $fields ) {
 add_action( 'pre_get_posts',  'ffw_set_posts_per_page'  );
 function ffw_set_posts_per_page( $query ) {
   global $wp_the_query;
-  if ( (!is_admin()) && ( $query === $wp_the_query ) && ( $query->is_archive() ) && (is_woocommerce()) ) {
+  if ( (!is_admin()) && ( $query === $wp_the_query ) && ( $query->is_archive() ) && (!is_woocommerce()) ) {
     $query->set( 'posts_per_page', 1 );
   }
   return $query;

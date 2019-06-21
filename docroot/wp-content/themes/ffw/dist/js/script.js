@@ -303,7 +303,6 @@
       
       $this.find('option').each(function() {
         if ( $(this).hasClass('attached') ) {
-        console.log($(this).val());
           $list.append('<input id="' + $name + '-' + $(this).val() + '" class="color-attribute" type="radio" name="' + $name + '" value="' + $(this).val() + '" data-attribute_name="' + $attr_name + '" data-text="' + $(this).text() + '" /><label class="label-color-attribute" for="' + $name + '-' + $(this).val() + '" style="background-color: ' + $(this).val() + ';">' + $(this).text() + '</label>');
         }
       });
@@ -323,6 +322,14 @@
   // Cart and Checkout page
   function showCoupon() {
     $(this).parent('.coupon').toggleClass('coupon-show-form');
+  }
+
+  function cartPageAutoUpdate() {
+    $('.woocommerce-cart-form .product-quantity input.qty').on('input', function() {
+      setTimeout(function() {
+        $('.woocommerce-cart-form .shop_table button[name="update_cart"]').trigger('click');
+      }, 100);
+    });
   }
 
   /* ==================================================================
@@ -401,6 +408,9 @@
 
     // Cart and Checkout page
     $('.woocommerce table.shop_table.cart .coupon label').on('click', showCoupon);
+
+    // Cart page auto update
+    cartPageAutoUpdate();
   });
 
   $(window).scroll(function() {
@@ -430,6 +440,8 @@
     // Call to function
     $('.cart-form-title').clone().removeClass('hidden').appendTo('.woocommerce table.shop_table th.product-thumbnail');
     wcNoticeRemove();
+    // Cart page auto update
+    cartPageAutoUpdate();
   });
 
 })(jQuery);

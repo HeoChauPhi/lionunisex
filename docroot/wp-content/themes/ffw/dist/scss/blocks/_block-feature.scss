@@ -5,12 +5,15 @@
 
   .feature-content {
     @include breakpoint(colmd) {
+      align-items: center;
+      display: flex;
+      justify-content: center;
       margin-bottom: rem(20px);
     }
   }
 
   .feature-content-inner {
-    padding: rem(115px) 17% 0 17%;
+    padding: rem(115px) 0 0;
 
     @include breakpoint(colmdDown) {
       display: flex;

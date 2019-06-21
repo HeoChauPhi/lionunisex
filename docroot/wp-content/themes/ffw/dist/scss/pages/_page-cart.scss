@@ -82,6 +82,11 @@
       }
 
       tbody {
+        tr {
+          @include transform(scale(1));
+          position: relative;
+        }
+
         td {
           padding: rem(45px 15px);
           vertical-align: top;
@@ -222,6 +227,7 @@
       @extend %btn;
       clear: both;
       color: $white !important;
+      display: none !important;
       font-weight: 400;
       margin: rem(26px 0 10px 0);
       padding: rem(8px 10px 9px) !important;

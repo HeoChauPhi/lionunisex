@@ -1,7 +1,6 @@
 .page-wrapper {
   background-color: $bg-body;
   position: relative;
-  z-index: 99;
 }
 
 .container {
@@ -39,9 +38,18 @@ main {
           padding-top: rem(40px);
 
           @include breakpoint(desktop) {
+            align-items: center;
+            display: flex;
+            justify-content: center;
             padding-left: 4%;
             padding-right: 4%;
             padding-top: rem(150px);
+          }
+
+          @include breakpoint(sidewide) {
+            .main-content-inner {
+              max-width: 70%;
+            }
           }
 
           @include breakpoint(colmdDown) {
@@ -140,7 +148,7 @@ body.woocommerce-page {
     padding: rem(40px 15px 35px 15px);
 
     @include breakpoint(desktop) {
-      padding: rem(120px 15px 65px 15px);
+      padding: rem(80px 15px 65px 15px);
     }
 
     .main-content[class*='col-md-'] {

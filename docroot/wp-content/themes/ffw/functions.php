@@ -208,6 +208,7 @@ add_action('acf/init', function() {
   acf_update_setting('google_api_key', $google_api_key);
 });
 
+// Woocommerce custom hooks
 remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20 );
 remove_action('woocommerce_before_main_content', 'woocommerce_breadcrumb', 20, 0);
 
@@ -220,13 +221,14 @@ function timber_set_product( $post ) {
 }
 
 // define the woocommerce_layered_nav_term_html callback 
-function filter_woocommerce_layered_nav_term_html( $term_html, $term, $link, $count ) {
+function ffw_theme_filter_woocommerce_layered_nav_term_html( $term_html, $term, $link, $count ) {
   $term_html .= '<span class="term-slug" data-value="' . $term->slug . '" style="background-color: ' . $term->slug . ';"></span>';
   return $term_html; 
 };
-add_filter( 'woocommerce_layered_nav_term_html', 'filter_woocommerce_layered_nav_term_html', 10, 4 );
+add_filter( 'woocommerce_layered_nav_term_html', 'ffw_theme_filter_woocommerce_layered_nav_term_html', 10, 4 );
 
-function ffw_add_to_cart_message() {
+// Change cart message markup
+function ffw_theme_add_to_cart_message() {
   if ( get_option( 'woocommerce_cart_redirect_after_add' ) == 'yes' ) :
     $message = sprintf( '<span class="success-added-products">%s</span> <a href="%s" class="your-style">%s</a>', __( 'Successfully added to cart.', 'woocommerce' ), esc_url( get_permalink( woocommerce_get_page_id( 'shop' ) ) ), __( 'Continue Shopping', 'woocommerce' ) );
   else :
@@ -234,4 +236,17 @@ function ffw_add_to_cart_message() {
   endif;
   return $message;
 }
-add_filter( 'wc_add_to_cart_message', 'ffw_add_to_cart_message' );
+add_filter( 'wc_add_to_cart_message', 'ffw_theme_add_to_cart_message' );
+
+// Change currency
+function ffw_theme_change_existing_currency_symbol( $currency_symbol, $currency ) {
+  switch( $currency ) {
+    case 'VND':
+      $currency_symbol = 'VNĐ';
+
+      break;
+  }
+
+  return $currency_symbol;
+}
+add_filter('woocommerce_currency_symbol', 'ffw_theme_change_existing_currency_symbol', 10, 2);

@@ -17,7 +17,7 @@
   }
 
   &-navigation-inner {
-    padding: rem(25px 0);
+    padding: rem(21px 0);
     position: relative;
 
     @include breakpoint(laptop) {
@@ -46,7 +46,8 @@
 
       img {
         margin-right: rem(20px);
-        max-width: rem(38px);
+        width: rem(46px);
+        height: auto;
       }
     }
 
@@ -62,19 +63,19 @@
   }
 
   .site-info {
-    line-height: rem(19px);
+    line-height: rem(22px);
     white-space: nowrap;
 
     .site-name {
       @include muli-black;
       display: block;
-      font-size: rem(19px);
+      font-size: rem(25px);
       text-transform: uppercase;
     }
 
     .site-slogan {
       display: block;
-      font-size: rem(15px);
+      font-size: rem(18px);
       letter-spacing: rem(2px);
       word-spacing: rem(2px);
     }

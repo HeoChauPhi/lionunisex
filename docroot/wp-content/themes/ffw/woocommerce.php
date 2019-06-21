@@ -32,7 +32,7 @@ if ( is_singular( 'product' ) ) {
 
   Timber::render( 'templates/woo/single-product.twig', $context );
 } else {
-  global $paged;
+  //global $paged;
   remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart');
   remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
   remove_action( 'woocommerce_before_shop_loop' , 'woocommerce_result_count', 20 );
@@ -44,19 +44,19 @@ if ( is_singular( 'product' ) ) {
   $context['count'] = $count;
   $context['paged'] = $paged;
 
-  $args = array(
+  /*$args = array(
     'post_type' => 'product',
     'posts_per_page' => $count,
     'paged' => $paged
-  );
+  );*/
 
-  query_posts($args);
+  //query_posts($args);
   $page = new TimberPost(get_option( 'woocommerce_shop_page_id' ));
-  $posts = Timber::get_posts($args);
+  $posts = Timber::get_posts();
   $context['post'] = $page;
   $context['products'] = $posts;
   $context['title'] = $page->title;
-  $context['pagination'] = Timber::get_pagination();
+  //$context['pagination'] = Timber::get_pagination();
 
   if ( is_product_category() ) {
     $queried_object = get_queried_object();

@@ -18,31 +18,33 @@
       {% endif %}
 
       <div class="{{ block_class }} main-content">
-        {% if fn('is_page') %}
-          {% if title_option != "on" %}
+        <div class="main-content-inner">
+          {% if fn('is_page') %}
+            {% if title_option != "on" %}
+              <h1 id="page-title">{{ post.title }}</h1>
+            {% endif %}
+          {% else %}
             <h1 id="page-title">{{ post.title }}</h1>
           {% endif %}
-        {% else %}
-          <h1 id="page-title">{{ post.title }}</h1>
-        {% endif %}
 
-        {% if post.content %}
-        <div class="block-content__body">
-        {% if fn('is_cart') %}
-        <div class="page-cart-action">
-          {% set shop_link = fn('get_permalink', fn('wc_get_page_id', 'shop')) %}
-          {% set checkout_link = fn('get_permalink', fn('wc_get_page_id', 'checkout')) %}
-          <a href="{{ shop_link }}" class="shop-link"><i class="fas fa-chevron-left"></i> {{ pll_e('Continue Shopping') }}</a>
-          <a href="{{ checkout_link }}" class="btn button checkout-link"><i class="fas fa-shopping-basket"></i> {{ pll_e('Checkout') }}</a>
+          {% if post.content %}
+          <div class="block-content__body">
+          {% if fn('is_cart') %}
+          <div class="page-cart-action">
+            {% set shop_link = fn('get_permalink', fn('wc_get_page_id', 'shop')) %}
+            {% set checkout_link = fn('get_permalink', fn('wc_get_page_id', 'checkout')) %}
+            <a href="{{ shop_link }}" class="shop-link"><i class="fas fa-chevron-left"></i> {{ pll_e('Continue Shopping') }}</a>
+            <a href="{{ checkout_link }}" class="btn button checkout-link"><i class="fas fa-shopping-basket"></i> {{ pll_e('Checkout') }}</a>
+          </div>
+          <h2 class="cart-form-title hidden">{{ pll_e('My cart') }} ({{ cart_counts }})</h2>
+          {% endif %}
+
+          {{ post.content|shortcodes }}
+          </div>
+          {% endif %}
+
+          {{ fn('flexible_content', 'group_component') }}
         </div>
-        <h2 class="cart-form-title hidden">{{ pll_e('My cart') }} ({{ cart_counts }})</h2>
-        {% endif %}
-
-        {{ post.content|shortcodes }}
-        </div>
-        {% endif %}
-
-        {{ fn('flexible_content', 'group_component') }}
       </div>
     </div>
 
