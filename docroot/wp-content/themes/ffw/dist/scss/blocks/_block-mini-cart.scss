@@ -107,6 +107,19 @@
           width: rem(80px);
         }
 
+        dl.variation {
+          border: 0;
+          display: inline-block;
+          float: right;
+          margin: 0;
+          padding: 0;
+          width: calc(100% - 90px);
+
+          dd {
+            margin: 0 !important;
+          }
+        }
+
         .remove_from_cart_button {
           @include transition(all 0.3s ease);
           border: rem(1px) solid $color-base;
@@ -135,7 +148,10 @@
         }
 
         .quantity {
+          display: inline-block;
+          float: right;
           font-weight: 400;
+          width: calc(100% - 90px);
         }
       }
     }

@@ -1,4 +1,11 @@
 .woocommerce-checkout:not(.woocommerce-order-received) {
+  .login-message {
+    font-size: rem(30px);
+    font-weight: 700;
+    margin-bottom: rem(30px);
+    text-align: center;
+  }
+
   form.checkout_coupon {
     .form-row {
       padding: 0;

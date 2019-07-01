@@ -15921,7 +15921,7 @@ table {
   top: 0;
   z-index: -2; }
 
-.footer .block-newsletter .sign-up-newsletter input[type="submit"], .block-user-login #loginform .login-submit input[type="submit"], .block-mini-cart .dropdown-mini-cart .woocommerce-mini-cart__buttons > a, .block-about-page .block-about-form .form-action > input, .woocommerce table.shop_table.cart .coupon button, .woocommerce table.shop_table button[name="update_cart"], .woocommerce .cart-collaterals a.checkout-button, .woocommerce #place_order, .woocommerce-checkout:not(.woocommerce-order-received) form.checkout_coupon button.button,
+.footer .block-newsletter .sign-up-newsletter input[type="submit"], .block-user-login #loginform .login-submit input[type="submit"], .block-mini-cart .dropdown-mini-cart .woocommerce-mini-cart__buttons > a, .block-text.block-instagram #sb_instagram #sbi_load .sbi_load_btn, .block-about-page .block-about-form .form-action > input, .woocommerce table.shop_table.cart .coupon button, .woocommerce table.shop_table button[name="update_cart"], .woocommerce .cart-collaterals a.checkout-button, .woocommerce #place_order, .woocommerce-checkout:not(.woocommerce-order-received) form.checkout_coupon button.button,
 .btn {
   font-family: 'Muli', sans-serif;
   font-weight: 800;
@@ -15935,7 +15935,7 @@ table {
   color: #ffffff;
   padding: 0.3125rem 0.9375rem 0.375rem 0.9375rem;
   text-transform: capitalize; }
-  .footer .block-newsletter .sign-up-newsletter input:hover[type="submit"], .block-user-login #loginform .login-submit input:hover[type="submit"], .block-mini-cart .dropdown-mini-cart .woocommerce-mini-cart__buttons > a:hover, .block-about-page .block-about-form .form-action > input:hover, .woocommerce table.shop_table.cart .coupon button:hover, .woocommerce table.shop_table button:hover[name="update_cart"], .woocommerce .cart-collaterals a.checkout-button:hover, .woocommerce #place_order:hover, .woocommerce-checkout:not(.woocommerce-order-received) form.checkout_coupon button.button:hover,
+  .footer .block-newsletter .sign-up-newsletter input:hover[type="submit"], .block-user-login #loginform .login-submit input:hover[type="submit"], .block-mini-cart .dropdown-mini-cart .woocommerce-mini-cart__buttons > a:hover, .block-text.block-instagram #sb_instagram #sbi_load .sbi_load_btn:hover, .block-about-page .block-about-form .form-action > input:hover, .woocommerce table.shop_table.cart .coupon button:hover, .woocommerce table.shop_table button:hover[name="update_cart"], .woocommerce .cart-collaterals a.checkout-button:hover, .woocommerce #place_order:hover, .woocommerce-checkout:not(.woocommerce-order-received) form.checkout_coupon button.button:hover,
   .btn:hover {
     background-color: #ffffff;
     color: #000000; }
@@ -16803,7 +16803,9 @@ body.woocommerce-page .main-inner {
   align-items: center;
   display: -webkit-box;
   display: -ms-flexbox;
-  display: flex; }
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap; }
   .page-product-list .WOOF_Widget .woof_container_pa_color ul.woof_list_checkbox li {
     margin-right: 0.3125rem !important; }
 
@@ -16923,8 +16925,7 @@ body.woocommerce-page .main-inner {
 .block-user-login .fb-login-button,
 .block-user-login .fb-login-button > span,
 .block-user-login .fb-login-button > span > iframe {
-  max-width: 100%;
-  width: 100% !important; }
+  max-width: 100%; }
 
 .block-mini-cart {
   position: relative; }
@@ -17038,6 +17039,15 @@ body.woocommerce-page .main-inner {
           margin-left: 0;
           margin-right: 0.625rem;
           width: 5rem; }
+        .block-mini-cart .dropdown-mini-cart .woocommerce-mini-cart .woocommerce-mini-cart-item dl.variation {
+          border: 0;
+          display: inline-block;
+          float: right;
+          margin: 0;
+          padding: 0;
+          width: calc(100% - 90px); }
+          .block-mini-cart .dropdown-mini-cart .woocommerce-mini-cart .woocommerce-mini-cart-item dl.variation dd {
+            margin: 0 !important; }
         .block-mini-cart .dropdown-mini-cart .woocommerce-mini-cart .woocommerce-mini-cart-item .remove_from_cart_button {
           -webkit-transition: all 0.3s ease;
           -moz-transition: all 0.3s ease;
@@ -17061,7 +17071,10 @@ body.woocommerce-page .main-inner {
           visibility: visible;
           opacity: 1; }
         .block-mini-cart .dropdown-mini-cart .woocommerce-mini-cart .woocommerce-mini-cart-item .quantity {
-          font-weight: 400; }
+          display: inline-block;
+          float: right;
+          font-weight: 400;
+          width: calc(100% - 90px); }
     .block-mini-cart .dropdown-mini-cart .woocommerce-mini-cart__total {
       border-bottom: 0.0625rem solid rgba(0, 0, 0, 0.2);
       font-size: 1.625rem;
@@ -17403,6 +17416,22 @@ body.woocommerce-page .main-inner {
 .fancybox-slide--html .instagram-comments {
   max-height: 25rem;
   overflow-y: auto; }
+
+.block-text.block-instagram #sb_instagram .sb_instagram_header {
+  max-width: 50%;
+  padding: 0 !important; }
+
+.block-text.block-instagram #sb_instagram #sbi_images {
+  margin: 0rem -1.875rem; }
+
+.block-text.block-instagram #sb_instagram #sbi_load .sbi_load_btn {
+  background-color: #ffffff;
+  border: 0.125rem solid #000000;
+  border-bottom-color: transparent;
+  color: #000000; }
+  .block-text.block-instagram #sb_instagram #sbi_load .sbi_load_btn:hover {
+    background-color: #000000;
+    color: #ffffff; }
 
 .block-icon-content .icon-content-item {
   -webkit-box-align: center;
@@ -18010,9 +18039,6 @@ body.woocommerce-page .main-inner {
   .single-product .reset_variations[style*="visibility: hidden"] {
     display: none !important; }
 
-.single-product #pa_color {
-  display: none; }
-
 .single-product .form-color-wrapper {
   align-item: center;
   display: -webkit-box;
@@ -18273,6 +18299,12 @@ body.woocommerce-page .main-inner {
   padding: 0.625rem; }
   .woocommerce .cart-collaterals a.checkout-button:before {
     margin-right: 0.4375rem; }
+
+.woocommerce-checkout:not(.woocommerce-order-received) .login-message {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 1.875rem;
+  text-align: center; }
 
 .woocommerce-checkout:not(.woocommerce-order-received) form.checkout_coupon .form-row {
   padding: 0;

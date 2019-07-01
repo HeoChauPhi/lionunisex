@@ -5,7 +5,7 @@ Email: diana@burduja.eu
 Tags: e-commerce, featured image, hover over image zoom, image, image zoom, image zoom plugin, image magnification, image magnifier, jquery picture zoom, magnifier, magnify image, magnifying glass, mouse over image zoom, panorama, picture zoom, product image, product zoom, product magnification, product magnifier, responsive, woocommerce product zoom, woocommerce zoom, woocommerce  magnifying glass, zoom, zoom image, zoom plugin, woocommerce image zoom, woocommerce product image zoom, woocommerce zoom magnifier
 Requires at least: 3.0.1
 Tested up to: 5.2 
-Stable tag: 1.33
+Stable tag: 1.34
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires PHP: 5.2.4
@@ -34,7 +34,7 @@ Your visitors will be able to see the beautiful details of your images. This wil
 = Using the plugin with a page bulider =
 For applying the zoom on an image on a page/post from within a page builder, you need to add the "zoooom" CSS class to the image. Here are screenshots on how to do this with the most popular page builders:
 * Gutenberg - [screenshot](https://www.silkypress.com/wp-content/uploads/2018/10/zoom-gutenberg.png)
-* Visual Composer - [screenshot](https://www.silkypress.com/wp-content/uploads/2017/05/image-zoom-js_composer.png). Please use the "large" or "full" for the Image Size setting
+* WPBakery (former Visual Composer) - depending on the page builder's version: 1) [screenshot](https://www.silkypress.com/wp-content/uploads/2017/05/image-zoom-js_composer.png) with the "large" or "full" for the Image Size setting. Or 2) [screenshot](https://www.silkypress.com/wp-content/uploads/2019/06/wpbakery-zoooom.png).
 * Page Builder by SiteOrigin - [screenshot](https://www.silkypress.com/wp-content/uploads/2016/02/zoom-siteorigin.png)
 * Elementor Page Builder - [screenshot](https://www.silkypress.com/wp-content/uploads/2016/09/image-zoom-elementor.png). It works with all the Image Size options, except Custom.
 * Beaver Builder - [screenshot](https://www.silkypress.com/wp-content/uploads/2017/06/image-zoom-beaver-builder.png)
@@ -151,6 +151,12 @@ Alternatively you can upgrade to the Pro version, as there the zoom lens is buil
 8. Apply the zoom from Page Builder by SiteOrigin, the Image Widget
 
 == Changelog ==
+
+= 1.34 =
+* 06/22/2019
+* Fix: zoom wasn't initialized for post/page images served by the ShortPixel CDN
+* Add Turkish translation
+
 
 = 1.33 =
 * 05/08/2019

@@ -39,7 +39,16 @@
           <h2 class="cart-form-title hidden">{{ pll_e('My cart') }} ({{ cart_counts }})</h2>
           {% endif %}
 
+          {% if fn('is_checkout') %}
+            {% if fn('is_user_logged_in') %}
+              {{ post.content|shortcodes }}
+            {% else %}
+              <div class="login-message">{{ pll_e('Please login before checkout') }}</div>
+              <div class="facebook-login-button">{{ fn('do_shortcode', '[fbl_login_button redirect="" hide_if_logged="" size="large" type="continue_with" show_face="true"]') }}</div>
+            {% endif %}
+          {% else %}
           {{ post.content|shortcodes }}
+          {% endif %}
           </div>
           {% endif %}
 

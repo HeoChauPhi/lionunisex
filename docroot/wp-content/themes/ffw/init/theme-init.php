@@ -367,7 +367,7 @@ function flexible_content($name) {
       $field['current_post_id'] = $post->ID;
 
       switch ($layout) {
-        case 'test':
+        case 'block_news':
           print_r($field);
 
           try {
@@ -380,7 +380,8 @@ function flexible_content($name) {
         case 'block_products':
           $args = array(
             'post_type' => 'any',
-            'post__in' => $field['product']
+            'post__in' => $field['product'],
+            'orderby' => 'post__in'
           );
 
           $products = Timber::get_posts($args);
@@ -394,7 +395,15 @@ function flexible_content($name) {
           break;
 
         case 'block_instagram':
-          $insta_json = file_get_contents('https://api.instagram.com/v1/users/self/media/recent/?access_token='.$field['instagram_access_tocken']);
+          $ch = curl_init();
+          $timeout = 5; // set to zero for no timeout
+          curl_setopt ($ch, CURLOPT_URL, 'https://api.instagram.com/v1/users/self/media/recent/?access_token='.$field['instagram_access_tocken']);
+          curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+          curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+          $insta_json = curl_exec($ch);
+          curl_close($ch);
+          
+          //$insta_json = file_get_contents('https://api.instagram.com/v1/users/self/media/recent/?access_token='.$field['instagram_access_tocken']);
           $insta_data = json_decode($insta_json, true);
 
           if ( $insta_data['meta']['code'] == 200 ) {

@@ -1,0 +1,14 @@
+<div class="block-text {{ component_class }}">
+  <div class="block-inner">
+    {% if 'block-instagram' in component_class %}
+    <div class="gallery-group-title">
+      <h2 class="block-title">{{ block_title }}</h2>
+    </div>
+    {% else %}
+    <h2 class="block-title">{{ block_title }}</h2>
+    {% endif %}
+    <div class="block-content">
+    {{ text_body|shortcodes }}
+    </div>
+  </div>
+</div>

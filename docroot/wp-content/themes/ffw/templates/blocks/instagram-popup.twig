@@ -3,7 +3,7 @@
   <div class="row">
     <div class="instagram-media col-md-7">
     {% if item.videos %}
-      <video controls autoplay name="media">
+      <video controls>
         <source src="{{ item.videos.standard_resolution.url }}" type="video/mp4">
         <source src="{{ item.videos.standard_resolution.url }}" type="video/ogg">
       </video>

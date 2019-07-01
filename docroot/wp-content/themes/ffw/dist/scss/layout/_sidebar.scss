@@ -269,6 +269,7 @@
       ul.woof_list_checkbox {
         align-items: center;
         display: flex;
+        flex-wrap: wrap;
 
         li {
           margin-right: rem(5px) !important;

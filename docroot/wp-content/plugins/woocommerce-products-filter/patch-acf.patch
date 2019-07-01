@@ -1,0 +1,16 @@
+diff --git a/woocommerce-products-filter/views/html_types/checkbox.php b/woocommerce-products-filter/views/html_types/checkbox.php
+index f1df135..7fa7223 100644
+--- a/plugins/woocommerce-products-filter/views/html_types/checkbox.php
++++ b/plugins/woocommerce-products-filter/views/html_types/checkbox.php
+@@ -203,6 +203,11 @@ if (!function_exists('woof_draw_checkbox_childs'))
+                 ?>
+                 <input type="hidden" value="<?php echo $term['name'] ?>" data-anchor="woof_n_<?php echo $tax_slug ?>_<?php echo $term['slug'] ?>" />
+ 
++                <?php
++                    if ( isset(get_term_meta( $term['term_id'])['product_attribute_color']) ) {
++                        echo '<input class="acf-color-code" type="hidden" value="' . get_term_meta( $term['term_id'])['product_attribute_color'][0] . '">';
++                    }
++                ?>
+             </li>
+ 
+ 

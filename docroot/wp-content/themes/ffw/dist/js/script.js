@@ -36,14 +36,11 @@
         $(this).css({
           'position': 'fixed',
           'top': offset.top,
-          'right': rt
+          'right': rt,
+          'z-index': 99
         });
       } else {
-        $(this).css({
-          'position': 'absolute',
-          'top': 0,
-          'right': 0
-        });
+        $(this).removeAttr('style');
       }
       $('.block-navigation').toggleClass('menu-show');
     }
@@ -359,6 +356,8 @@
     $('.js-scroll-down').on('click', scrollDown);
     $('.js-show-cart').on('click', showCart);
     $('.block-user-login .user-login-icon').on('click', loginForm);
+
+    // WWoocommerce custom jquery
     $('.mini-cart-close, .dropdown-mini-cart .layer-fixed').on('click', hideCart);
     $('.sidebar-mobile-filter').on('click', showFilter);
     $('.page-product-list #sidebar .WOOF_Widget .widget-title').on('click', hideFilter);
@@ -374,6 +373,19 @@
       return false;
     });
 
+    // Disable video autoplay
+    if ( $('video').length ) {
+      $('video').get(0).pause();  
+    }
+    $('[data-fancybox*="image-gallery-component-"]').fancybox({
+      afterShow : function(instance, current) {
+        $('video').get(0).stop();
+      },
+      afterClose : function(instance, current) {
+        $('video').get(0).stop();
+      }
+    });
+
     // Color hover filter
     $('.woo-attribute-color .woocommerce-widget-layered-nav-list__item > a, .woof_container_pa_color .woof_list_checkbox li .woof_checkbox_label').mouseenter(function() {
       var color_name = $(this).text();
@@ -383,7 +395,7 @@
       $('.color-name-attribute').remove();
     });
     $('.woof_container_pa_color .woof_list_checkbox li').each(function() {
-      var color_val = $(this).find('input[type="checkbox"]').attr('name');
+      var color_val = $(this).find('.acf-color-code').val();
       $(this).find('.woof_checkbox_label').css('background-color', color_val);
     });
     
@@ -420,6 +432,16 @@
 
   $(window).load(function() {
     // Call to function
+    /*$('#sbi_images .sbi_photo_wrap .sbi_photo').on('click', function(e){
+      var frame_box = 'http://' + $(this).attr('href').replace(/^https?:\/\//,'');
+      console.log(frame_box);
+      $.fancybox.open({
+        src  : frame_box,
+        type : 'iframe',
+      });
+      return false;
+    });*/
+
     mainPadding();
     $('.woocommerce table.shop_table th.product-thumbnail').empty();
     $('.cart-form-title').clone().removeClass('hidden').appendTo('.woocommerce table.shop_table th.product-thumbnail');
@@ -428,7 +450,7 @@
       $('.js-show-cart').trigger('click');
       wcNoticeRemove();
     }
-    selectToList('select#pa_color');
+    //selectToList('select#pa_color');
   });
 
   $(window).resize(function() {

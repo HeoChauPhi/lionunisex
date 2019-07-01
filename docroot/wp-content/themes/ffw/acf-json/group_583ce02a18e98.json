@@ -359,6 +359,73 @@
                     "min": "",
                     "max": ""
                 },
+                "layout_5d198052f4343": {
+                    "key": "layout_5d198052f4343",
+                    "name": "block_text",
+                    "label": "Block Text",
+                    "display": "row",
+                    "sub_fields": [
+                        {
+                            "key": "field_5d198052f4344",
+                            "label": "Block Title",
+                            "name": "block_title",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        },
+                        {
+                            "key": "field_5d198052f4345",
+                            "label": "Text Body",
+                            "name": "text_body",
+                            "type": "wysiwyg",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "tabs": "all",
+                            "toolbar": "full",
+                            "media_upload": 1,
+                            "delay": 0
+                        },
+                        {
+                            "key": "field_5d198052f4346",
+                            "label": "Component Class",
+                            "name": "component_class",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
                 "layout_5b8372f2dae72": {
                     "key": "layout_5b8372f2dae72",
                     "name": "block_icon_content",
@@ -581,6 +648,76 @@
                     "min": "",
                     "max": ""
                 },
+                "layout_5d10bcb68339a": {
+                    "key": "layout_5d10bcb68339a",
+                    "name": "block_news",
+                    "label": "Block News",
+                    "display": "row",
+                    "sub_fields": [
+                        {
+                            "key": "field_5d10bcb78339e",
+                            "label": "Post Type",
+                            "name": "post_type",
+                            "type": "posttype_select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "allow_null": 0,
+                            "multiple": 0,
+                            "placeholder": "",
+                            "disabled": 0,
+                            "readonly": 0
+                        },
+                        {
+                            "key": "field_5d10bd137c6d5",
+                            "label": "Post Per Page",
+                            "name": "post_per_page",
+                            "type": "number",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": 16,
+                            "placeholder": "Set -1 for display all posts",
+                            "prepend": "",
+                            "append": "",
+                            "min": -1,
+                            "max": "",
+                            "step": ""
+                        },
+                        {
+                            "key": "field_5d10bcb78339f",
+                            "label": "Component Class",
+                            "name": "component_class",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
                 "layout_5cd81094136cb": {
                     "key": "layout_5cd81094136cb",
                     "name": "map_block",
@@ -689,5 +826,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1560337151
+    "modified": 1561952382
 }

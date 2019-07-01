@@ -1,5 +1,6 @@
 <div class="block-gallery block-instagram {{ component_class }}">
   <div class="block-inner">
+    {% if instagram_data %}
     <div class="gallery-group-title">
       <h2 class="block-title">{{ block_title }}</h2>
 
@@ -10,7 +11,6 @@
       {% endif %}
     </div>
 
-    {% if instagram_data %}
     <div class="images-gallery">
       <div class="row image-result">
         {% for item in instagram_data %}
@@ -37,6 +37,11 @@
       </div>
       <div class="show-more"><a href="#" class="instagram-show-more-link btn" data-showless="{{ pll_e('show less') }}" data-showmore="{{ pll_e('show more') }}">{{ pll_e('show more') }}</a></div>
     </div>
+    {% else %}
+      <div class="instagram-connect-failed">
+        <div class="loading"></div>
+        <p>{{ pll_e('Connect failed') }}</p>
+      </div>
     {% endif %}
   </div>
 </div>

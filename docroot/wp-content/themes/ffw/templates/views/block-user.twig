@@ -27,9 +27,9 @@
   </ul>
   {% else %}
   <div class="user-login-content">
-    {{ fn('wp_login_form') }}
+    {#{ fn('wp_login_form') }#}
     <ul class="user-login-register">
-      <li class="user-register"><a href="{{ fn('wp_registration_url') }}&#38;redirect_to={{ current_link }}">{{ pll_e('register') }}</a><br />{{ pll_e('or') }}</li>
+      {#<li class="user-register"><a href="{{ fn('wp_registration_url') }}&#38;redirect_to={{ current_link }}">{{ pll_e('register') }}</a><br />{{ pll_e('or') }}</li>#}
       <li class="user-facebook-login">{{ fn('do_shortcode', '[fbl_login_button redirect="" hide_if_logged="" size="large" type="continue_with" show_face="true"]') }}</li>
     </ul>
   </div>

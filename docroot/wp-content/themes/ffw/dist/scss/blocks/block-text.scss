@@ -1,0 +1,29 @@
+.block-text {
+  // Custom for instagram shortcode
+  &.block-instagram {
+    #sb_instagram {
+      .sb_instagram_header {
+        max-width: 50%;
+        padding: 0 !important;
+      }
+
+      #sbi_images {
+        //padding: 0 !important;
+        margin: rem(0 -30px);
+      }
+
+      #sbi_load .sbi_load_btn {
+        @extend %btn;
+        background-color: $white;
+        border: rem(2px) solid $black;
+        border-bottom-color: transparent;
+        color: $black;
+
+        &:hover {
+          background-color: $black;
+          color: $white;
+        }
+      }
+    }
+  }
+}
