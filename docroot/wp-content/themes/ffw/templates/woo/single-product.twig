@@ -22,7 +22,35 @@
 
       <div class="single-product-fullcontent col-md-5">
         <div class="summary entry-summary">
-          {% do action('woocommerce_single_product_summary') %}
+          {% if post.get_field('facebook_pixel_form') %}
+            <h1 class="product_title entry-title">{{ post.title }}</h1>
+            <div class="price">{{ fn('wc_get_product').get_price_html }}</div>
+            <div class="product-subscribe">
+              {{ fn('shortcode', '[contact-form-7 id="' ~ post.get_field('add_to_cart_form') ~ '"]') }}
+            </div>
+
+            <script type="text/javascript">
+            document.getElementById('SubmitProduct').addEventListener('click', function() {
+              var $user_name = jQuery('.product-subscribe input[name="user-name"]').val();
+                  $user_email = jQuery('.product-subscribe input[name="user-email"]').val();
+                  $user_mobile = jQuery('.product-subscribe input[name="user-mobile"]').val();
+
+              jQuery('.product-subscribe input[name="product-title"]').val("{{ post.title }}");
+
+              if ( $user_name.length !== 0 && $user_mobile.length !== 0 ) {
+                fbq('track', 'SubmitApplication', {
+                  product_title: "{{ post.title }}",
+                  product_price: "{{ fn('wc_get_product', post.ID).get_price }}",
+                  user_name: $user_name,
+                  user_email: $user_email,
+                  user_mobile: $user_mobile,
+                });
+              }
+            }, false);
+            </script>
+          {% else %}
+            {% do action('woocommerce_single_product_summary') %}
+          {% endif %}
         </div>
 
         <div class="product-content js-accordion">

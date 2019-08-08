@@ -183,8 +183,9 @@ function ffw_create_custom_taxonomy() {
     'show_in_nav_menus'          => true,
     'show_tagcloud'              => true,
     'show_in_quick_edit'         => false,
+    'rewrite'                    => array( 'slug' => '{CUSTOM-TAXONOMY-SLUG}' ),
   );
-  register_taxonomy('{CUSTOM_TAXONOMY}', array('{CUSTOM-POST-TYPE}'), $args_subsite);
+  register_taxonomy('{CUSTOM-TAXONOMY-SLUG}', array('{CUSTOM-POST-TYPE}'), $args_subsite);
 }
 //add_action( 'init', 'ffw_create_custom_taxonomy', 0 );
 

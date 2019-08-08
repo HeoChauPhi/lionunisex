@@ -252,10 +252,9 @@ ul.pager {
 
     &.prev,
     &.next {
-      text-indent: -999em;
+      line-height: 0;
 
       a {
-        line-height: 0;
         text-indent: -999em;
 
         &:before {

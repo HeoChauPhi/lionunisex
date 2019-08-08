@@ -16,7 +16,6 @@
         @extend %btn;
         background-color: $white;
         border: rem(2px) solid $black;
-        border-bottom-color: transparent;
         color: $black;
 
         &:hover {

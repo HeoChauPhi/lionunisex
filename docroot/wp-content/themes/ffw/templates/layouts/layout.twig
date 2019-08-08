@@ -16,6 +16,10 @@
     <link rel="pingback" href="{{site.pingback_url}}" />
     <script src='https://www.google.com/recaptcha/api.js?render=explicit' async defer></script>
     {{ wp_head }}
+
+    {% if head_content_code and post.get_field('facebook_pixel_form') %}
+      {{ fn('htmlspecialchars_decode', head_content_code) }}
+    {% endif %}
   </head>
   <body class="{{ body_class }}" data-template="base.twig">
     <div class="page-wrapper">
@@ -29,7 +33,7 @@
 
       <main role="main">
         <div class="container">
-          <div class="main-inner animation-element" data-animate="fadeIn">
+          <div class="main-inner">
             {% block content %}
               {{context}}
             {% endblock %}
@@ -50,5 +54,9 @@
 
       <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&#38;key={{ google_api_key }}&#38;libraries=places" type="text/javascript"></script>
     </div>
+
+    {% if body_content_code %}
+      {{ fn('htmlspecialchars_decode', body_content_code) }}
+    {% endif %}
   </body>
 </html>

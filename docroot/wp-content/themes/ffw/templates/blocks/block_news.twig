@@ -1,0 +1,8 @@
+<div class="block-news block-news-wrapper">
+  <div class="block-news-list row">
+  {% for item in return_items %}
+    {% include 'post-item.twig' with {'post': item} only %}
+  {% endfor %}
+  </div>
+  {% include 'pagination.twig' with {'pagination': pagination} only %}
+</div>

@@ -175,6 +175,29 @@
     }
   }
 
+  .product-subscribe {
+    margin-bottom: rem(30px);
+
+    .form-item {
+      margin-bottom: rem(15px);
+
+      select,
+      input[type="text"],
+      input[type="password"],
+      input[type="email"],
+      input[type="tel"],
+      input[type="number"],
+      textarea {
+        width: 100%;
+      }
+    }
+
+    .wpcf7-response-output {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
   .variations_form {
     margin-bottom: rem(25px);
 

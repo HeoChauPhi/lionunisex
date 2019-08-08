@@ -368,7 +368,30 @@ function flexible_content($name) {
 
       switch ($layout) {
         case 'block_news':
-          print_r($field);
+          $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+
+          $args = array(
+            'post_type'       => $field['post_type'],
+            'posts_per_page'  => $field['post_per_page'],
+            'paged'           => $paged,
+            'post_status'     => 'publish',
+          );
+
+          $posts = new WP_Query($args);
+          $field['return_items'] = $posts->posts;
+
+          $big = 999999999; // need an unlikely integer
+   
+          $pagination = Timber::get_pagination( array(
+            'base'      => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+            'format'    => '?paged=%#%',
+            'current'   => max( 1, get_query_var('paged') ),
+            'mid_size'  => 1,
+            'total'     => $posts->max_num_pages
+          ) );
+
+          $field['pagination'] = $pagination;
+          //print_r($field);
 
           try {
             Timber::render($layout . '.twig', $field);
@@ -648,10 +671,14 @@ function ffw_twig_data($data){
   // Theme option
   $theme_options                = get_option('ffw_board_settings');
   $google_api_key               = $theme_options['ffw_google_api_key'];
+  $head_content_code            = $theme_options['ffw_head_content_code'];
+  $body_content_code            = $theme_options['ffw_body_content_code'];
   $popup_banner_url             = $theme_options['ffw_popup_banner_url'];
   $popup_banner_image           = $theme_options['ffw_popup_banner_image'];
 
   $data['google_api_key']       = $google_api_key;
+  $data['head_content_code']    = $head_content_code;
+  $data['body_content_code']    = $body_content_code;
   $data['popup_banner_url']     = $popup_banner_url;
   $data['popup_banner_image']   = $popup_banner_image;
 

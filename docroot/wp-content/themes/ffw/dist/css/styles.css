@@ -15935,7 +15935,8 @@ table {
   color: #ffffff;
   padding: 0.3125rem 0.9375rem 0.375rem 0.9375rem;
   text-transform: capitalize; }
-  .footer .block-newsletter .sign-up-newsletter input:hover[type="submit"], .block-user-login #loginform .login-submit input:hover[type="submit"], .block-mini-cart .dropdown-mini-cart .woocommerce-mini-cart__buttons > a:hover, .block-text.block-instagram #sb_instagram #sbi_load .sbi_load_btn:hover, .block-about-page .block-about-form .form-action > input:hover, .woocommerce table.shop_table.cart .coupon button:hover, .woocommerce table.shop_table button:hover[name="update_cart"], .woocommerce .cart-collaterals a.checkout-button:hover, .woocommerce #place_order:hover, .woocommerce-checkout:not(.woocommerce-order-received) form.checkout_coupon button.button:hover,
+  .footer .block-newsletter .sign-up-newsletter input:focus[type="submit"], .block-user-login #loginform .login-submit input:focus[type="submit"], .block-mini-cart .dropdown-mini-cart .woocommerce-mini-cart__buttons > a:focus, .block-text.block-instagram #sb_instagram #sbi_load .sbi_load_btn:focus, .block-about-page .block-about-form .form-action > input:focus, .woocommerce table.shop_table.cart .coupon button:focus, .woocommerce table.shop_table button:focus[name="update_cart"], .woocommerce .cart-collaterals a.checkout-button:focus, .woocommerce #place_order:focus, .woocommerce-checkout:not(.woocommerce-order-received) form.checkout_coupon button.button:focus, .footer .block-newsletter .sign-up-newsletter input:hover[type="submit"], .block-user-login #loginform .login-submit input:hover[type="submit"], .block-mini-cart .dropdown-mini-cart .woocommerce-mini-cart__buttons > a:hover, .block-text.block-instagram #sb_instagram #sbi_load .sbi_load_btn:hover, .block-about-page .block-about-form .form-action > input:hover, .woocommerce table.shop_table.cart .coupon button:hover, .woocommerce table.shop_table button:hover[name="update_cart"], .woocommerce .cart-collaterals a.checkout-button:hover, .woocommerce #place_order:hover, .woocommerce-checkout:not(.woocommerce-order-received) form.checkout_coupon button.button:hover,
+  .btn:focus,
   .btn:hover {
     background-color: #ffffff;
     color: #000000; }
@@ -16195,9 +16196,8 @@ ul.pager {
     ul.pager > li.current {
       font-weight: 400; }
     ul.pager > li.prev, ul.pager > li.next {
-      text-indent: -999em; }
+      line-height: 0; }
       ul.pager > li.prev a, ul.pager > li.next a {
-        line-height: 0;
         text-indent: -999em; }
         ul.pager > li.prev a:before, ul.pager > li.next a:before {
           content: "";
@@ -17427,7 +17427,6 @@ body.woocommerce-page .main-inner {
 .block-text.block-instagram #sb_instagram #sbi_load .sbi_load_btn {
   background-color: #ffffff;
   border: 0.125rem solid #000000;
-  border-bottom-color: transparent;
   color: #000000; }
   .block-text.block-instagram #sb_instagram #sbi_load .sbi_load_btn:hover {
     background-color: #000000;
@@ -17673,6 +17672,44 @@ body.woocommerce-page .main-inner {
 
 .block-map + .block-map {
   margin-top: 1.25rem; }
+
+.block-news-list .post-item {
+  margin-bottom: 1.875rem; }
+  @media (max-width: 480px) {
+    .block-news-list .post-item {
+      width: 100%;
+      float: none; } }
+
+.block-news-list .post-media {
+  overflow: hidden;
+  margin-bottom: 0.9375rem; }
+  .block-news-list .post-media:hover .post-image {
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    transform: scale(1.1); }
+
+.block-news-list .post-image {
+  -webkit-transition: -webkit-transform 0.3s ease;
+  -moz-transition: -moz-transform 0.3s ease;
+  -o-transition: -o-transform 0.3s ease;
+  transition: -webkit-transform 0.3s ease;
+  -o-transition: transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: block; }
+  .block-news-list .post-image img {
+    position: relative;
+    visibility: hidden;
+    z-index: -99; }
+
+.block-news-list .post-title {
+  font-size: 1.25rem;
+  margin: 0rem 0rem 0.625rem; }
 
 .woocommerce-notices-wrapper,
 .woocommerce-form-coupon-toggle,
@@ -18002,6 +18039,24 @@ body.woocommerce-page .main-inner {
     margin-right: 0.625rem; }
   .single-product .price ins {
     text-decoration: none; }
+
+.single-product .product-subscribe {
+  margin-bottom: 1.875rem; }
+  .single-product .product-subscribe .form-item {
+    margin-bottom: 0.9375rem; }
+    .single-product .product-subscribe .form-item select,
+    .single-product .product-subscribe .form-item input[type="text"],
+    .single-product .product-subscribe .form-item .woocommerce table.shop_table.cart .coupon input[type="text"],
+    .woocommerce table.shop_table.cart .coupon .single-product .product-subscribe .form-item input[type="text"],
+    .single-product .product-subscribe .form-item input[type="password"],
+    .single-product .product-subscribe .form-item input[type="email"],
+    .single-product .product-subscribe .form-item input[type="tel"],
+    .single-product .product-subscribe .form-item input[type="number"],
+    .single-product .product-subscribe .form-item textarea {
+      width: 100%; }
+  .single-product .product-subscribe .wpcf7-response-output {
+    margin-left: 0;
+    margin-right: 0; }
 
 .single-product .variations_form {
   margin-bottom: 1.5625rem; }

@@ -105,6 +105,32 @@ class FFWSettingsPage {
       'ffw_popup_banner',
       'ffw_popup_banner_image'
     );  
+
+    // Popup banner
+    add_settings_section(
+      'ffw_integrated_code', // ID
+      __('Integrated third party Code', 'ffw_theme'), // Title
+      array( $this, 'ffw_google_print_section_info' ), // Callback
+      'ffw-setting-admin' // Page
+    );
+
+    add_settings_field(
+      'ffw_head_content_code',
+      __('Head Code', 'ffw_theme'),
+      array( $this, 'ffw_form_textarea' ), // Callback
+      'ffw-setting-admin', // Page
+      'ffw_integrated_code',
+      'ffw_head_content_code'
+    );
+
+    add_settings_field(
+      'ffw_body_content_code',
+      __('Body Code', 'ffw_theme'),
+      array( $this, 'ffw_form_textarea' ), // Callback
+      'ffw-setting-admin', // Page
+      'ffw_integrated_code',
+      'ffw_body_content_code'
+    );
   }
 
   /**
@@ -123,6 +149,12 @@ class FFWSettingsPage {
 
     if( isset( $input['ffw_popup_banner_image'] ) )
       $new_input['ffw_popup_banner_image'] = sanitize_text_field( $input['ffw_popup_banner_image'] );
+
+    if( isset( $input['ffw_head_content_code'] ) )
+      $new_input['ffw_head_content_code'] = sanitize_text_field( htmlentities($input['ffw_head_content_code']) );
+
+    if( isset( $input['ffw_body_content_code'] ) )
+      $new_input['ffw_body_content_code'] = sanitize_text_field( htmlentities($input['ffw_body_content_code']) );
 
     return $new_input;
   }
@@ -160,6 +192,6 @@ class FFWSettingsPage {
 
   public function ffw_form_textarea($name) {
     $value = isset($this->options[$name]) ? esc_attr($this->options[$name]) : '';
-    printf('<textarea cols="100%%" rows="3" type="textarea" id="form-id-%s" name="ffw_board_settings[%s]">%s</textarea>', $name, $name, $value);
+    printf('<textarea cols="100%%" rows="8" type="textarea" id="form-id-%s" name="ffw_board_settings[%s]">%s</textarea>', $name, $name, $value);
   }
 }

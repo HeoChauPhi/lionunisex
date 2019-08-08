@@ -1,0 +1,40 @@
+.block-news-list {
+  .post-item {
+    margin-bottom: rem(30px);
+
+    @include breakpoint(mobileonly) {
+      width: 100%;
+      float: none;
+    }
+  }
+
+  .post-media {
+    overflow: hidden;
+    margin-bottom: rem(15px);
+
+    &:hover {
+      .post-image {
+        @include transform(scale(1.1));
+      }
+    }
+  }
+
+  .post-image {
+    @include transition(transform 0.3s ease);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: block;
+
+    img {
+      position: relative;
+      visibility: hidden;
+      z-index: -99;
+    }
+  }
+
+  .post-title {
+    font-size: rem(20px);
+    margin: rem(0 0 10px);
+  }
+}

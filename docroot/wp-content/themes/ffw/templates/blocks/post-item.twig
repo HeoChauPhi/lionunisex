@@ -1,0 +1,17 @@
+<div class="col-md-4 col-xs-6 post-item {{ fn('get_post_class', post.ID)|join(' ') }}">
+  <div class="post-item-inner">
+    {% if fn('get_the_post_thumbnail_url', post.ID) %}
+    <div class="post-media">
+      <a class="post-image" href="{{ fn('get_permalink', post.ID) }}" style="background-image: url({{ fn('get_the_post_thumbnail_url', post.ID)|resize(600, 600) }});"><img src="{{ fn('get_the_post_thumbnail_url', post.ID)|resize(600, 600) }}" alt></a>
+    </div>
+    {% endif %}
+    <div class="post-body">
+      <h2 class="post-title"><a href="{{ fn('get_permalink', post.ID) }}">{{ fn('get_the_title', post.ID) }}</a></h2>
+      <div class="post-info">
+        <div class="post-date">
+          {{ fn('get_the_date', 'F j, Y', post.ID) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

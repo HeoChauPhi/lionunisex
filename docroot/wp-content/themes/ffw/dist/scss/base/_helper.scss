@@ -48,6 +48,7 @@
   padding: rem(5px 15px 6px 15px);
   text-transform: capitalize;
 
+  &:focus,
   &:hover {
     background-color: $white;
     color: $black;
