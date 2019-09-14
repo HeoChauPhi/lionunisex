@@ -5,7 +5,7 @@ Email: diana@burduja.eu
 Tags: e-commerce, featured image, hover over image zoom, image, image zoom, image zoom plugin, image magnification, image magnifier, jquery picture zoom, magnifier, magnify image, magnifying glass, mouse over image zoom, panorama, picture zoom, product image, product zoom, product magnification, product magnifier, responsive, woocommerce product zoom, woocommerce zoom, woocommerce  magnifying glass, zoom, zoom image, zoom plugin, woocommerce image zoom, woocommerce product image zoom, woocommerce zoom magnifier
 Requires at least: 3.0.1
 Tested up to: 5.2 
-Stable tag: 1.34
+Stable tag: 1.36
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires PHP: 5.2.4
@@ -151,6 +151,16 @@ Alternatively you can upgrade to the Pro version, as there the zoom lens is buil
 8. Apply the zoom from Page Builder by SiteOrigin, the Image Widget
 
 == Changelog ==
+
+= 1.36 =
+* 09/07/2019
+* Fix: Elementor lightbox skewed if zoom applied on it (https://wordpress.org/support/topic/elementor-lightbox-2/)
+* Fix: zoom wasn't initiating when some lazy load plugins are installed on the website
+* Add notice about the WooCommerce product gallery from the Avada theme
+
+= 1.35 =
+* 07/19/2019
+* Add "with Zoom" style to the Gutenberg image block
 
 = 1.34 =
 * 06/22/2019

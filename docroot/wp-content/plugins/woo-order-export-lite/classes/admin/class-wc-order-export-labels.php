@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class WC_Order_Export_Labels {
 
-	private $labels;
+	private $labels = array();
 
 	public function __get( $key ) {
 		if ( ! $key || empty( $this->labels ) ) {
@@ -159,7 +159,6 @@ class WC_Order_Export_Labels {
 				$unique_keys[ $label_data["key"] ] = $label_data["label"];
 			}
 		}
-
 		return $unique_keys;
 	}
 }

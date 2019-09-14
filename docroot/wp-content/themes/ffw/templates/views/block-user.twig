@@ -22,7 +22,13 @@
     {% else %}
       {% set user_avata = fn('get_avatar_url', current_user.data.ID) %}
     {% endif %}
-    <li class="user-data"><span class="user-avatar"><img src="{{ user_avata }}" alt="{{ user_name }}"></span><a href="{{ fn('get_edit_profile_url') }}" class="user-name">{{ user_name }}</a>!</li>
+
+    {% if current_lang == 'vi' %}
+      {% set user_profile_url = fn('get_page_link', 875) %}
+    {% else %}
+      {% set user_profile_url = fn('get_edit_profile_url') %}
+    {% endif %}
+    <li class="user-data"><span class="user-avatar"><img src="{{ user_avata }}" alt="{{ user_name }}"></span><a href="{{ user_profile_url }}" class="user-name">{{ user_name }}</a>!</li>
     <li class="user-logout"><a href="{{ fn('wp_logout_url', current_link) }}">{{ pll_e('logout') }}</a></li>
   </ul>
   {% else %}

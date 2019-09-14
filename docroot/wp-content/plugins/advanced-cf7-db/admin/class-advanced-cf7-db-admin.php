@@ -103,7 +103,10 @@ class Advanced_Cf7_Db_Admin {
 
 	}
 
-	////////////// to add admin screens for Contact form Db and Import CSV
+	/**
+	 * Defining the extra menus to be added
+	 * admin screens for Contact form Db and Import CSV
+	 */
 	function vsz_cf7_plugin_menu(){
 		///// Menu pages for contact form DB
 
@@ -159,44 +162,62 @@ class Advanced_Cf7_Db_Admin {
 		add_submenu_page( 'contact-form-listing', __('Add-ons', 'advanced-cf7-db'), __('Add-ons', ' advanced-cf7-db'), $cap, 'extentions',array($this,'vsz_extension') );
 	}
 
-	// Callback function for listing screen
+	/**
+	 * Callback function for listing screen
+	 * Define all entry related design in this file
+	 * Kept the current screen permission in the this file to view and edit the data
+	 */
+
 	function vsz_contact_form_callback(){
-		//Check current user permission
 
-		/* if (!current_user_can('manage_options'))  {
-			wp_die( __('You do not have sufficient permissions to access this page.') );
-		} */
 		wp_enqueue_style('vsz-cf7-db-admin-css');
-		//Define all entry related design in this file
+
 		require_once plugin_dir_path( __FILE__ ) . 'partials/contact_form_listing.php';
+
 	}
 
-	// Callback function for Import CSV screen
+	/**
+	 * Developer support page
+	 * All the filters/actions/shortcodes used in the plugins are mentioned for the developers to
+	 * expand the plugin functionality
+	 */
+
 	function vsz_shortcode(){
-		//Define import CSV screen design in this file
+
 		require_once plugin_dir_path( __FILE__ ) . 'partials/developer_support.php';
+
 	}
 
-	// Callback function for Import CSV screen
+	/**
+	 * Addon's page
+	 * All the plugin related Addon's are been defined in this screen for the users to get more
+	 * help from the plugin.
+	 */
 	function vsz_extension(){
-		//Define import CSV screen design in this file
+
 		require_once plugin_dir_path( __FILE__ ) . 'partials/add-ons.php';
+
 	}
 
-	// Callback function for Import CSV screen
+	/**
+	 * Callback function for Import CSV screen
+	 */
 	function vsz_import_cf7_csv(){
-		//Check current user permission
-		/* if (!current_user_can('manage_options'))  {
-			wp_die( __('You do not have sufficient permissions to access this page.') );
-		} */
-		//Define import CSV screen design in this file
 		require_once plugin_dir_path( __FILE__ ) . 'partials/import_cf7_csv.php';
 	}
 
-	//Get form related all fields information here
+	/**
+	 * Get form related all fields information here
+	 * @param $fields, $fid
+	 */
 	function vsz_cf7_admin_fields_callback($fields, $fid){
 		$return = array();
+
 		$fid = (int)$fid;
+		//Return null if the $fid is empty
+		if( empty( $fid ) ){
+			return $return;
+		}
 		//Get current form related field setting value from option table
 		$field_settings = get_option('vsz_cf7_settings_field_' . $fid, array());
 		//Check field settings value empty or not
@@ -217,8 +238,10 @@ class Advanced_Cf7_Db_Admin {
 				$arr_form_tag = array();
 			}
 
-			/**** This functionality Added because when field settings not define then
-				Fields display as per form design format*/
+			/**
+			 * This functionality Added because when field settings not define then
+			 * fields display as per form design format
+			 */
 
 			//Check field exist with form or not
 			if(!empty($arr_form_tag)){
@@ -269,13 +292,21 @@ class Advanced_Cf7_Db_Admin {
 				}
 			}
 		}//Close else
+
 		//return all existing fields information in array format here
 		return $return;
-	}//Close function for fields related information
+	}
 
-	//Define Export option box on form listing screen
+	/**
+	 * Action callback function of 'vsz_cf7_after_bulkaction_btn'
+	 * Populate Export option box on form listing screen
+	 * @param $fid
+	 */
 	function vsz_cf7_after_bulkaction_btn_callback($fid){
 		$fid = (int)$fid;
+		if( empty( $fid ) ){
+			return 'Select at least one form';
+		}
 		?><!-- Display Export functionality button here-->
 		<select id="vsz-cf7-export" name="vsz-cf7-export" data-fid="<?php echo $fid; ?>">
 			<option value="-1"><?php _e('Export to...'); ?></option>
@@ -284,15 +315,17 @@ class Advanced_Cf7_Db_Admin {
 			<option value="pdf"><?php _e('PDF'); ?></option>
 		</select>
 		<button class="button action" title="<?php _e('Export'); ?>" type="submit" name="btn_export"><?php _e('Export'); ?></button><?php
-	}//Close export option function
+	}
 
-	//Display Search text box design structure here
+	/**
+	 * Display Search text box design structure here
+	 */
 	function vsz_cf7_after_datesection_btn_callback($fid){
 		//Get menu page URL
 		$url = menu_page_url('contact-form-listing',false);
 		//Check form id is define in current page or not if defirn then current form ID add with existing URL
 		if(isset($_REQUEST['cf7_id']) && !empty($_REQUEST['cf7_id'])){
-			$fid = intval($_REQUEST['cf7_id']);
+			$fid = (int)sanitize_text_field($_REQUEST['cf7_id']);
 			$url .= '&cf7_id='.$fid;
 		}
 		?><input value="<?php echo ((isset($_POST['search_cf7_value'])) && !empty($_POST['search_cf7_value']) ? htmlspecialchars(stripslashes(sanitize_text_field($_POST['search_cf7_value']))) : ''); ?>" type="text" class="" id="cf7d-search-q" name="search_cf7_value" placeholder="<?php echo _e('Type something...'); ?>" id="" />
@@ -300,12 +333,16 @@ class Advanced_Cf7_Db_Admin {
 		<?php
 	}//Close search box design function
 
-	//Display table header in edit column here
+	/**
+	 * Display table header in edit column here
+	 */
 	function vsz_cf7_admin_after_heading_field_callback(){
 		?><th style="width: 32px;" class="manage-column"><?php _e(''); ?></th><?php
 	}
 
-	//Display Settings popup here
+	/**
+	 * Display Settings popup here
+	 */
 	function vsz_cf7_display_settings_btn_callback(){
 
 		//Define thickbox popup function
@@ -318,7 +355,9 @@ class Advanced_Cf7_Db_Admin {
 		</div><?php
 	}
 
-	//Display edit link with each entry in table
+	/**
+	 * Display edit link with each entry in table
+	 */
 	function vsz_cf7_admin_after_body_edit_field_func($form_id, $row_id){
 		//Define thickbox popup function
 		add_thickbox();
@@ -330,7 +369,9 @@ class Advanced_Cf7_Db_Admin {
 		</td><?php
 	}
 
-	//Define Display Setting Popup functionality here
+	/**
+	 * Define Display Setting Popup functionality here
+	 */
 	function vsz_cf7_after_admin_setting_form_callback($fid){
 
 		$fid = intval($fid);
@@ -447,7 +488,9 @@ class Advanced_Cf7_Db_Admin {
 		</div><?php
 	}//Close setting POPUP function here
 
-	//Display edit popup related content for this function
+	/**
+	 * Display edit popup related content for this function
+	 */
 	function vsz_cf7_after_admin_edit_values_form_callback($form_id){
 
 		$form_id = intval($form_id);
@@ -599,7 +642,9 @@ class Advanced_Cf7_Db_Admin {
 	}//Close Edit POPUP function here
 
 
-	//Save all custom define settings fields value here
+	/**
+	 * Save all custom define settings fields value here
+	 */
 	public function vsz_cf7_save_setting_callback(){
 		global $wpdb;
 
@@ -614,7 +659,7 @@ class Advanced_Cf7_Db_Admin {
 				return;
 			}
 			//get form Id
-			$fid = intval($_POST['fid']);
+			$fid = (int)sanitize_text_field($_POST['fid']);
 			//Get nonce value
 			$nonce = sanitize_text_field($_POST['vsz_cf7_setting_nonce']);
 			//Verify nonce value
@@ -660,8 +705,8 @@ class Advanced_Cf7_Db_Admin {
 			}
 
 			//Get form and entry id
-			$fid = intval($_POST['fid']);
-			$rid = intval($_POST['rid']);
+			$fid = intval(sanitize_text_field($_POST['fid']));
+			$rid = intval(sanitize_text_field($_POST['rid']));
 			//Verify nonce value
 			$nonce = sanitize_text_field($_POST['vsz_cf7_edit_nonce']);
 			if(!wp_verify_nonce( $nonce, 'vsz-cf7-edit-nonce-'.$fid)){
@@ -740,7 +785,7 @@ class Advanced_Cf7_Db_Admin {
 			$current_action = sanitize_text_field($current_action);
 			//Check current action is delete then execute this functionality
 			if($current_action == 'delete'){
-				if(isset($_POST['del_id'])){
+				if(isset($_POST['del_id']) && !empty($_POST['del_id'])){
 					//Get nonce value
 					$nonce = sanitize_text_field($_POST['_wpnonce']);
 					//Verify nonce value
@@ -750,7 +795,7 @@ class Advanced_Cf7_Db_Admin {
 					//Get Delete row ID information
 					$del_id = implode(',', array_map('intval',$_POST['del_id']));
 					//Get Form ID
-					$fid = intval($_POST['fid']);
+					$fid = intval(sanitize_text_field($_POST['fid']));
 
 					// Checking for file type
 					$arr_field_type_info = vsz_field_type_info($fid);
@@ -760,7 +805,7 @@ class Advanced_Cf7_Db_Admin {
 
 					$del_attach_key = array();
 					foreach ($fields as $k1 => $v1) {
-						if($arr_field_type_info[$k1] == 'file'){
+						if( isset($arr_field_type_info[$k1]) && $arr_field_type_info[$k1] == 'file'){
 							$del_attach_key[] = $k1;
 						}
 					}
@@ -798,7 +843,7 @@ class Advanced_Cf7_Db_Admin {
 		//Setup export functionality here
 		if(isset($_POST['btn_export'])){
 			//Get form ID
-			$fid = (int)$_POST['fid'];
+			$fid = (int)sanitize_text_field($_POST['fid']);
 
 			//Get export id related information
 			$ids_export = ((isset($_POST['del_id']) && !empty($_POST['del_id'])) ? implode(',', array_map('intval',$_POST['del_id'])) : '');
@@ -825,13 +870,32 @@ class Advanced_Cf7_Db_Admin {
 		}//Close if for export
 	}//Close admin_init hook function
 
-	//Edit form AJAX call hadle By this function
+	//
+	/**
+	 * Edit form AJAX callback function for the data to be viewed in the form
+	 * @param $_POST
+	 * rid = recordid
+	 * fid = CF7 formid
+	 */
 	public function vsz_cf7_edit_form_ajax(){
-		//global $cap;
-		//if(!current_user_can( $cap )) return;
+
 		global $wpdb;
 		//Check entry id set or not in current request
-		$rid = ((isset($_POST['rid']) && !empty($_POST['rid'])) ? intval($_POST['rid']) : '');
+		$rid = ((isset($_POST['rid']) && !empty($_POST['rid'])) ? intval(sanitize_text_field($_POST['rid'])) : '');
+		$fid = ((isset($_POST['fid']) && !empty($_POST['fid'])) ? intval(sanitize_text_field($_POST['fid'])) : '');
+
+		if( empty( $rid ) || empty( $fid ) ){
+			echo json_encode('@@You do not have access to edit the data.');
+			exit;
+		}
+
+		// Checking for the capability
+		$edit_cap = 'cf7_db_form_edit_'.$fid;
+		if( !cf7_check_capability( $edit_cap ) ){
+			echo json_encode('@@You do not have access to edit the data for this form.');
+			exit;
+		}
+
 		//If entry not empty
 		if(!empty($rid)){
 			//Get entry related all fields information
@@ -845,22 +909,28 @@ class Advanced_Cf7_Db_Admin {
 			//All fields encode in JSON format and return in AJAX request
 			exit(json_encode($return));
 		}
+
 	}//Close Edit Ajax request function
 
-	////Define not editable fields name here
+	/**
+	 * Filter 'vsz_cf7_not_editable_fields'
+	 * Define not editable fields name here
+	 */
 	public function vsz_cf7_not_editable_fields_callback(){
 		$cf7_not_editable_fields = array('submit_time','submit_ip','submit_user_id');
-		
+
 		if(!empty($non_editable)){
 			foreach($non_editable as $val){
 				$cf7_not_editable_fields[] = $val;
 			}
 		}
-		
+
 		return $cf7_not_editable_fields;
 	}
 
-	// Create table when new site added
+	/**
+	 * Create table when new site added if the install is multisite
+	 */
 	public function vsz_cf7_add_new_table_for_sites($blog_id){
 
 		global $wpdb;
@@ -873,7 +943,9 @@ class Advanced_Cf7_Db_Admin {
 		}
 	}
 
-	// create table when plugin update
+	/**
+	 * Callback function to handle the table creation when plugin updates provided
+	 */
 	public function vsz_cf7_create_new_table_for_sites(){
 
 		global $vsz_cf7db_current_version;
@@ -951,7 +1023,9 @@ class Advanced_Cf7_Db_Admin {
 		add_shortcode( 'cf7-db-display-ip',array($this,'cf7_db_vsz_cf7_display_ip'));
 	}
 
-	// Short code execution related to hide the submit ip
+	/**
+	 * Short code execution related to hide the submit ip
+	 */
 	function cf7_db_vsz_cf7_display_ip($atts, $content, $name){
 		if(is_multisite()){
 			$arrInfo = shortcode_atts( array( 'site_id' => ''),$atts );
@@ -974,8 +1048,6 @@ class Advanced_Cf7_Db_Admin {
 		// define('vsz_cf7_display_ip',true);
 	}
 
-
-
 	// Create role and assign capability for user
 	public function vsz_cf7_create_role_for_contact_form($post_id){
 		$post_type = get_post_type($post_id);
@@ -991,11 +1063,11 @@ class Advanced_Cf7_Db_Admin {
 	function vsz_acf7_db_edit_scr_file_upload(){
 
 		// Verify the current user can upload files
-		if (!current_user_can('upload_files')){
+		if ( !current_user_can('upload_files') ){
 			print 'Not_accessed_to_upload_file';
 			wp_die(__('You do not have permission to upload files.'));
 		}
-		if(isset($_FILES) && is_array($_FILES) && !empty($_FILES)){
+		if(isset($_FILES) && is_array($_FILES) && empty($_FILES)){
 			print 'Not_accessed_to_upload_file';
 			exit;
 		}
@@ -1018,9 +1090,9 @@ class Advanced_Cf7_Db_Admin {
 		}
 
 		global $wpdb;
-		$fid = $_POST["fid"];
-		$rid = $_POST["rid"];
-		$field = $_POST["field"];
+		$fid = (int)sanitize_text_field($_POST["fid"]);
+		$rid = (int)sanitize_text_field($_POST["rid"]);
+		$field = sanitize_text_field($_POST["field"]);
 
 		$upload_dir = wp_upload_dir();
 		$acf7db_upload_folder = VSZ_CF7_UPLOAD_FOLDER;
@@ -1064,7 +1136,10 @@ class Advanced_Cf7_Db_Admin {
 		wp_die();
 	}
 
-	// Function to delete file from edit file popup
+	/**
+	 * Callback function to delet the uploaded images in CF7DB
+	 * Function to delete file from edit file popup
+	 */
 	function vsz_acf7_db_edit_scr_file_delete(){
 
 		if(!isset($_POST["fid"]) || empty($_POST["fid"])){
@@ -1084,10 +1159,10 @@ class Advanced_Cf7_Db_Admin {
 			exit;
 		}
 
-		$fid = $_POST["fid"];
-		$rid = $_POST["rid"];
-		$field = $_POST["field"];
-		$val = $_POST["val"];
+		$fid = (int)sanitize_text_field($_POST["fid"]);
+		$rid = (int)sanitize_text_field($_POST["rid"]);
+		$field = sanitize_text_field($_POST["field"]);
+		$val = sanitize_text_field($_POST["val"]);
 		global $wpdb;
 
 		$res = $wpdb->update(VSZ_CF7_DATA_ENTRY_TABLE_NAME, array("value" => ""), array("data_id" => $rid, "cf7_id" => $fid, "name" => $field));
@@ -1107,11 +1182,16 @@ class Advanced_Cf7_Db_Admin {
 
 }//close class
 
-//Generate CSV file here
+/**
+ * Generate CSV file here
+ */
 function vsz_cf7_export_to_csv($fid, $ids_export = ''){
     global $wpdb;
 
 	$fid = intval($fid);
+    if( empty( $fid ) ){
+    	return 'You do not have the permission to export the data';
+    }
     $fields = vsz_cf7_get_db_fields($fid);
 
 	//Get form id related contact form object
@@ -1143,12 +1223,17 @@ function vsz_cf7_export_to_csv($fid, $ids_export = ''){
 		exit();
 	}
 }
-//Generate excel file here
+/**
+ * Generate excel file here
+ */
 function vsz_cf7_export_to_excel($fid, $ids_export){
 
 	global $wpdb;
 
 	$fid = intval($fid);
+	if( empty( $fid ) ){
+    	return 'You do not have the permission to export the data';
+    }
     $fields = vsz_cf7_get_db_fields($fid);
     $fields1 = vsz_field_type_info($fid);
 
@@ -1213,6 +1298,9 @@ function vsz_cf7_export_to_excel($fid, $ids_export){
 function vsz_cf7_export_to_pdf($fid, $ids_export){
 	global $wpdb;
 	$fid = intval($fid);
+	if( empty( $fid ) ){
+    	return 'You do not have the permission to export the data';
+    }
 	$fields = vsz_cf7_get_db_fields($fid);
 
 	//Get form id related contact form object
@@ -1231,12 +1319,8 @@ function vsz_cf7_export_to_pdf($fid, $ids_export){
 		//Check that the class exists before trying to use it
 		if(!class_exists('MYPDF')){
 			//Include pdf class file
-			// require_once(dirname(__FILE__).'/pdfgenerate/mypdf.class.php');
 
 			require_once(dirname(__FILE__).'/pdfgenerate/dompdf/autoload.inc.php');
-			//require_once(dirname(__FILE__).'/pdfgenerate/dompdf/load_font.php');
-
-			// $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, false, 'UTF-8', false);
 
 			$pdf = new Dompdf\Dompdf();
 			$pdf->set_option('defaultFont', 'helvetica');
@@ -1476,9 +1560,14 @@ function create_table_cf7_vdata_entry_add_blog(){
 }
 
 // Check user capability
+/**
+ * Change log : 18-07-2019
+ * Taken by : @Jaydeep
+ * Summary : Added the multisite check
+ */
 function cf7_check_capability($user_capability){
 
-	if(is_super_admin()){
+	if(is_super_admin() && is_multisite()){
 		return true;
 	}
 	$user_id = get_current_user_id();
@@ -1494,7 +1583,6 @@ function cf7_check_capability($user_capability){
 		wp_get_current_user()->caps    = $caps;
 	}
 	$user = wp_get_current_user();
-
 	foreach($user->allcaps as $key=>$capability){
 		if($capability == true){
 			if($key == $user_capability){

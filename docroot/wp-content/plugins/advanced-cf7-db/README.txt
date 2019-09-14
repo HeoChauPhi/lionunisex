@@ -2,159 +2,165 @@
 Contributors: vsourz1td
 Tags: contact form 7 db, advanced cf7 db, contact form 7 database, contact form db, contact form 7, save form data, save contact form, save cf7, database, cf7db, save-contact-form, Save-Forms-Data, import-cf7, export-contact-data, view-cf7-entry
 Requires at least: 4.0
-Tested up to: 5.1.1
-Stable tag: 1.6.1
+Tested up to: 5.2.2
+Stable tag: 1.7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Save all contact form 7 form submitted data to the database, View, Ordering, Change field labels and Import/Export data using CSV.
 
 == Description ==
-Plug and Play, No Confrontation is required after install and activated, you can see it in wp-admin.
+Easy plug & play plugin to store all enquiry details received through website Contact Form 7 forms. Simply install & activate plugin to store all your enquiries in wp-admin.
 
-Each and every submission of Contact Form 7 is stored in the database and manage easily using the default WordPress interface. There is a nice drop-down to select the form and view all form data for that particular form. you can filter by searching keywords or select a date range.
-	
-Attached files are stored in the /wp-content/uploads/advanced-cf7-upload directory and also download from wp-admin.
+Every form that is submitted in the website will be captured into database using “Advanced Contact Form 7” plugin. Follow below steps to view form details:
+
+* Select form from drop-down
+* View all form data for that particular form
+* Option to search / filter forms by keyword or date range
+* View attachments in wp-content/uploads/advanced-cf7-upload
+* Option to download attachments from wp-admin
 
 
 = Features =
-* **Multisite compatible** to store individual site wise contact form data.
-* Save Contact Form 7 form submitted data to the database.
-* Easy to update/edit enquiry data.
-* Display **all** created contact form 7 form list.
-* Keyword search for all the entries of selected form.
-* **Date range filter** to filter specific date related entries easily.
-* **Export all**, or only searched, filtered results with selected fields.
-* Export data in **CSV**, **EXCEL** and **PDF** file.
-* Display attachment download link.
-* Given **advance pagination** on the listing screen so all the records are not loaded at once, to save resources.
-* Given go to page functionality within pagination so view specific page related entries.
-* **Enable or disable columns display**.
-* **Drag and drop** to reorder columns once the entries are stored.
-* Multiple select of records and selected records will be deleted or export in the sheet.
-* Facility to update each record.
-* Easy to update each field label name.
-* Easy to setup **import functionality.**
-* Facility to import form related entries from CSV file.
-* Provided filters for excluding particular contact form entry to CF7 DB.
-* Provided filter to add,modify,remove CF7 fields and data before submitting to CF7 DB.
-* You can display the contact form DB data to user by using shortcodes.
-* Generate shortcode using different parameters to display specific data only.
-* For more details checkout the plugin "Shortcode" screen.
+* Compatible with **Multisite feature** – Efficient data management by storing form details website wise
+* Securely stores form data into database
+* Easily modify enquiry data
+* View list of all forms received through Contact Form 7
+* Search / filter form details using keyword
+* Search / filter enquiries using custom date-range filter
+* Export data in **CSV, Excel or PDF** format by applying filters
+* View attachment download link
+* Advanced pagination with an option to jump to any page to view specific entries
+* Enable/Disable columns with personalized tabular structure
+* Drag & Drop with ease to view data in customized tabular view
+* Option to select multiple entries at a time for deleting / exporting entries
+* Rename field label names easily
+* Import form details using CSV
+* Filter to exclude data from creating record in CF7 database
+* Modify form data before creating record in CF7 database
+* Generate shortcode using different parameters to display specific data only. For more details, please refer plugin “Shortcode” screen
 
 == Commercial Features ==
-**1. Advanced CF7 DB - GDPR compliant**
-Advanced CF7 DB – GDPR compliant plugin assists website and web-shop owners to comply with European privacy regulations known as GDPR. Advanced CF7 DB – GDPR compliant is an add-on of Advanced Cf7 DB, based on GDPR rules to Export or Erase user’s personal data stored with advanced cf7 DB. For more details you can check the below download link.
+**1. Advanced CF7 DB - GDPR Compliant**
+Advanced CF7 DB – GDPR Compliant plugin assists website and web-shop owners to comply with European privacy regulations known as GDPR. Advanced CF7 DB – GDPR Compliant is an add-on of Advanced CF7 DB, it is based on GDPR rules to export or erase user’s personal data stored with advanced CF7 DB. 
 
-You can download the plugin from <a target="_blank" href="https://codecanyon.net/item/advanced-cf7-db-gdpr-compliant/22386060">here</a>
+Download Advanced CF7 DB – GDPR Complaint plugin from <a target="_blank" href="https://codecanyon.net/item/advanced-cf7-db-gdpr-compliant/22386060">here</a>
 
-= Advanced CF7 DB - GDPR compliant Plugin Features =
-* Compatible with the latest WordPress version 4.9.6 and later for GDPR compliances. Meets with the new regulations for the data to be handled.
-* Individual CF7 form wise settings to show the personal data on user’s request.
-* Erase only the CF7 form personal data, that are required.
-* Site owners can export a ZIP file containing a user’s personal data, including data collected by Advanced CF7 DB plugin.
-* Site owners can erase a user’s personal data, including data collected by Advanced CF7 DB plugin.
+= Advanced CF7 DB - GDPR Compliant Plugin Features =
+* Compatible with the latest WordPress version 5.1.1 and later for GDPR compliances
+* Manages data as per new regulations and up to the mark performance
+* View personal data of individual record On-Request, categorized as per CF7 forms and websites
+* Erase personal data specific to CF7 that are not required
+* Website owners can export a ZIP file containing a user’s personal data, including data collected by Advanced CF7 DB plugin
+* Website owners can erase a user’s personal data, including data collected by Advanced CF7 DB plugin
 
 **2. Schedule Report**
-We have also introduced new feature "Schedule Report". This add-on is specially for businesses that require daily, weekly or monthly reports for the data that are stored at **Advanced Contact form 7 DB**. **Schedule Report For Advanced CF7 DB** plugin will do the same and send the email as per schedule set(Daily, Monthly, Weekly or Yearly) with report attachment. 
+We have introduced a new add-on “Schedule Report” focusing on day-to-day business specific requirement like:
 
-You can download the plugin from <a target="_blank" href="https://codecanyon.net/item/schedule-report-for-advanced-cf7-db/21560647?s_rank=8">here</a>
+* Daily Report
+* Weekly Report
+* Monthly Report
+
+Reports will be automatically generated and will be available to you in your e-mail address as per scheduled routine. 
+
+Download Schedule Report plugin from <a target="_blank" href="https://codecanyon.net/item/schedule-report-for-advanced-cf7-db/21560647?s_rank=8">here</a>
 
 = Schedule Report Plugin Features =
-* Automatically generating the CSV report, Send an email with report attachment based on the scheduled time.
-* Option to create more than one scheduling event to get different enquiry form data report.
-* Option to select report datasheet columns from enquiry form field.
-* Provision to filter the data while creating the scheduled event for the particular report.
-* You can manage the email content by defining TO, FROM and email body content for each scheduling event.
-* The added schedule event will be added to WordPress cron schedule and accordingly will be fire at the scheduled time.
+* Auto-generated CSV report are sent in emails at scheduled time
+* Schedule multiple email events for receiving different enquiry form reports
+* Option to select datasheet columns for reports to be generated
+* Option to filter data while creating the scheduled event for a particular report
+* Option to create email templates by defining To, From, Email message for schedule reports
+* Scheduled Report will also be added to wp-cron and will be triggered as per schedule
 
 **3. Advanced CF7 DB - User Access Manager**
-Need to provide access to other users? Your, search ends now, this plugin provides access to individual users OR based on user Role and accordingly user can view or edit the contact form DB data. For more details you can check the below download link.
+Need to provide access to other users? Your, search ends now, this plugin provides access to individual users or user groups and accordingly user(s) can view or edit their contact form DB data. 
 
-You can download the plugin from <a target="_blank" href="https://codecanyon.net/item/advanced-cf7-db-user-access-manager/22058788">here</a>
+Download Advanced CF7 DB – User Access Manager plugin from <a target="_blank" href="https://codecanyon.net/item/advanced-cf7-db-user-access-manager/22058788">here</a>
  
 = Advanced CF7 DB - User Access Manager Plugin Features =
-* Provide access of contact form 7 DB to View & Update data to individual users OR based on user Role.
-* Provide access of Single/Multiple forms to single user.
+* Provide access of CF7 DB to view & update data to individual users or user groups
+* Provide access to single user for creating single/multiple forms
+
 
 
 == Plugin Customization ==
-= Restrict IP address storage =
-* Some of Countries have introduced a Law to don't store the user's IP addresses into the database, So we had given provision to Restrict IP address storage.
+Restrict IP address storage – Various countries restrict websites to store end users IP address. We have a provision to Restrict IP address storage. Now, IP address can be neglected while storing form’s data into database.
 
-= How to Restrict IP address storage? =
-1. Goto -> wp-content/themes/{active theme folder}/functions.php
-2. Open the functions.php file and place the code **do_shortcode( '[cf7-db-display-ip]' );** at the end of the file.
+**How to restrict IP address storage?**
+Navigate to -> wp-content/themes/{active theme folder}/functions.php
+Open the functions.php file and place the code do_shortcode( ‘[cf7-db-display-ip]’ ); at the end of the file.
 
-**Need Support?** <mehul@vsourz.com>
+For support, email us at: <wp.support@vsourz.com>
 
 = How to use? =
-1. Install Plugin via WordPress Admin - Go to Admin > Plugins > Add New.
-2. View form entries Go To Admin >> Advanced CF7 DB >> Select form name.
-3. Import CSV file Go To Admin >> Import CSV >> Import CSV tab >> Select form name.
+1. Install Plugin via WordPress Admin – Go to Admin > Plugins > Add New.
+2. View form entries – Go To Admin >> Advanced CF7 DB >> Advanced CF7 DB >> Select form name.
+3. Import CSV file – Go To Admin >> Advanced CF7 DB >> Import CSV >> Select form name.
 
 == Installation ==
 
 = Install via WordPress Admin =
-1. Ready the zip file of the plugin
-2. Go to Admin > Plugins > Add New
-3. On the upper portion click the Upload link
-4. Using the file upload field, upload the plugin zip file here and activate the plugin
+1. Go to Admin > Plugins > Add New 
+2. On the upper portion click the Upload link.
+3. Using the file upload field, upload the plugin zip file here and activate the plugin.
 
 = Install via FTP =
-1. First, unzip the plugin file
-2. Using FTP go to your server's wp-content/plugins directory
-3. Upload the unzipped plugin here
-4. Once finished login into your WP Admin and go to Admin > Plugins
-5. Look for Advanced CF7 DB and activate it
+1. Unzip the plugin file.
+2. Using FTP go to your server’s wp-content/plugins directory.
+3. Upload the unzipped plugin here.
+4. Once finished, login into your WP Admin and go to Plugins.
+5. Find Advanced CF7 DB and activate it.
 
 
 == Frequently Asked Questions ==
 
-= Can I use this plugin when contact form 7 not install or activate? =
-No, without contact form this plugin is not worked.
+= Can I use this plugin if Contact Form 7 is not installed or activated? =
+No, this plugin work only when Contact Form 7 is installed & activated.
 
 = How can I import CSV sheet? =
-First, you need to add CSV sheet related column name on Import CSV screen in the field setting tab and save values then import sheet on import CSV tab screen.
+Go to "Field Setting Tab" under "Import CSV" screen, define/add column names as per your sheet, save those values and click "Import CSV".
 
-= Can I change the field name? =
-No, You can change only field label name from Display settings screen.
+= Can I modify field names? =
+No, you can only change field’s label name from “display settings” screen.
 
-= Any Difficulty to exported data in CSV? =
-While exporting the data as CSV, the sheet needs to be opened with delimiter as "," comma separated else the sheet data will not be displayed properly. 
+= Are you facing difficulty in viewing data in CSV? =
+Please note while exporting data in CSV format, the sheet must be opened with delimiter an it - (,)comma separated otherwise you may face difficulty in viewing the data sheet.
 
-= What to do if advanced CF7 DB not work? =
-If the plugin does not work on the website, contact our Support Team via following email address: <mehul@vsourz.com>.
-If you think, that you found a bug in our plugin or have any question contact us at <mehul@vsourz.com>. Our support team will solve within 24 hours.
+= What needs to be done if advanced CF7 DB is not working? =
+Please contact our support team at <wp.support@vsourz.com> in case you face any difficulty. In case you have spotted a bug, please report at <wp.support@vsourz.com> & our support team will get is resolved in 24 hours.
 
 = Can I restrict the plugin from storing IP address of the user to contact form DB? =
-Yes, you can strict the plugin for storing IP address of the user.
+Yes, you can restrict the plugin from storing user's IP address.
 
-= Can I display contact form DB data to user ? =
-Yes, you can display contact form DB data to user. You can use short code for this purpose. For detail please visit "Shortcode" screen of plugin.
+= Can I display Contact Form DB data to user ? =
+Yes, you can use short codes for displaying contact form data to users. For more detail please visit “Shortcode” plugin's description page.
 
 = How to restrict the plugin from storing IP address of the user to contact form DB? =
-Restriction is simple, just code **do_shortcode( '[cf7-db-display-ip]' );** to be placed in theme folder functions.php. By placing the code the IP address of the user will not been stored. Step by step process is explained below :
-- Goto -> wp-content/themes/{active theme folder}/functions.php
-- Open the functions.php file and place the code **do_shortcode( '[cf7-db-display-ip]' );** at the end of the file.
-**For Multisite** it should be **do_shortcode( '[cf7-db-display-ip site_id="(your-site-id)"]' );**
-- You need to add different shortcode for each site with specific siteId. If you need to restrict for all the sites then just place the shortcode without the parameter.
+Restriction is simple, just place "do_shortcode( ‘[cf7-db-display-ip]’ );" in the theme folders functions.php file By placing the code, IP address of the user's will not been stored.
 
-= How to restrict the plugin from storing form entry to contact form DB? =
-Restriction is simple, just following below steps :
-- Goto -> wp-content/themes/{active theme folder}/functions.php
-- Open the functions.php file and place below code at the end of the file.
-add_filter('vsz_cf7_unwanted_form_data_submission','vsz_restrict_form_data_submission'); 
-function vsz_restrict_form_data_submission($contact_form_ids){ 	
-	$contact_form_ids[] = {your-contact-form-id}; 
-	return $contact_form_ids;
+Please follow below steps:
+– Goto -> wp-content/themes/{active theme folder}/functions.php
+– Open the functions.php file and place the code do_shortcode( ‘[cf7-db-display-ip]’ ); at the end of the file.
+**For Multisite** - do_shortcode( ‘[cf7-db-display-ip site_id=”(your-site-id)”]’ );
+– You need to add different shortcode for each site with specific siteId. If you need to restrict for all the sites then just place the shortcode without the parameter.
+
+= How to restrict the plugin from storing form entry to Contact Form DB? =
+Please follow below steps for restricting the plugin to store data 
+– Goto -> wp-content/themes/{active theme folder}/functions.php
+– Open the functions.php file and place below code at the end of the file.
+add_filter(‘vsz_cf7_unwanted_form_data_submission’,’vsz_restrict_form_data_submission’);
+function vsz_restrict_form_data_submission($contact_form_ids){
+$contact_form_ids[] = {your-contact-form-id};
+return $contact_form_ids;
 }
-**For multiple forms**
-add_filter('vsz_cf7_unwanted_form_data_submission','vsz_restrict_form_data_submission'); 
-function vsz_restrict_form_data_submission($contact_form_ids){ 	
-	$contact_form_ids[] = ['{your-contact-form-id}','{your-contact-form-id}']; 
-	return $contact_form_ids;
-}
+
+**For Multiple Forms**
+add_filter(‘vsz_cf7_unwanted_form_data_submission’,’vsz_restrict_form_data_submission’);
+function vsz_restrict_form_data_submission($contact_form_ids){
+$contact_form_ids[] = [‘{your-contact-form-id}’,'{your-contact-form-id}’];
+return $contact_form_ids;
+} 
 
 
 == Screenshots ==
@@ -169,11 +175,24 @@ function vsz_restrict_form_data_submission($contact_form_ids){
 
 == Changelog ==
 
+= 1.7.2 =
+* Fixed the delete data case as throws database error.
+
+= 1.7.1 =
+* Minor tweaks in the plugin related to the edit data
+
+= 1.7.0 =
+* We have upgraded with Security patch.
+* Changes related to the premium plugin **User Access Manager** for the edit case to be handled.
+
+= 1.6.2 =
+* We have fixed SQL injection related bugs at the back office query.
+
 = 1.6.1 =
 * We have upgraded with Security patched for shortcode.
 
 = 1.6.0 =
-* We have upgraded with Security patched to securing user's uploaded data which managed on advanced-cf7-upload directory..
+* We have upgraded with Security patched to securing user's uploaded data which managed on advanced-cf7-upload directory.
 
 = 1.5.1 =
 * Minor bug fixing related to variable mismatch for wordpress 5.0.1.

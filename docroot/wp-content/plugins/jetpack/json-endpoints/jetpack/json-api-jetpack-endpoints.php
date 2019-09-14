@@ -647,6 +647,26 @@ new Jetpack_JSON_API_Sync_Unlock_Endpoint( array(
 	'example_request' => 'https://public-api.wordpress.com/rest/v1.1/sites/example.wordpress.org/sync/unlock'
 ) );
 
+// GET /sites/%s/sync/object-id-range
+new Jetpack_JSON_API_Sync_Object_Id_Range( array(
+	'description'     => 'Gets minimum and maximum object ids for each batch of given batch size.',
+	'method'          => 'GET',
+	'path'            => '/sites/%s/sync/object-id-range',
+	'group'           => '__do_not_document',
+	'stat'            => 'sync-object-id-range',
+	'path_labels' => array(
+		'$site' => '(int|string) The site ID, The site domain'
+	),
+	'query_parameters' => array(
+		'batch_size' => '(int=1000) The amount of objects per batch.',
+		'sync_module' => '(string=posts) The sync module used to enumerate the ranges.',
+	),
+	'response_format' => array(
+		'ranges' => '(array) An array of range objects with min and max properties for each batch.',
+	),
+	'example_request' => 'https://public-api.wordpress.com/rest/v1.1/sites/example.wordpress.org/sync/object-id-range?batch_size=100&sync_module=comments'
+) );
+
 // POST /sites/%s/sync/checkout
 new Jetpack_JSON_API_Sync_Checkout_Endpoint( array(
 	'description'     => 'Locks the queue and returns items and the buffer ID.',
@@ -1061,8 +1081,9 @@ new Jetpack_JSON_API_Get_Post_Backup_Endpoint( array(
 		'$post' => '(int) The post ID',
 	),
 	'response_format' => array(
-		'post' => '(array) Post table row',
-		'meta' => '(array) Associative array of key/value postmeta data',
+		'post'  => '(array) Post table row',
+		'meta'  => '(array) Associative array of key/value postmeta data',
+		'terms' => '(array) List of terms attached to the post object',
 	),
 	'example_request_data' => array(
 		'headers' => array(

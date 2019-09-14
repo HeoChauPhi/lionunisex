@@ -1,6 +1,7 @@
 <?php
 
 require dirname( __FILE__ ) . '/base.php';
+use Automattic\Jetpack\Connection\Manager as Connection_Manager;
 
 /**
  * Main Comments class
@@ -291,7 +292,7 @@ class Jetpack_Comments extends Highlander_Comments_Base {
 				 * one Normal Token per site, avoid concern by
 				 * sending the magic "use the Normal Token" token key.
 				 */
-				$params['token_key'] = Jetpack_Data::MAGIC_NORMAL_TOKEN_KEY;
+				$params['token_key'] = Connection_Manager::MAGIC_NORMAL_TOKEN_KEY;
 			}
 		}
 
@@ -301,7 +302,7 @@ class Jetpack_Comments extends Highlander_Comments_Base {
 		}
 
 		$params['sig']    = $signature;
-		$url_origin       = set_url_scheme( 'http://jetpack.wordpress.com' );
+		$url_origin       = 'https://jetpack.wordpress.com';
 		$url              = "{$url_origin}/jetpack-comment/?" . http_build_query( $params );
 		$url              = "{$url}#parent=" . urlencode( set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ) );
 		$this->signed_url = $url;
@@ -363,7 +364,7 @@ class Jetpack_Comments extends Highlander_Comments_Base {
 	 * @since JetpackComments (1.4)
 	 */
 	public function watch_comment_parent() {
-		$url_origin = set_url_scheme( 'http://jetpack.wordpress.com' );
+		$url_origin = 'https://jetpack.wordpress.com';
 		?>
 
 		<!--[if IE]>

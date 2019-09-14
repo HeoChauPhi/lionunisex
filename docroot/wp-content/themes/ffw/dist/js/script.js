@@ -423,6 +423,24 @@
 
     // Cart page auto update
     cartPageAutoUpdate();
+
+    var $form = $('form#test-form'),
+        url = 'https://script.google.com/macros/s/AKfycbyug70O8GbSC-mbiLtJ_4wnRS_--u_HIBrp_aPUTqCM_r_uYB5D/exec';
+
+    $('#submit-form').on('click', function(e) {
+      e.preventDefault();
+      var jqxhr = $.ajax({
+        url: url,
+        method: "GET",
+        dataType: "json",
+        data: $form.serializeObject(),
+        success: function(response) {
+          console.log('ok');
+        },
+        error: function(response) {
+        }
+      });
+    })
   });
 
   $(window).scroll(function() {

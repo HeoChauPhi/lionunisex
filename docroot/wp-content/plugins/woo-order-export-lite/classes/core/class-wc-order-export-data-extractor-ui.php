@@ -31,48 +31,31 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
 					$where_users = '';
 				}
 				$user_fields = $wpdb->get_col( "SELECT DISTINCT meta_key FROM {$wpdb->usermeta} $where_users" );
-				$fields      = self::get_order_custom_fields();
+				$order_fields      = self::get_order_custom_fields();
 			} else {
 				$user_fields = $wpdb->get_col( "SELECT DISTINCT meta_key FROM {$wpdb->posts} INNER JOIN {$wpdb->usermeta} ON {$wpdb->posts}.post_author = {$wpdb->usermeta}.user_id WHERE post_type = '" . self::$object_type . "' {$sql_in_orders}" );
-				$fields      = $wpdb->get_col( "SELECT DISTINCT meta_key FROM {$wpdb->posts} INNER JOIN {$wpdb->postmeta} ON {$wpdb->posts}.ID = {$wpdb->postmeta}.post_id WHERE post_type = '" . self::$object_type . "' {$sql_in_orders}" );
+				$order_fields      = $wpdb->get_col( "SELECT DISTINCT meta_key FROM {$wpdb->posts} INNER JOIN {$wpdb->postmeta} ON {$wpdb->posts}.ID = {$wpdb->postmeta}.post_id WHERE post_type = '" . self::$object_type . "' {$sql_in_orders}" );
 			}
 
 			foreach ( $user_fields as $k => $v ) {
 				$user_fields[ $k ] = 'USER_' . $v;
 			}
-			$fields = array_unique( array_merge( $fields, $user_fields ) );
-			sort( $fields );
+
+			$user_fields = array_unique( $user_fields );
+			$order_fields = array_unique( $order_fields );
+			sort( $user_fields );
+			sort( $order_fields );
+
+			$fields = array(
+				'user' => $user_fields,
+				'order' => $order_fields,
+			);
 			//debug set_transient( $transient_key, $fields, 60 ); //valid for a 1 min
 		}
 
 		return apply_filters( 'woe_get_all_order_custom_meta_fields', $fields );
 	}
 
-	//filter attributes by matched orders
-	public static function get_all_product_custom_meta_fields_for_orders( $sql_order_ids ) {
-		global $wpdb;
-
-		$wc_fields = $wpdb->get_col( "SELECT DISTINCT meta_key FROM {$wpdb->prefix}woocommerce_order_itemmeta WHERE order_item_id IN
-									(SELECT DISTINCT order_item_id FROM {$wpdb->prefix}woocommerce_order_items WHERE order_item_type = 'line_item' AND order_id IN ($sql_order_ids))" );
-
-		// WC internal table add attributes
-		$wc_attr_fields = $wpdb->get_results( "SELECT attribute_name FROM {$wpdb->prefix}woocommerce_attribute_taxonomies" );
-		foreach ( $wc_attr_fields as $f ) {
-			$wc_fields[] = 'pa_' . $f->attribute_name;
-		}
-
-		//sql to gather product id for orders
-		$sql_products = "SELECT DISTINCT meta_value FROM {$wpdb->prefix}woocommerce_order_itemmeta WHERE meta_key ='_product_id' AND order_item_id IN
-									(SELECT DISTINCT order_item_id FROM {$wpdb->prefix}woocommerce_order_items WHERE order_item_type = 'line_item' AND order_id IN ($sql_order_ids))";
-
-		$wp_fields = $wpdb->get_col( "SELECT DISTINCT meta_key FROM {$wpdb->postmeta} WHERE post_id IN
-									(SELECT DISTINCT ID FROM {$wpdb->posts} WHERE post_type IN ('product','product_variation') AND ID IN ($sql_products))" );
-
-		$fields = array_unique( array_merge( $wp_fields, $wc_fields ) );
-		$fields = sort( $fields );
-
-		return apply_filters( 'get_all_product_custom_meta_fields_for_orders', $fields );
-	}
 
 	public static function get_order_item_custom_meta_fields_for_orders( $sql_order_ids ) {
 		global $wpdb;
@@ -98,10 +81,13 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
 		$sql_products = "SELECT DISTINCT meta_value FROM {$wpdb->prefix}woocommerce_order_itemmeta WHERE meta_key ='_product_id' AND order_item_id IN
 									(SELECT DISTINCT order_item_id FROM {$wpdb->prefix}woocommerce_order_items WHERE order_item_type = 'line_item' AND order_id IN ($sql_order_ids))";
 
-		$wp_fields = $wpdb->get_col( "SELECT DISTINCT meta_key FROM {$wpdb->postmeta} WHERE post_id IN
-									(SELECT DISTINCT ID FROM {$wpdb->posts} WHERE post_type IN ('product','product_variation') AND ID IN ($sql_products))" );
+		$product_ids = $wpdb->get_col( "SELECT DISTINCT ID FROM {$wpdb->posts} WHERE post_type IN ('product','product_variation') AND ID IN ($sql_products) ORDER BY ID DESC LIMIT 1000" );
 
-		sort( $wp_fields );
+		$wp_fields  = array();
+		if($product_ids ) {
+			$product_ids = join(",", $product_ids);
+			$wp_fields = $wpdb->get_col( "SELECT DISTINCT meta_key FROM {$wpdb->postmeta} WHERE post_id IN ($product_ids)  ORDER BY meta_key" );
+		}
 
 		return apply_filters( 'get_product_custom_meta_fields_for_orders', $wp_fields );
 	}
@@ -153,7 +139,7 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
                 ORDER BY    post.post_title
                 LIMIT " . intval( $limit );
 
-		$products = $wpdb->get_results( $wpdb->prepare($query, '%'.$like.'%') );
+		$products = $wpdb->get_results( $wpdb->prepare( $query, '%' . $like . '%' ) );
 		foreach ( $products as $key => $product ) {
 			if ( $product->photo_id ) {
 				$photo                       = wp_get_attachment_image_src( $product->photo_id, 'thumbnail' );
@@ -197,7 +183,7 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
                 LIMIT 0,10
         ";
 
-		return $wpdb->get_results( $wpdb->prepare($query, '%'.$like.'%') );
+		return $wpdb->get_results( $wpdb->prepare( $query, '%' . $like . '%' ) );
 	}
 
 	public static function get_categories_like( $like ) {
@@ -241,12 +227,12 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
 	public static function get_products_taxonomies_values( $key ) {
 		$values = array();
 		$terms  = get_terms( array( 'taxonomy' => $key ) );
-		if ( ! empty( $terms ) ) {
+		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 			$values = array_map( function ( $term ) {
 				return $term->name;
 			}, $terms );
+			sort( $values );
 		}
-		sort( $values );
 
 		return $values;
 	}
@@ -310,7 +296,7 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
 		global $wpdb;
 
 		$names = $wpdb->get_results( "SELECT distinct order_item_type,meta_key  FROM  {$wpdb->prefix}woocommerce_order_items AS items
-			INNER JOIN (SELECT ID AS order_id FROM {$wpdb->prefix}posts WHERE post_type='shop_order' ORDER BY ID DESC LIMIT 1000) AS orders ON orders.order_id = items.order_id 
+			INNER JOIN (SELECT ID AS order_id FROM {$wpdb->prefix}posts WHERE post_type='shop_order' ORDER BY ID DESC LIMIT 1000) AS orders ON orders.order_id = items.order_id
 			JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS meta ON meta.order_item_id = items.order_item_id
 			ORDER BY order_item_type,meta_key" );
 
@@ -330,7 +316,7 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
 		//we skip serialized and long values!
 		$values = $wpdb->get_col( $wpdb->prepare( "SELECT distinct meta_value FROM  {$wpdb->prefix}woocommerce_order_items AS items
 			JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS meta ON meta.order_item_id = items.order_item_id
-			WHERE items.order_item_type = %s AND meta.meta_key=%s 
+			WHERE items.order_item_type = %s AND meta.meta_key=%s
 				AND meta_value NOT LIKE  'a:%' AND LENGTH(meta_value)<20
 			ORDER BY meta_value", $type, $key ) );
 
@@ -367,6 +353,11 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
 			),
 			'product_name'                => array(
 				'label'   => __( 'Product Name', 'woo-order-export-lite' ),
+				'checked' => 0,
+				'format'  => 'string',
+			),
+			'product_name_main' => array(
+				'label'   => __( 'Product Name (main)', 'woo-order-export-lite' ),
 				'checked' => 0,
 				'format'  => 'string',
 			),
@@ -510,6 +501,11 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
 				'checked' => 0,
 				'format'  => 'string',
 			),
+			'item_download_url'                => array(
+				'label'   => __( 'Item download URL', 'woo-order-export-lite' ),
+				'checked' => 0,
+				'format'  => 'string',
+			),
 			'image_url'                   => array(
 				'label'   => __( 'Image URL', 'woo-order-export-lite' ),
 				'checked' => 0,
@@ -542,6 +538,26 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
 			),
 			'summary_report_total_amount' => array(
 				'label'   => __( 'Summary Report Total Amount', 'woo-order-export-lite' ),
+				'checked' => 0,
+				'format'  => 'money',
+			),
+			'embedded_product_image' => array(
+				'label'   => __( 'Embedded Product Image', 'woo-order-export-lite' ),
+				'checked' => 0,
+				'format'  => 'image',
+			),
+			'summary_report_total_discount' => array(
+				'label'   => __( 'Summary Report Total Discount', 'woo-order-export-lite' ),
+				'checked' => 0,
+				'format'  => 'money',
+			),
+			'summary_report_total_refund_count' => array(
+				'label'   => __( 'Summary Report Total Refunds', 'woo-order-export-lite' ),
+				'checked' => 0,
+				'format'  => 'number',
+			),
+			'summary_report_total_refund_amount' => array(
+				'label'   => __( 'Summary Report Total Refund Amount', 'woo-order-export-lite' ),
 				'checked' => 0,
 				'format'  => 'money',
 			),
@@ -604,23 +620,12 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
 
 	public static function get_order_fields( $format, $segments = array() ) {
 		if ( ! $segments ) {
-			$segments = array(
-				'common',
-				'user',
-				'billing',
-				'shipping',
-				'products',
-				'coupons',
-				'cart',
-				'ship_calc',
-				'totals',
-				'misc',
-			);
+			$segments = array_keys(self::get_order_segments());
 		}
 		$map = array();
 		foreach ( $segments as $segment ) {
 			$method      = "get_order_fields_" . $segment;
-			$map_segment = self::$method();
+			$map_segment = method_exists('WC_Order_Export_Data_Extractor_UI', $method) ? self::$method() : array();
 
 			foreach ( $map_segment as $key => $value ) {
 				$map_segment[ $key ]['segment'] = $segment;
@@ -702,6 +707,11 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
 				'checked' => 0,
 				'format'  => 'string',
 			),
+			'embedded_edit_order_link' => array(
+				'label'   => __( 'Link to edit order', 'woo-order-export-lite' ),
+				'checked' => 0,
+				'format'  => 'string',
+			),
 		);
 	}
 
@@ -742,57 +752,92 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
 				'checked' => 0,
 				'format'  => 'number',
 			),
+			'customer_first_order_date' => array(
+				'label'   => __( 'Customer first order date', 'woo-order-export-lite' ),
+				'checked' => 0,
+				'format'  => 'date',
+			),
+			'customer_last_order_date'  => array(
+				'label'   => __( 'Customer last order date', 'woo-order-export-lite' ),
+				'checked' => 0,
+				'format'  => 'date',
+			),
+			'summary_report_total_count'    => array(
+				'label'   => __( 'Summary Report Total Orders', 'woo-order-export-lite' ),
+				'checked' => 0,
+				'format'  => 'number',
+			),
+			'summary_report_total_amount' => array(
+				'label'   => __( 'Summary Report Total Amount', 'woo-order-export-lite' ),
+				'checked' => 0,
+				'format'  => 'money',
+			),
+			'summary_report_total_amount_paid' => array(
+				'label'   => __( 'Summary Report Total Amount Paid', 'woo-order-export-lite' ),
+				'checked' => 0,
+				'format'  => 'money',
+			),
+			'summary_report_total_refund_count' => array(
+				'label'   => __( 'Summary Report Total Refunds', 'woo-order-export-lite' ),
+				'checked' => 0,
+				'format'  => 'number',
+			),
+			'summary_report_total_refund_amount' => array(
+				'label'   => __( 'Summary Report Total Refund Amount', 'woo-order-export-lite' ),
+				'checked' => 0,
+				'format'  => 'money',
+			),
 		);
 	}
 
 	public static function get_order_fields_billing() {
 		return array(
-			'billing_first_name'   => array(
+			'billing_first_name'      => array(
 				'label'   => __( 'First Name (Billing)', 'woo-order-export-lite' ),
 				'checked' => 1,
 				'format'  => 'string',
 			),
-			'billing_last_name'    => array(
+			'billing_last_name'       => array(
 				'label'   => __( 'Last Name (Billing)', 'woo-order-export-lite' ),
 				'checked' => 1,
 				'format'  => 'string',
 			),
-			'billing_full_name'    => array(
+			'billing_full_name'       => array(
 				'label'   => __( 'Full Name (Billing)', 'woo-order-export-lite' ),
 				'checked' => 0,
 				'format'  => 'string',
 			),
-			'billing_company'      => array(
+			'billing_company'         => array(
 				'label'   => __( 'Company (Billing)', 'woo-order-export-lite' ),
 				'checked' => 1,
 				'format'  => 'string',
 			),
-			'billing_address'      => array(
+			'billing_address'         => array(
 				'label'   => __( 'Address 1&2 (Billing)', 'woo-order-export-lite' ),
 				'checked' => 1,
 				'format'  => 'string',
 			),
-			'billing_address_1'    => array(
+			'billing_address_1'       => array(
 				'label'   => __( 'Address 1 (Billing)', 'woo-order-export-lite' ),
 				'checked' => 0,
 				'format'  => 'string',
 			),
-			'billing_address_2'    => array(
+			'billing_address_2'       => array(
 				'label'   => __( 'Address 2 (Billing)', 'woo-order-export-lite' ),
 				'checked' => 0,
 				'format'  => 'string',
 			),
-			'billing_city'         => array(
+			'billing_city'            => array(
 				'label'   => __( 'City (Billing)', 'woo-order-export-lite' ),
 				'checked' => 1,
 				'format'  => 'string',
 			),
-			'billing_state'        => array(
+			'billing_state'           => array(
 				'label'   => __( 'State Code (Billing)', 'woo-order-export-lite' ),
 				'checked' => 1,
 				'format'  => 'string',
 			),
-			'billing_citystatezip' => array(
+			'billing_citystatezip'    => array(
 				'label'   => __( 'City, State, Zip (Billing)', 'woo-order-export-lite' ),
 				'checked' => 0,
 				'format'  => 'string',
@@ -802,32 +847,32 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
 				'checked' => 0,
 				'format'  => 'string',
 			),
-			'billing_state_full'   => array(
+			'billing_state_full'      => array(
 				'label'   => __( 'State Name (Billing)', 'woo-order-export-lite' ),
 				'checked' => 0,
 				'format'  => 'string',
 			),
-			'billing_postcode'     => array(
+			'billing_postcode'        => array(
 				'label'   => __( 'Postcode (Billing)', 'woo-order-export-lite' ),
 				'checked' => 1,
 				'format'  => 'string',
 			),
-			'billing_country'      => array(
+			'billing_country'         => array(
 				'label'   => __( 'Country Code (Billing)', 'woo-order-export-lite' ),
 				'checked' => 1,
 				'format'  => 'string',
 			),
-			'billing_country_full' => array(
+			'billing_country_full'    => array(
 				'label'   => __( 'Country Name (Billing)', 'woo-order-export-lite' ),
 				'checked' => 0,
 				'format'  => 'string',
 			),
-			'billing_email'        => array(
+			'billing_email'           => array(
 				'label'   => __( 'Email (Billing)', 'woo-order-export-lite' ),
 				'checked' => 1,
 				'format'  => 'string',
 			),
-			'billing_phone'        => array(
+			'billing_phone'           => array(
 				'label'   => __( 'Phone (Billing)', 'woo-order-export-lite' ),
 				'checked' => 1,
 				'format'  => 'string',
@@ -837,52 +882,52 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
 
 	public static function get_order_fields_shipping() {
 		return array(
-			'shipping_first_name'   => array(
+			'shipping_first_name'      => array(
 				'label'   => __( 'First Name (Shipping)', 'woo-order-export-lite' ),
 				'checked' => 1,
 				'format'  => 'string',
 			),
-			'shipping_last_name'    => array(
+			'shipping_last_name'       => array(
 				'label'   => __( 'Last Name (Shipping)', 'woo-order-export-lite' ),
 				'checked' => 1,
 				'format'  => 'string',
 			),
-			'shipping_full_name'    => array(
+			'shipping_full_name'       => array(
 				'label'   => __( 'Full Name (Shipping)', 'woo-order-export-lite' ),
 				'checked' => 0,
 				'format'  => 'string',
 			),
-			'shipping_company'      => array(
+			'shipping_company'         => array(
 				'label'   => __( 'Company (Shipping)', 'woo-order-export-lite' ),
 				'checked' => 0,
 				'format'  => 'string',
 			),
-			'shipping_address'      => array(
+			'shipping_address'         => array(
 				'label'   => __( 'Address 1&2 (Shipping)', 'woo-order-export-lite' ),
 				'checked' => 1,
 				'format'  => 'string',
 			),
-			'shipping_address_1'    => array(
+			'shipping_address_1'       => array(
 				'label'   => __( 'Address 1 (Shipping)', 'woo-order-export-lite' ),
 				'checked' => 0,
 				'format'  => 'string',
 			),
-			'shipping_address_2'    => array(
+			'shipping_address_2'       => array(
 				'label'   => __( 'Address 2 (Shipping)', 'woo-order-export-lite' ),
 				'checked' => 0,
 				'format'  => 'string',
 			),
-			'shipping_city'         => array(
+			'shipping_city'            => array(
 				'label'   => __( 'City (Shipping)', 'woo-order-export-lite' ),
 				'checked' => 1,
 				'format'  => 'string',
 			),
-			'shipping_state'        => array(
+			'shipping_state'           => array(
 				'label'   => __( 'State Code (Shipping)', 'woo-order-export-lite' ),
 				'checked' => 1,
 				'format'  => 'string',
 			),
-			'shipping_citystatezip' => array(
+			'shipping_citystatezip'    => array(
 				'label'   => __( 'City, State, Zip (Shipping)', 'woo-order-export-lite' ),
 				'checked' => 0,
 				'format'  => 'string',
@@ -892,22 +937,22 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
 				'checked' => 0,
 				'format'  => 'string',
 			),
-			'shipping_state_full'   => array(
+			'shipping_state_full'      => array(
 				'label'   => __( 'State Name (Shipping)', 'woo-order-export-lite' ),
 				'checked' => 0,
 				'format'  => 'string',
 			),
-			'shipping_postcode'     => array(
+			'shipping_postcode'        => array(
 				'label'   => __( 'Postcode (Shipping)', 'woo-order-export-lite' ),
 				'checked' => 1,
 				'format'  => 'string',
 			),
-			'shipping_country'      => array(
+			'shipping_country'         => array(
 				'label'   => __( 'Country Code (Shipping)', 'woo-order-export-lite' ),
 				'checked' => 1,
 				'format'  => 'string',
 			),
-			'shipping_country_full' => array(
+			'shipping_country_full'    => array(
 				'label'   => __( 'Country Name (Shipping)', 'woo-order-export-lite' ),
 				'checked' => 0,
 				'format'  => 'string',
@@ -948,6 +993,11 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
 			),
 			'shipping_method'               => array(
 				'label'   => __( 'Shipping Method', 'woo-order-export-lite' ),
+				'checked' => 0,
+				'format'  => 'string',
+			),
+			'shipping_method_only'          => array(
+				'label'   => __( 'Shipping Method (no id)', 'woo-order-export-lite' ),
 				'checked' => 0,
 				'format'  => 'string',
 			),
@@ -1089,6 +1139,10 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
 		);
 	}
 
+	public static function get_order_fields_other_items() {
+		return array();
+	}
+
 	public static function get_order_fields_misc() {
 		return array(
 			'total_weight_items'    => array(
@@ -1127,18 +1181,19 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
 	}
 
 	public static function get_order_segments() {
-		return array(
-			'common'    => __( 'Common', 'woo-order-export-lite' ),
-			'user'      => __( 'User', 'woo-order-export-lite' ),
-			'billing'   => __( 'Billing Address', 'woo-order-export-lite' ),
-			'shipping'  => __( 'Shipping Address', 'woo-order-export-lite' ),
-			'products'  => __( 'Products', 'woo-order-export-lite' ),
-			'coupons'   => __( 'Coupons', 'woo-order-export-lite' ),
-			'cart'      => __( 'Cart', 'woo-order-export-lite' ),
-			'ship_calc' => __( 'Shipping', 'woo-order-export-lite' ),
-			'totals'    => __( 'Totals', 'woo-order-export-lite' ),
-			'misc'      => __( 'Others', 'woo-order-export-lite' ),
-		);
+		return apply_filters('woe_get_order_segments', array(
+			'common'	 => __('Common', 'woo-order-export-lite'),
+			'user'		 => __('User', 'woo-order-export-lite'),
+			'billing'	 => __('Billing Address', 'woo-order-export-lite'),
+			'shipping'	 => __('Shipping Address', 'woo-order-export-lite'),
+			'products'	 => __('Products', 'woo-order-export-lite'),
+			'coupons'	 => __('Coupons', 'woo-order-export-lite'),
+			'other_items'	 => __('Other items', 'woo-order-export-lite'),
+			'cart'		 => __('Cart', 'woo-order-export-lite'),
+			'ship_calc'	 => __('Shipping', 'woo-order-export-lite'),
+			'totals'	 => __('Totals', 'woo-order-export-lite'),
+			'misc'		 => __('Others', 'woo-order-export-lite'),
+		));
 	}
 
 	public static function get_format_fields() {
@@ -1147,6 +1202,7 @@ class WC_Order_Export_Data_Extractor_UI extends WC_Order_Export_Data_Extractor {
 			'money'  => __( 'Money', 'woo-order-export-lite' ),
 			'number' => __( 'Number', 'woo-order-export-lite' ),
 			'date'   => __( 'Date', 'woo-order-export-lite' ),
+			'image'   => __( 'Image', 'woo-order-export-lite' ),
 		);
 	}
 

@@ -57,10 +57,12 @@ class WOE_Formatter_Json extends WOE_Formatter {
 					$rec_out[ $label ] = $field_value;
 					continue;
 				}
-				
-				if( empty($child_labels ) ) // can't export!
+
+				if ( empty( $child_labels ) ) // can't export!
+				{
 					continue;
-					
+				}
+
 				$rec_out[ $label ] = array();
 				foreach ( $field_value as $child_element ) {
 					$child = array();

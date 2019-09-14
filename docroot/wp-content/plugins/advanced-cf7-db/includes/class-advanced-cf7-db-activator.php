@@ -100,11 +100,11 @@ function create_table_cf7_vdata_entry(){
 
 function create_f7_capability(){
 // Add Capability when update plugin 
-			$role = get_role( 'administrator');
-			$args = array('post_type' => 'wpcf7_contact_form', 'posts_per_page' => -1); 
-			$cf7Forms = get_posts( $args );
-			foreach($cf7Forms as $data){
-				$role->add_cap('cf7_db_form_view'.$data->ID);
-				$role->add_cap('cf7_db_form_edit_'.$data->ID);
-			}
+	$role = get_role( 'administrator');
+	$args = array('post_type' => 'wpcf7_contact_form', 'posts_per_page' => -1); 
+	$cf7Forms = get_posts( $args );
+	foreach($cf7Forms as $data){
+		$role->add_cap('cf7_db_form_view'.$data->ID);
+		$role->add_cap('cf7_db_form_edit_'.$data->ID);
+	}
 }			

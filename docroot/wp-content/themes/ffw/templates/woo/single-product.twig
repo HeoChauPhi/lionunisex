@@ -22,6 +22,31 @@
 
       <div class="single-product-fullcontent col-md-5">
         <div class="summary entry-summary">
+          {#% if post.get_field('google_form') %}
+            <script src="https://wzrd.in/standalone/formdata-polyfill"></script>
+            <script src="https://wzrd.in/standalone/promise-polyfill@latest"></script>
+            <script src="https://wzrd.in/standalone/whatwg-fetch@latest"></script>
+
+            <form name="submit-to-google-sheet">
+              <input name="email" type="email" placeholder="Email" required>
+              <input name="firstName" type="text" placeholder="First Name">
+              <input name="lastName" type="text" placeholder="Last Name">
+              <button type="submit">Send</button>
+            </form>
+
+            <script>
+              const scriptURL = 'https://script.google.com/macros/s/AKfycbzsuxRawBpT_4zegks16AxbuGof6MzWzHWqGeCjTuPf76Mka9g/exec'
+              const form = document.forms['submit-to-google-sheet']
+
+              form.addEventListener('submit', e => {
+                e.preventDefault()
+                fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                  .then(response => console.log('Success!', response))
+                  .catch(error => console.error('Error!', error.message))
+              });
+            </script>
+          {% endif %}
+
           {% if post.get_field('facebook_pixel_form') %}
             <h1 class="product_title entry-title">{{ post.title }}</h1>
             <div class="price">{{ fn('wc_get_product').get_price_html }}</div>
@@ -50,7 +75,86 @@
             </script>
           {% else %}
             {% do action('woocommerce_single_product_summary') %}
+          {% endif %#}
+
+
+          {% if post.get_field('third_party_form') == 'facebook_pixel' %}
+            <h1 class="product_title entry-title">{{ post.title }}</h1>
+            <div class="price">{{ fn('wc_get_product').get_price_html }}</div>
+            <div class="product-subscribe">
+              {{ fn('shortcode', '[contact-form-7 id="' ~ post.get_field('facebook_form') ~ '"]') }}
+            </div>
+
+            <script type="text/javascript">
+            document.getElementById('SubmitProduct').addEventListener('click', function() {
+              var $user_name = jQuery('.product-subscribe input[name="user-name"]').val();
+                  $user_email = jQuery('.product-subscribe input[name="user-email"]').val();
+                  $user_mobile = jQuery('.product-subscribe input[name="user-mobile"]').val();
+
+              jQuery('.product-subscribe input[name="product-title"]').val("{{ post.title }}");
+
+              if ( $user_name.length !== 0 && $user_mobile.length !== 0 ) {
+                fbq('track', 'SubmitApplication', {
+                  product_title: "{{ post.title }}",
+                  product_price: "{{ fn('wc_get_product', post.ID).get_price }}",
+                  user_name: $user_name,
+                  user_email: $user_email,
+                  user_mobile: $user_mobile,
+                });
+              }
+            }, false);
+            </script>
+          {% elseif post.get_field('third_party_form') == 'google_sheet' %}
+            <h1 class="product_title entry-title">{{ post.title }}</h1>
+            <div class="price">{{ fn('wc_get_product').get_price_html }}</div>
+
+            <div class="product-subscribe">
+              <form name="submit-to-google-sheet">
+                <div class="form-item" style="display: none !important;">
+                  <input name="productUrl" type="text" value="{{ post.link }}" required>
+                </div>
+                <div class="form-item" style="display: none !important;">
+                  <input name="productTitle" type="text" value="{{ post.title }}" required>
+                </div>
+                <div class="form-item" style="display: none !important;">
+                  <input name="productPrice" type="text" value="{{ fn('wc_get_product', post.ID).get_price }}" required>
+                </div>
+                <div class="form-item">
+                  <label>{{ pll_e('Full Name') }}:*</label>
+                  <input name="productUserName" type="text" placeholder="Họ và Tên" required>
+                </div>
+                <div class="form-item">
+                  <label>Email:</label>
+                  <input name="productUserEmail" type="email" placeholder="Email">
+                </div>
+                <div class="form-item">
+                  <label>{{ pll_e('Your Phone') }}:*</label>
+                  <input name="productUsermobile" type="number" placeholder="Số điện thoại" required>
+                </div>
+                <div class="form-action">
+                  <button type="submit" class="btn submit-roduct">{{ pll_e('Add to Cart') }}</button>
+                </div>
+
+                <div class="wpcf7-response-output wpcf7-display-none wpcf7-mail-sent-ok custom-meassage-ok" style="display: none;" role="alert">{{ pll_e('Thank you! Your information submitted.') }}</div>
+                <div class="wpcf7-response-output wpcf7-display-none wpcf7-validation-errors custom-meassage-error" style="display: none;" role="alert">{{ pll_e('Please recheck your information.') }}</div>
+              </form>
+            </div>
+
+            <script>
+              const scriptURL = '{{ post.get_field("google_sheet") }}'
+              const form = document.forms['submit-to-google-sheet']
+
+              form.addEventListener('submit', e => {
+                e.preventDefault()
+                fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                  .then(response => jQuery('.custom-meassage-ok').show(), jQuery('.custom-meassage-error').hide())
+                  .catch(error => jQuery('.custom-meassage-error').show(), jQuery('.custom-meassage-ok').hide())
+              });
+            </script>
+          {% else %}
+            {% do action('woocommerce_single_product_summary') %}
           {% endif %}
+
         </div>
 
         <div class="product-content js-accordion">

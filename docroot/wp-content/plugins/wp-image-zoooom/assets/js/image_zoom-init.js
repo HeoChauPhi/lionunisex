@@ -22,6 +22,17 @@ jQuery(document).ready(function( $ ){
         $(this).attr('data-zoom-image', $(this).data('lazy-src'));
     });
 
+    // Fix for the lazy load functionality from the SG Optimizer plugin
+    $("img[data-src].lazyload").each(function() {
+        $(this).attr('data-zoom-image', $(this).data('src'));
+    });
+ 
+
+    // Add "zoooom" for the "is-style-zoooom" images added with Gutenberg
+    $(".is-style-zoooom").each(function(){
+        $(this).addClass('zoooom');
+    });
+
     // Get the image url from data-large_image
     $("img[data-large_image]").each(function(){
         $(this).attr('data-zoom-image', $(this).data('large_image'));

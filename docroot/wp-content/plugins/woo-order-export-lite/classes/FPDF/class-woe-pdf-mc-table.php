@@ -1,9 +1,9 @@
 <?php
-if ( ! class_exists( 'FPDF' ) ) {
-	require( 'fpdf.php' );
+if ( ! class_exists( 'WOE_FPDF' ) ) {
+	require( 'class-woe-fpdf.php' );
 }
 
-class WOE_PDF_MC_Table extends FPDF {
+class WOE_PDF_MC_Table extends WOE_FPDF {
 	protected $widths;
 	protected $aligns;
 
@@ -24,16 +24,17 @@ class WOE_PDF_MC_Table extends FPDF {
 			'style'      => 'B',
 			'size'       => 5,
 			'text_color' => array( 0, 0, 0 ),
-			'logo' => array(
-				'source'   => '',
-				'width'    => 0,
-				'height'   => 0,
-				'align'    => 'R',
+			'logo'       => array(
+				'source' => '',
+				'width'  => 0,
+				'height' => 0,
+				'align'  => 'R',
 			),
 		),
 		'table'        => array(
 			'stretch'      => false,
 			'column_width' => array(),
+			'solid_width'  => array(),
 		),
 		'table_header' => array(
 			'style'            => '',
@@ -123,11 +124,11 @@ class WOE_PDF_MC_Table extends FPDF {
 		$width = $this->validateWidth( $width );
 
 		if ( $align == 'R' ) {
-			$x = $this->GetPageWidth() - $this->rMargin - $width;
+			$x = $this->GetPageWidth() - $this->getRightMargin() - $width;
 		} elseif ( $align == 'C' ) {
 			$x = ( $this->GetPageWidth() - $width ) / 2;
 		} else {
-			$x = $this->lMargin;
+			$x = $this->getLeftMargin();
 		}
 
 		$type = strtoupper( pathinfo( $source, PATHINFO_EXTENSION ) );
@@ -155,7 +156,11 @@ class WOE_PDF_MC_Table extends FPDF {
 
 		if ( ! empty( $this->footer_props['pagination'] ) ) {
 			// Page number
-			$align = in_array( $this->footer_props['pagination'], array( 'L', 'C', 'R', ) ) ? $this->footer_props['pagination'] : false;
+			$align = in_array( $this->footer_props['pagination'], array(
+				'L',
+				'C',
+				'R',
+			) ) ? $this->footer_props['pagination'] : false;
 			if ( $align ) {
 				$this->Cell( 0, 10, 'Page ' . $this->PageNo() . '/{nb}', 0, 0, $align );
 			}
@@ -198,8 +203,16 @@ class WOE_PDF_MC_Table extends FPDF {
 			$y = $this->GetY();
 			//Draw the border
 			$this->Rect( $x, $y, $w, $h, 'DF' );
-			//Print the text
-			$this->MultiCell( $w, 5, $data[ $i ], 0, $a );
+
+			if ( isset( $data[ $i ]['type'], $data[ $i ]['value'] ) && 'image' === $data[ $i ]['type'] && file_exists( $data[ $i ]['value'] ) ) {
+				$source = $data[ $i ]['value'];
+				$type   = strtoupper( pathinfo( $source, PATHINFO_EXTENSION ) );
+				$this->Image( $source, $x + 1 / 2, $y + 1 / 2, $w - 1, $h - 1, $type );
+			} elseif ( ! is_array( $data[ $i ] ) ) {
+				//Print the text
+				$this->MultiCell( $w, 5, $data[ $i ], 0, $a );
+			}
+
 			//Put the position to the right of the cell
 			$this->SetXY( $x + $w, $y );
 		}
@@ -211,7 +224,7 @@ class WOE_PDF_MC_Table extends FPDF {
 		$count = count( $widths );
 		if ( $this->table_props['stretch'] ) {
 			$sum_width  = 0;
-			$page_width = $this->GetPageWidth() - $this->lMargin - $this->rMargin;
+			$page_width = $this->GetPageWidth() - $this->getLeftMargin() - $this->getRightMargin();
 			$count      = 0;
 			foreach ( $widths as $width ) {
 				if ( $sum_width + $width > $page_width ) {
@@ -236,20 +249,42 @@ class WOE_PDF_MC_Table extends FPDF {
 		if ( $this->table_props['stretch'] ) {
 			$widths = array();
 			for ( $i = 0; $i < count( $row ); $i ++ ) {
-				$width = isset( $this->table_props['column_width'][ $i ] ) ? $this->table_props['column_width'][ $i ] :
-					$this->table_props['column_width'][ $i % count( $this->table_props['column_width'] ) ];
+				$width = isset( $this->table_props['column_width'][ $i ] ) ? $this->table_props['column_width'][ $i ] : $this->table_props['column_width'][ $i % count( $this->table_props['column_width'] ) ];
 
 				$widths[ $i ] = $this->validateWidth( $width );
 			}
 
-			return $widths;
 		} else {
-			return array_fill( 0, count( $row ), ( $this->GetPageWidth() - $this->lMargin - $this->rMargin ) / count( $row ) );
+			$widths = array_fill( 0, count( $row ), ( $this->GetPageWidth() - $this->getLeftMargin() - $this->getRightMargin() ) / count( $row ) );
 		}
+
+		if ( $this->table_props['solid_width'] ) {
+			foreach ( $this->table_props['solid_width'] as $position => $width ) {
+				$widths[ $position ] = $this->validateWidth( $width );
+			}
+		}
+
+		return $widths;
+	}
+
+	public function GetPageWidth() {
+		return $this->flt_current_width;
+	}
+
+	public function GetPageHeight() {
+		return $this->flt_current_height;
+	}
+
+	public function getLeftMargin() {
+		return $this->int_left_margin;
+	}
+
+	public function getRightMargin() {
+		return $this->int_right_margin;
 	}
 
 	protected function validateWidth( $width, $min_width = 5 ) {
-		$max_width = $this->GetPageWidth() - $this->lMargin - $this->rMargin - 50;
+		$max_width = $this->GetPageWidth() - $this->getLeftMargin() - $this->getRightMargin() - 50;
 		if ( $width < $min_width ) {
 			$width = $min_width;
 		} elseif ( $width > $max_width ) {
@@ -260,7 +295,7 @@ class WOE_PDF_MC_Table extends FPDF {
 	}
 
 	protected function validateHeight( $height, $min_height = 5 ) {
-		$max_height = $this->GetPageHeight() - $this->tMargin - $this->bMargin - 50;
+		$max_height = $this->GetPageHeight() - $this->int_top_margin - $this->int_break_margin - 50;
 		if ( $height < $min_height ) {
 			$height = $min_height;
 		} elseif ( $height > $max_height ) {
@@ -281,7 +316,9 @@ class WOE_PDF_MC_Table extends FPDF {
 	protected function getRowHeight( $widths, $row ) {
 		$nb = 0;
 		for ( $i = 0; $i < count( $row ); $i ++ ) {
-			$nb = max( $nb, $this->NbLines( $widths[ $i ], $row[ $i ] ) );
+			// do not calculate height for non string values
+			$value = is_string( $row[ $i ] ) ? $row[ $i ] : 0;
+			$nb    = max( $nb, $this->NbLines( $widths[ $i ], $value ) );
 		}
 
 		return 5 * $nb;
@@ -289,10 +326,10 @@ class WOE_PDF_MC_Table extends FPDF {
 
 	public function CheckPageBreak( $h ) {
 		//If the height h would cause an overflow, add a new page immediately
-		if ( $this->GetY() + $h > $this->PageBreakTrigger ) {
+		if ( $this->GetY() + $h > $this->flt_page_break_trigger ) {
 			$this->flush_buffer();
 
-			$this->AddPage( $this->CurOrientation );
+			$this->AddPage( $this->str_current_orientation );
 			if ( $this->table_header_props['repeat'] && $this->table_header ) {
 				$this->changeBrushToDraw( 'table_header' );
 				$this->Row( $this->table_header );
@@ -301,14 +338,89 @@ class WOE_PDF_MC_Table extends FPDF {
 		}
 	}
 
-	public function Output( $dest = '', $name = '', $isUTF8 = false ) {
+	public function output_to_destination( $dest = '', $name = '', $isUTF8 = false ) {
 		$this->flush_buffer();
-		parent::Output( $dest, $name, $isUTF8 );
+		// Output PDF to some destination
+		$this->Close();
+		$output = parent::output();
+		if ( strlen( $name ) == 1 && strlen( $dest ) != 1 ) {
+			// Fix parameter order
+			$tmp  = $dest;
+			$dest = $name;
+			$name = $tmp;
+		}
+		if ( $dest == '' ) {
+			$dest = 'I';
+		}
+		if ( $name == '' ) {
+			$name = 'doc.pdf';
+		}
+		switch ( strtoupper( $dest ) ) {
+			case 'I':
+				// Send to standard output
+				if ( PHP_SAPI != 'cli' ) {
+					// We send to a browser
+					header( 'Content-Type: application/pdf' );
+					header( 'Content-Disposition: inline; ' . $this->_httpencode( 'filename', $name, $isUTF8 ) );
+					header( 'Cache-Control: private, max-age=0, must-revalidate' );
+					header( 'Pragma: public' );
+				}
+				echo $output;
+				break;
+			case 'D':
+				// Download file
+				header( 'Content-Type: application/x-download' );
+				header( 'Content-Disposition: attachment; ' . $this->_httpencode( 'filename', $name, $isUTF8 ) );
+				header( 'Cache-Control: private, max-age=0, must-revalidate' );
+				header( 'Pragma: public' );
+				echo $output;
+				break;
+			case 'F':
+				// Save to local file
+				if ( ! file_put_contents( $name, $output ) ) {
+					throw new WOE_FPDF_Exception( 'Unable to create output file: ' . $name );
+				}
+				break;
+			case 'S':
+				// Return as a string
+				return $output;
+			default:
+				throw new WOE_FPDF_Exception( 'Incorrect output destination: ' . $dest );
+		}
+
+		return '';
+	}
+
+	protected function _httpencode( $param, $value, $isUTF8 ) {
+		// Encode HTTP header field parameter
+		if ( $this->_isascii( $value ) ) {
+			return $param . '="' . $value . '"';
+		}
+		if ( ! $isUTF8 ) {
+			$value = utf8_encode( $value );
+		}
+		if ( strpos( $_SERVER['HTTP_USER_AGENT'], 'MSIE' ) !== false ) {
+			return $param . '="' . rawurlencode( $value ) . '"';
+		} else {
+			return $param . "*=UTF-8''" . rawurlencode( $value );
+		}
+	}
+
+	protected function _isascii( $s ) {
+		// Test if string is ASCII
+		$nb = strlen( $s );
+		for ( $i = 0; $i < $nb; $i ++ ) {
+			if ( ord( $s[ $i ] ) > 127 ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	protected function flush_buffer() {
 		while ( $this->stretch_buffer ) {
-			$this->AddPage( $this->CurOrientation );
+			$this->AddPage( $this->str_current_orientation );
 
 			$buffer                      = $this->stretch_buffer;
 			$stretch_buffer_params       = $this->stretch_buffer_params;
@@ -331,53 +443,54 @@ class WOE_PDF_MC_Table extends FPDF {
 
 	public function NbLines( $w, $txt ) {
 		//Computes the number of lines a MultiCell of width w will take
-		$cw =& $this->CurrentFont['cw'];
 		if ( $w == 0 ) {
-			$w = $this->w - $this->rMargin - $this->x;
+			$w = $this->GetPageWidth() - $this->getRightMargin() - $this->flt_position_x;
 		}
-		$wmax = ( $w - 2 * $this->cMargin ) * 1000 / $this->FontSize;
-		$s    = str_replace( "\r", '', $txt );
-		$nb   = strlen( $s );
-		if ( $nb > 0 and $s[ $nb - 1 ] == "\n" ) {
-			$nb --;
+		$wmax     = ( $w - 2 * $this->int_cell_margin ) * 1000;
+		$s        = str_replace( "\r", '', $txt );
+		$text_len = strlen( $s );
+		if ( $text_len > 0 and $s[ $text_len - 1 ] == "\n" ) {
+			$text_len --;
 		}
-		$sep = - 1;
-		$i   = 0;
-		$j   = 0;
-		$l   = 0;
-		$nl  = 1;
-		while ( $i < $nb ) {
-			$c = $s[ $i ];
-			if ( $c == "\n" ) {
-				$i ++;
+		$sep          = - 1;
+		$ch_index     = 0;
+		$j            = 0;
+		$l            = 0;
+		$line_counter = 1;
+		while ( $ch_index < $text_len ) {
+			$char = $s[ $ch_index ];
+			if ( $char == "\n" ) {
+				$ch_index ++;
 				$sep = - 1;
-				$j   = $i;
+				$j   = $ch_index;
 				$l   = 0;
-				$nl ++;
+				$line_counter ++;
 				continue;
 			}
-			if ( $c == ' ' ) {
-				$sep = $i;
+			if ( $char == ' ' ) {
+				$sep = $ch_index;
 			}
-			$l += $cw[ $c ];
+//			$l += $arr_character_width[ $char ];
+			$l += $this->GetStringWidth( $char ) * 1000;
+
 			if ( $l > $wmax ) {
 				if ( $sep == - 1 ) {
-					if ( $i == $j ) {
-						$i ++;
+					if ( $ch_index == $j ) {
+						$ch_index ++;
 					}
 				} else {
-					$i = $sep + 1;
+					$ch_index = $sep + 1;
 				}
 				$sep = - 1;
-				$j   = $i;
+				$j   = $ch_index;
 				$l   = 0;
-				$nl ++;
+				$line_counter ++;
 			} else {
-				$i ++;
+				$ch_index ++;
 			}
 		}
 
-		return $nl;
+		return $line_counter;
 	}
 
 	public function SetAligns( $a ) {
@@ -396,11 +509,49 @@ class WOE_PDF_MC_Table extends FPDF {
 		}
 		$props = $this->$name;
 
-		$this->SetFont( $this->FontFamily, $props['style'], $props['size'] );
-		$this->loadTextColor( $props );
-		$this->loadFillColor( $props );
+		$defaults = array(
+			'font_family'      => $this->str_current_font_family,
+			'font_style'       => $props['style'],
+			'font_size'        => $props['size'],
+			'font_color'       => $this->getTextColor( $props ),
+			'background_color' => $this->getFillColor( $props ),
+		);
+		$args = apply_filters( 'woe_formatter_pdf_change_brush_to_draw_arguments', $defaults, $what );
+		$args = array_merge($defaults, $args);
+
+
+
+		$this->SetFont( $args['font_family'], $args['font_style'], $args['font_size'] );
+		if ( ! empty( $args['font_color'] ) ) {
+			$color = $args['font_color'];
+			$this->SetTextColor( $color[0], $color[1], $color[2] );
+		}
+		if ( ! empty( $args['background_color'] ) ) {
+			$color = $args['background_color'];
+			$this->SetFillColor( $color[0], $color[1], $color[2] );
+		}
 
 		return true;
+	}
+
+	private function getTextColor($props) {
+		$color = ! empty( $props['text_color'] ) ? $props['text_color'] : null;
+
+		if ( $color ) {
+			$color = $this->convert_color( $color );
+		}
+
+		return $color;
+	}
+
+	private function getFillColor($props) {
+		$color = ! empty( $props['background_color'] ) ? $props['background_color'] : null;
+
+		if ( $color ) {
+			$color = $this->convert_color( $color );
+		}
+
+		return $color;
 	}
 
 	private function loadTextColor( $props ) {

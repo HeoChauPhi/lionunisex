@@ -18,16 +18,12 @@ foreach ( $modes as $mode ) {
 	$settings_export[ $mode ] = WC_Order_Export_Manage::get( $mode );
 }
 
-$type_labels = ! $WC_Order_Export::is_full_version() ? array() : array(
-	WC_Order_Export_Manage::EXPORT_PROFILE      => __( 'Profiles', 'woo-order-export-lite' ),
-	WC_Order_Export_Manage::EXPORT_ORDER_ACTION => __( 'Status change jobs', 'woo-order-export-lite' ),
-	WC_Order_Export_Manage::EXPORT_SCHEDULE     => __( 'Scheduled jobs', 'woo-order-export-lite' ),
-);
+$type_labels = apply_filters( 'woe_tools_page_get_type_labels', array() );
 ?>
 <div class="clearfix"></div>
 <div id="woe-admin" class="container-fluid wpcontent">
     <form>
-        <?php wp_nonce_field( 'woe_nonce', 'woe_nonce' ); ?>
+		<?php wp_nonce_field( 'woe_nonce', 'woe_nonce' ); ?>
         <div class="woe-tab" id="woe-tab-general">
             <div class="woe-box woe-box-main">
                 <h3 class="woe-box-title"><?php _e( 'Export settings', 'woo-order-export-lite' ) ?></h3>
@@ -78,13 +74,17 @@ $type_labels = ! $WC_Order_Export::is_full_version() ? array() : array(
                 </div>
                 <div class="row">
                     <div class="col-sm-2 form-group col-md-offset-7">
+                        <div id="import-error" style='display:none;color:red;font-size: 120%;padding-bottom: 10px;'>
+                            <label class="error-message"></label>
+                        </div>
+
                         <input disabled type="submit" class="woe-btn-tools"
                                value="<?php _e( 'Import', 'woo-order-export-lite' ) ?>" name="woe-tools-import"
                                id="submit-import">
 
                         <div id=Settings_updated
-         style='display:none;color:green;font-size: 120%;padding-bottom: 10px;'><?php _e( "Settings were successfully updated!",
-			'woo-order-export-lite' ) ?></div>
+                             style='display:none;color:green;font-size: 120%;padding-bottom: 10px;'><?php _e( "Settings were successfully updated!",
+								'woo-order-export-lite' ) ?></div>
                     </div>
                 </div>
             </div>
@@ -94,6 +94,20 @@ $type_labels = ! $WC_Order_Export::is_full_version() ? array() : array(
 
 <script>
 	jQuery( function ( $ ) {
+	    function showError($e) {
+	        var message = '';
+	        if ( $e instanceof Error) {
+                message = $e.message;
+            } else if ( $e instanceof String) {
+	            message = $e;
+            } else {
+	            return;
+            }
+
+	        $('#import-error .error-message').text(message);
+	        $('#import-error').show().delay( 5000 ).fadeOut();
+        }
+
 		jQuery( '#wpbody .tools-textarea' ).click( function () {
 			jQuery( this ).select();
 		} );
@@ -107,16 +121,24 @@ $type_labels = ! $WC_Order_Export::is_full_version() ? array() : array(
 		} );
 
 		jQuery( '#submit-import' ).on( 'click', function ( e ) {
+            try {
+                JSON.parse($('#tools-import-text').val());
+            } catch ($e) {
+                showError($e);
+                e.preventDefault();
+                return;
+            }
+
 			if ( ! confirm( '<?php esc_attr_e( 'Are you sure to continue?', 'woo-order-export-lite' ) ?>' ) ) {
 				e.preventDefault();
 				$( document.activeElement ).blur();
 			} else {
-                                $('#Settings_updated').hide();
+				$( '#Settings_updated' ).hide();
 				var data = $( '#woe-admin form' ).serialize();
-				data = data + "&action=order_exporter&method=save_tools";
+				data = data + "&action=order_exporter&method=save_tools&tab=tools";
 				$.post( ajaxurl, data, function ( response ) {
-                                    $( '#tools-import-text' ).val('');
-                                    $('#Settings_updated').show().delay(5000).fadeOut();
+					$( '#tools-import-text' ).val( '' );
+					$( '#Settings_updated' ).show().delay( 5000 ).fadeOut();
 				}, "json" );
 				return false;
 			}

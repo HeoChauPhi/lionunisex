@@ -1,7 +1,7 @@
 <?php
 /* Plugin Name: Theme and plugin translation for Polylang (TTfP)
 Description: Polylang - theme and plugin translation for WordPress
-Version: 3.0.0
+Version: 3.1.0
 Author: Marcin Kazmierski
 License: GPL2
 */
@@ -121,7 +121,14 @@ class Polylang_Theme_Translation
     {
         $strings = array();
         foreach ($files as $file) {
-            preg_match_all("/pll_[_e][\s]*\([\s]*[\'\"](.*?)[\'\"][\s]*\)/s", file_get_contents($file), $matches);
+            // find polylang functions
+            preg_match_all("/[\s=\(]+pll_[_e][\s]*\([\s]*[\'\"](.*?)[\'\"][\s]*\)/s", file_get_contents($file), $matches);
+            if (!empty($matches[1])) {
+                $strings = array_merge($strings, $matches[1]);
+            }
+
+            // find wp functions
+            preg_match_all("/[\s=\(]+_[_e][\s]*\([\s]*[\'\"](.*?)[\'\"][\s]*,[\s]*[\'\"](.*?)[\'\"][\s]*\)/s", file_get_contents($file), $matches);
             if (!empty($matches[1])) {
                 $strings = array_merge($strings, $matches[1]);
             }
@@ -155,6 +162,8 @@ function process_polylang_theme_translation()
             $plugin_obj->run();
         }
     }
+
+
 }
 
 add_action('wp_loaded', 'process_polylang_theme_translation_wp_loaded');
@@ -207,3 +216,15 @@ function plugins_loaded_tt_for_polylang()
 {
     load_plugin_textdomain('polylang-tt', false, basename(__DIR__) . '/languages');
 }
+
+add_filter('gettext', 'tt_pll_gettext_filter');
+function tt_pll_gettext_filter($original)
+{
+    $translations = get_translations_for_domain('pll_string');
+    $translation = $translations->translate($original);
+    if (empty($translation)) {
+        return $original;
+    }
+    return $translation;
+}
+

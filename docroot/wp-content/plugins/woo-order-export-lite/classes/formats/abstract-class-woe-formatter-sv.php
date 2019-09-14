@@ -12,7 +12,6 @@ abstract class WOE_Formatter_sv extends WOE_Formatter_Plain_Format {
 	var $enclosure;
 	var $linebreak;
 	var $delimiter;
-	var $encoding;
 
 	public function __construct(
 		$mode,
@@ -29,7 +28,6 @@ abstract class WOE_Formatter_sv extends WOE_Formatter_Plain_Format {
 		$this->enclosure = $this->convert_literals( isset( $this->settings['enclosure'] ) ? $this->settings['enclosure'] : '' );
 		$this->linebreak = $this->convert_literals( isset( $this->settings['linebreak'] ) ? $this->settings['linebreak'] : '' );
 		$this->delimiter = $this->convert_literals( isset( $this->settings['delimiter'] ) ? $this->settings['delimiter'] : '' );
-		$this->encoding  = isset( $this->settings['encoding'] ) ? $this->settings['encoding'] : '';
 
 		// register the filter
 		WOE_Formatter_sv_crlf_filter::set_linebreak( $this->linebreak );
@@ -44,11 +42,11 @@ abstract class WOE_Formatter_sv extends WOE_Formatter_Plain_Format {
 		$this->prepare_array( $data );
 		parent::start( $data );
 
-		if ( ! empty($this->settings['add_utf8_bom']) ) {
+		if ( ! empty( $this->settings['add_utf8_bom'] ) ) {
 			fwrite( $this->handle, chr( 239 ) . chr( 187 ) . chr( 191 ) );
 		}
 
-		if ( ! empty($this->settings['display_column_names']) AND $data ) {
+		if ( ! empty( $this->settings['display_column_names'] ) AND $data ) {
 			if ( $this->mode == 'preview' ) {
 				$this->rows[] = $data;
 			} else {
@@ -91,6 +89,7 @@ abstract class WOE_Formatter_sv extends WOE_Formatter_Plain_Format {
 			}
 		}
 
+		return $rows;
 	}
 
 	public function finish() {
@@ -100,10 +99,10 @@ abstract class WOE_Formatter_sv extends WOE_Formatter_Plain_Format {
 			$this->rows = apply_filters( "woe_{$this->format}_preview_rows", $this->rows );
 			fwrite( $this->handle, '<table>' );
 			if ( count( $this->rows ) < 2 ) {
-				$this->rows[] = array( __( '<td colspan=10><b>No results</b></td>', 'woo-order-export-lite' ) );
+				$this->rows[] = array( '<td colspan=10><b>' . __( 'No results', 'woo-order-export-lite' ) . '</b></td>' );
 			}
 			foreach ( $this->rows as $num => $rec ) {
-				if ( $num == 0 AND ! empty($this->settings['display_column_names']) ) {
+				if ( $num == 0 AND ! empty( $this->settings['display_column_names'] ) ) {
 					fwrite( $this->handle,
 						'<tr style="font-weight:bold"><td>' . join( '</td><td>', $rec ) . "</td><tr>\n" );
 				} else {

@@ -554,10 +554,54 @@
 				$fields = wvs_taxonomy_meta_fields( $attribute_taxonomy->attribute_type );
 				
 				if ( ! empty( $fields ) ): ?>
-                    <button class="button fr plus wvs_add_new_attribute" data-dialog_title="<?php printf( esc_html__( 'Add new %s', 'woo-variation-swatches' ), esc_attr( $attribute_taxonomy->attribute_label ) ) ?>"><?php esc_html_e( 'Add new', 'woo-variation-swatches' ); ?></button>
+                    <button disabled="disabled" class="button fr plus wvs_add_new_attribute" data-dialog_title="<?php printf( esc_html__( 'Add new %s', 'woo-variation-swatches' ), esc_attr( $attribute_taxonomy->attribute_label ) ) ?>"><?php esc_html_e( 'Add new', 'woo-variation-swatches' ); ?></button>
 				<?php else: ?>
                     <button class="button fr plus add_new_attribute"><?php esc_html_e( 'Add new', 'woo-variation-swatches' ); ?></button>
 				<?php endif; ?>
+				<?php
+			}
+		}
+	endif;
+	
+	//-------------------------------------------------------------------------------
+	// Dokan Support - OLD WC Style
+	//-------------------------------------------------------------------------------
+	if ( ! function_exists( 'dokan_support_wvs_product_option_terms' ) ) :
+		function dokan_support_wvs_product_option_terms( $attribute_taxonomy, $i ) {
+			// $attribute_taxonomy, $i
+			// $tax, $i
+			global $post, $thepostid, $product_object;
+			if ( in_array( $attribute_taxonomy->attribute_type, array_keys( wvs_available_attributes_types() ) ) ) {
+				
+				$taxonomy = wc_attribute_taxonomy_name( $attribute_taxonomy->attribute_name );
+				
+				$product_id = $thepostid;
+				
+				if ( is_null( $thepostid ) && isset( $_POST[ 'post_id' ] ) ) {
+					$product_id = absint( $_POST[ 'post_id' ] );
+				}
+				
+				$args = array(
+					'orderby'    => 'name',
+					'hide_empty' => 0,
+				);
+				
+				?>
+                <select multiple="multiple" style="width:100%" data-placeholder="<?php esc_attr_e( 'Select terms', 'woo-variation-swatches' ); ?>" class="dokan_attribute_values dokan-select2" name="attribute_values[<?php echo esc_attr( $i ); ?>][]">
+					<?php
+						$all_terms = get_terms( $taxonomy, apply_filters( 'dokan_product_attribute_terms', $args ) );
+						if ( $all_terms ) :
+							foreach ( $all_terms as $term ) :
+								echo '<option value="' . esc_attr( $term->slug ) . '" ' . selected( has_term( absint( $term->term_id ), $taxonomy, $product_id ), true, false ) . '>' . esc_attr( apply_filters( 'woocommerce_product_attribute_term_name', $term->name, $term ) ) . '</option>';
+							endforeach;
+						endif;
+					?>
+                </select>
+
+                <div class="dokan-pre-defined-attribute-btn-group">
+                    <button class="dokan-btn dokan-btn-default plus dokan-select-all-attributes"><?php esc_html_e( 'Select all', 'woo-variation-swatches' ); ?></button>
+                    <button class="dokan-btn dokan-btn-default minus dokan-select-no-attributes"><?php esc_html_e( 'Select none', 'woo-variation-swatches' ); ?></button>
+                </div>
 				<?php
 			}
 		}
@@ -595,7 +639,7 @@
 				$fields = wvs_taxonomy_meta_fields( $attribute_taxonomy->attribute_type );
 				
 				if ( ! empty( $fields ) ): ?>
-                    <button class="button fr plus wvs_add_new_attribute" data-dialog_title="<?php printf( esc_html__( 'Add new %s', 'woo-variation-swatches' ), esc_attr( $attribute_taxonomy->attribute_label ) ) ?>"><?php esc_html_e( 'Add new', 'woo-variation-swatches' ); ?></button>
+                    <button disabled="disabled" class="button fr plus wvs_add_new_attribute" data-dialog_title="<?php printf( esc_html__( 'Add new %s', 'woo-variation-swatches' ), esc_attr( $attribute_taxonomy->attribute_label ) ) ?>"><?php esc_html_e( 'Add new', 'woo-variation-swatches' ); ?></button>
 				<?php else: ?>
                     <button class="button fr plus add_new_attribute"><?php esc_html_e( 'Add new', 'woo-variation-swatches' ); ?></button>
 				<?php endif; ?>

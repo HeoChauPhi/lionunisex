@@ -1,12 +1,12 @@
 === Variation Swatches for WooCommerce ===
-Contributors: EmranAhmed, wpeshaan, getwooplugins
+Contributors: EmranAhmed, getwooplugins
 Tags: woocommerce variation swatches, woocommerce variation, woocommerce, variation swatches, woocommerce attributes, product attributes, product color, product size, variable product attributes, variation product swatches, color variation swatch, image variation swatch, printful color swatches
 Requires at least: 4.8
 Tested up to: 5.2
 Requires PHP: 5.6
 Stable tag: trunk
 WC requires at least: 3.2
-WC tested up to: 3.6
+WC tested up to: 3.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -143,6 +143,7 @@ In the free WooCommerce attribute variation plugin, besides creating size, brand
 * Archive Page Swatches Alignment
  [Live Demo & Documentation](http://bit.ly/3rd-demo-readme-shop-alignment)
 <hr />
+* Multi Color Variaiton Swatchees. 
 * Customize Tooltip Text and Background Color
 * Enable / Disable Ajax Variation
 * Archive page swatches positioning
@@ -316,6 +317,27 @@ And your are ready to go.
 12. Global Variation Color Swatches Attribute List Preview
 
 == Changelog ==
+
+= 1.0.62 =
+
+* Add: WC 3.7 update
+
+= 1.0.61 =
+
+* Fix: CSS source map issue.
+
+= 1.0.60 =
+
+* Fix: Clear selection js error fix.
+
+= 1.0.59 =
+
+* Add: Dokan Multivendor Support added
+
+= 1.0.58 =
+
+* Fix: Inactive WooCommerce notice
+* Fix: Known Issues
 
 = 1.0.57 =
 

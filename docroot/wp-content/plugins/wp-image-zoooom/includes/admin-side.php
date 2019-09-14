@@ -29,6 +29,8 @@ class ImageZoooom_Admin {
         add_action( 'admin_menu', array( $this, 'admin_menu' ) );
         add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
         add_action( 'admin_head', array( $this, 'iz_add_tinymce_button' ) );
+        add_action( 'admin_head', array( $this, 'gutenberg_style' ) );
+        add_action( 'enqueue_block_editor_assets', array($this, 'enqueue_block_editor_assets' ) );
         $this->plugin = wp_image_zoooom_settings('plugin'); 
         $this->warnings();
     }
@@ -109,6 +111,22 @@ class ImageZoooom_Admin {
         }
         return false;
     }
+
+
+    /**
+     * Add "with Image Zoom" style for the Image block in Gutenberg
+     * @access public
+     */
+    public function enqueue_block_editor_assets() {
+        wp_enqueue_script(
+            'gutenberg-zoom-style',
+            IMAGE_ZOOM_URL . 'assets/js/gutenberg-zoom-style.js',
+            array( 'wp-blocks', 'wp-dom' ),
+            filemtime( IMAGE_ZOOM_PATH . '/assets/js/gutenberg-zoom-style.js' ),
+            true
+        );
+    }
+
 
     /**
      * Output the admin page
@@ -440,6 +458,28 @@ class ImageZoooom_Admin {
 
 
     /**
+     * Image style in the Gutenberg editor
+     */
+    function gutenberg_style() {
+        echo '<style type="text/css">
+                .edit-post-layout__content figure.is-style-zoooom::before{
+                    content: "\f179     Zoom applied to the image. Check on the frontend";
+                    position: absolute;
+                    margin-top: 12px;
+                    text-align: right;
+                    background-color: white;
+                    padding: 0 10px 6px;
+                    right: 0;
+                    font-family: dashicons;
+                    font-size: 0.9em;
+                    font-style: italic;
+                    z-index: 20;
+                }
+            </style>';
+    }
+
+
+    /**
      * Show admin warnings
      */
     function warnings() {
@@ -454,6 +494,7 @@ class ImageZoooom_Admin {
             'iz_dismiss_shopkeeper',
             'iz_dismiss_bridge',
             'iz_dismiss_wooswipe',
+            'iz_dismiss_avada_woo_gallery',
         );
 
         $w = new SilkyPress_Warnings($allowed_actions); 
@@ -510,6 +551,16 @@ class ImageZoooom_Admin {
             $wooswipe_url = 'https://wordpress.org/plugins/wooswipe/';
             $message = sprintf( __( 'WP Image Zoom plugin is <b>not compatible with the <a href="%1$s">WooSwipe WooCommerce Gallery</a> plugin</b>. You can try the zoom plugin with the default WooCommerce gallery by deactivating the WooSwipe plugin. Alternatively, you can upgrade to the WP Image Zoom Pro version, where the issue with the WooSwipe plugin is fixed.' ), $wooswipe_url, $pro_url);
             $w->add_notice( 'iz_dismiss_wooswipe', $message );
+        }
+
+
+        // Check if the Avada theme is active and the WooCommerce plugin installed
+        if ( strpos( strtolower(get_template()), 'avada') !== false && is_plugin_active('woocommerce/woocommerce.php')) {
+            $avada_options = get_option('fusion_options');
+            if ( isset($avada_options['disable_woo_gallery']) && $avada_options['disable_woo_gallery'] == '1') {
+                $message = __( '<b>The zoom will work</b> on the WooCommerce products images only when having the <b>"Avada\'s WooCommerce Product Gallery Slider"</b> option <b>turned off</b> on the <a href="'.admin_url('themes.php?page=avada_options').'">WP Admin -> Avada -> Theme Options -> WooCommerce -> General WooCommerce</a> page');
+                $w->add_notice( 'iz_dismiss_avada_woo_gallery', $message );
+            } 
         }
 
         $w->show_warnings();

@@ -9,7 +9,19 @@
 	},
 	"require": {
 		"ext-openssl": "*",
-		"automattic/jetpack-logo": "@dev"
+		"automattic/jetpack-abtest": "@dev",
+		"automattic/jetpack-connection": "@dev",
+		"automattic/jetpack-options": "@dev",
+		"automattic/jetpack-logo": "@dev",
+		"automattic/jetpack-constants": "@dev",
+		"automattic/jetpack-error": "@dev",
+		"automattic/jetpack-jitm": "@dev",
+		"automattic/jetpack-assets": "@dev",
+		"automattic/jetpack-roles": "@dev",
+		"automattic/jetpack-sync": "@dev",
+		"automattic/jetpack-tracking": "@dev",
+		"automattic/jetpack-autoloader": "@dev",
+		"automattic/jetpack-compat": "@dev"
 	},
 	"require-dev": {
 		"dealerdirect/phpcodesniffer-composer-installer": "0.5.0",
@@ -18,7 +30,7 @@
 		"phpcompatibility/phpcompatibility-wp": "2.0.0"
 	},
 	"scripts": {
-		"php:compatibility": "composer install && vendor/bin/phpcs -p -s --runtime-set testVersion '5.3-' --standard=PHPCompatibilityWP --ignore=docker,tools,tests,node_modules,vendor --extensions=php",
+		"php:compatibility": "composer install && vendor/bin/phpcs -p -s --runtime-set testVersion '5.6-' --standard=PHPCompatibilityWP --ignore=docker,tools,tests,node_modules,vendor --extensions=php",
 		"php:lint": "composer install && vendor/bin/phpcs -p -s",
 		"php:autofix": "composer install && vendor/bin/phpcbf",
 		"php:lint:errors": "composer install && vendor/bin/phpcs -p -s --runtime-set ignore_warnings_on_exit 1"
@@ -26,7 +38,14 @@
 	"repositories": [
 		{
 			"type": "path",
-			"url": "./packages/logo"
+			"url": "./packages/*"
 		}
-	]
+	],
+	"autoload": {
+		"classmap": [
+			"src"
+		]
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true
 }

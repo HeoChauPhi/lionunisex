@@ -44,7 +44,7 @@ function submit_cf7(){
 
 //Select form name then call
 function import_submit_cf7(){
-	
+
 	var url = jQuery('#base_url').val();
 	var cf7_id = parseInt(jQuery('#import_cf7_id').val());
 	if(!isNaN(cf7_id)){
@@ -68,12 +68,12 @@ function checkfile(sender) {
 }
 
 jQuery(document).ready(function($) {
-    
+
 	//Set date picker on listing screen
 	jQuery("#start_date").datetimepicker({
-		
+
 		timepicker:false,
-		format:'d/m/Y',	
+		format:'d/m/Y',
 		maxDate: "0",
 		changeMonth: true,
 		changeYear: true,
@@ -81,21 +81,21 @@ jQuery(document).ready(function($) {
 		scrollInput: false,
 	});
 	jQuery("#end_date").datetimepicker({
-		
+
 		timepicker:false,
-		format:'d/m/Y',	
+		format:'d/m/Y',
 		maxDate: "0",
 		changeMonth: true,
 		changeYear: true,
 		closeOnDateSelect: true,
 		scrollInput: false,
 	});
-	
+
 	//Setup date filter text box is readonly
 	jQuery(".input-cf-date").attr("readonly","true");
 	jQuery(".input-cf-date").css("background-color","#fff");
-	
-	
+
+
 	//Setup icon functionality in setting page
 	jQuery('#cf7d-list-field li span.dashicons').click(function(event) {
         var $this = jQuery(this);
@@ -112,13 +112,13 @@ jQuery(document).ready(function($) {
             $custom_label.val('1');
         }
     });
-    
+
 	/////////// For Date filter condition here/////////////
 	jQuery('#search_date').click(function(event) {
 		var startDate = document.getElementById('start_date');
 		var endDate = document.getElementById('end_date');
 		formCheck = true;
-		
+
 		if(startDate.value == ''){
 			startDate.style.border = 'solid 1px red';
 			startDate.value = '';
@@ -128,7 +128,7 @@ jQuery(document).ready(function($) {
 		else{
 			startDate.style.border = '';
 		}
-		
+
 		if(endDate.value == ''){
 			endDate.style.border = 'solid 1px red';
 			endDate.value = '';
@@ -138,23 +138,23 @@ jQuery(document).ready(function($) {
 		else{
 			endDate.style.border = '';
 		}
-		
+
 		 //Detailed check for valid date ranges
 		var dayfield=startDate.value.split("/")[0];
 		var monthfield=startDate.value.split("/")[1];
 		var yearfield=startDate.value.split("/")[2];
-	
+
 		var edayfield=endDate.value.split("/")[0];
 		var emonthfield=endDate.value.split("/")[1];
 		var eyearfield=endDate.value.split("/")[2];
-		
+
 		if(formCheck && (new Date(yearfield, monthfield-1, dayfield).getTime() > new Date(eyearfield, emonthfield-1, edayfield).getTime())){
 			endDate.style.border = 'solid 1px red';
 			endDate.value = '';
 			endDate.focus();
 			formCheck = false;
 		}
-		
+
 		if(formCheck){
 			endDate.style.border = '';
 			jQuery('#cf7d-admin-action-frm').submit();
@@ -162,34 +162,35 @@ jQuery(document).ready(function($) {
 		else{
 			return false;
 		}
-		
+
 	});
-	
-	
+
+
     /*
-     * Edit value    
+     * Edit value
      */
     jQuery('a.cf7d-edit-value').click(function(event) {
-       
-		
+
+
 	   jQuery('#cf7d-modal-form-edit-value').removeClass('loading');
 		jQuery('body').addClass('our-body-class');
-		
+
 		document.getElementById('overlayLoader').style.display = "block";
 		var rid = parseInt(jQuery(this).data('rid'));
-			
+		var fid = parseInt(jQuery('#cf7_id').val());
+
 		var arr_field_type = jQuery.parseJSON(jQuery('form#cf7d-modal-form-edit-value input[name="arr_field_type"]').val());
 		var arr_option = ['radio','checkbox','select'];
 		//console.log(arr_field_type);
         jQuery('form#cf7d-modal-form-edit-value input[name="rid"]').attr('value', rid);
 		rs = jQuery('form#cf7d-modal-form-edit-value input[class^="field-"]');
 		var arr_text = jQuery('form#cf7d-modal-form-edit-value textarea[class^="field-"]');
-		
+
 		//Set all fields value is loading
 		for(var fieldname in arr_field_type){
 			if(Object.keys(arr_field_type[fieldname]).length == 1){
 			//if(!arr_option.includes(arr_field_type[fieldname])){
-				//check field type is not text and file 
+				//check field type is not text and file
 				if(arr_field_type[fieldname]['basetype'] != 'text' && arr_field_type[fieldname]['basetype'] != 'file'){
 					jQuery('form#cf7d-modal-form-edit-value textarea[class^="field-'+fieldname+'"]').html('Loading...');
 				}
@@ -210,27 +211,36 @@ jQuery(document).ready(function($) {
 				jQuery('form#cf7d-modal-form-edit-value textarea[class^="field-'+fieldname+'"]').html('Loading...');
 			}
 		}
-		
+
 		//Call Ajax request here for get entry related information
 		jQuery.ajax({
             url: ajaxurl + '?action=vsz_cf7_edit_form_value',
             type: 'POST',
-            data: {'rid': rid},
+            data: {
+            	 	'rid': rid,
+            	 	'fid': fid
+        		  },
         })
         .done(function(data) {
             //Decode json data here
 			var json = jQuery.parseJSON(data);
+            if(json.indexOf != undefined && json.indexOf('@@') != -1){
+            	alert('You do not have the access to edit the data.');
+            	document.getElementById('overlayLoader').style.display = "none";
+            	self.parent.tb_remove();
+            	return false;
+            }
 			//Set fields value
 			jQuery.each(json, function(index, el){
                 //Get existing fields information
 				if(index in arr_field_type){
-					
+
 					//Check existing field length for field type is check box or radio button
 					//if(Object.keys(arr_field_type[index]).length > 1){
 					if(false && arr_option.includes(arr_field_type[index]['basetype'])){
 						//Get all existing checkboxes values
 						var arr_checkbox = jQuery('form#cf7d-modal-form-edit-value input[class^="field-'+index+'"]');
-						//Set option box values 
+						//Set option box values
 						//if(arr_checkbox.length == 0){
 						if(arr_field_type[index]['basetype'] == 'select'){
 							jQuery('form#cf7d-modal-form-edit-value select option[value="'+el+'"]').prop('selected', true);
@@ -240,7 +250,7 @@ jQuery(document).ready(function($) {
 							arr_values = el.split('\n');
 							//Add or remove checked attributes on check boxes
 							jQuery.each(arr_checkbox, function(indexc, elc){
-								//Set checked value check boxes  
+								//Set checked value check boxes
 								if(arr_values != '' && arr_values.includes(jQuery(this).val())){
 									jQuery(this).attr('checked','checked');
 								}
@@ -250,7 +260,7 @@ jQuery(document).ready(function($) {
 							});
 						}
 					}
-					//Set file field related functionality here 
+					//Set file field related functionality here
 					else if(arr_field_type[index]['basetype'] == 'file'){
 						if(el){
 							var filename = el.split('/').pop();
@@ -274,12 +284,12 @@ jQuery(document).ready(function($) {
 						jQuery('form#cf7d-modal-form-edit-value .field-' + index).html(el);
 					}
 				}
-				else{ 
-					jQuery('form#cf7d-modal-form-edit-value .field-' + index).attr('value', el);	
+				else{
+					jQuery('form#cf7d-modal-form-edit-value .field-' + index).attr('value', el);
 				}
-				
+
 			});
-			
+
 			//Remove Loading word on all fields values
 			jQuery.each(rs, function(index, el){
 				if(jQuery(this).val() == 'Loading...'){
@@ -289,14 +299,14 @@ jQuery(document).ready(function($) {
 					}
 				}
 			});
-			
-			//Remove text area to loading value 
+
+			//Remove text area to loading value
 			jQuery.each(arr_text, function(index, el){
 				if(jQuery(this).val() == 'Loading...'){
 					jQuery(this).val('');
 				}
 			});
-			
+
 			//setTimeout(function(){ document.getElementById('overlayLoader').style.display = "none"; }, 1000);
         })
         .fail(function() {
@@ -306,10 +316,10 @@ jQuery(document).ready(function($) {
             console.log("complete");
 			document.getElementById('overlayLoader').style.display = "none";
         });
-		
+
 	});
-	
-	//Add email field validation on Edit form 
+
+	//Add email field validation on Edit form
 	jQuery('#update_cf7_value').click(function(){
 		var arr_field_type = jQuery.parseJSON(jQuery('form#cf7d-modal-form-edit-value input[name="arr_field_type"]').val());
 		var flagReturn =true;
@@ -330,7 +340,7 @@ jQuery(document).ready(function($) {
 		}
 		return false;
 	});
-	
+
     /*
      * Search
      */
@@ -346,36 +356,36 @@ jQuery(document).ready(function($) {
             return false;
         }
     });
-   
+
 });
 
 //Define valid email address function here
 function validateEmail(email) {
-	
+
 	var expr = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,10}|[0-9]{1,3})(\]?)$/;
 	return expr.test(email);
 };
 
 // Define add remove file for edit section
 function add_remove_file(index,filename){
-	
+
 	if(filename != ""){
 		jQuery('form#cf7d-modal-form-edit-value .field-' + index).show();
 		jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().find(".vsz_cf7_db_file_edit").each(function(){
 			jQuery(this).click(function(){
 				if(confirm("Are you sure to remove the file? File will be deleted permanently and could not be retrieved.")){
-					
+
 					var fid = jQuery("input[name='fid']").val();
 					var rid = jQuery("input[name='rid']").val();
 					var field = index;
-					
+
 					var fd = new FormData();
 					fd.append( "fid", fid);
 					fd.append( "rid", rid);
 					fd.append( "field", field);
 					fd.append( "val", filename);
 					fd.append( "action", "acf7_db_edit_scr_file_delete");
-					
+
 					jQuery.ajax({
 						url: ajaxurl,
 						type: 'POST',
@@ -390,26 +400,26 @@ function add_remove_file(index,filename){
 							jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().find('a').remove();
 							jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().append('<span class="margin_left">Maximum file size allowed : 7.60 MB.</span><span class="margin_left" style="display: block;">It is possible that server has limit less than 7.60 MB, in that case it can terminate the request. It is advisable to keep upload file size as minimum as possible.</span>');
 							jQuery('form#cf7d-modal-form-edit-value .field-' + index).hide();
-							
+
 							document.getElementById('overlayLoader').style.display = "none";
-							
+
 							jQuery(".field-"+index+"-val").change(function(){
 								var thisdata = jQuery(this);
 								var fileName = jQuery(thisdata).val();
 								var checkvalidate = 1;
-								
+
 								if(fileName != "" && fileName != undefined){
 									var fd = new FormData();
 									var fid = jQuery("input[name='fid']").val();
 									var rid = jQuery("input[name='rid']").val();
 									var field = index;
-									
+
 									fd.append( "image", jQuery(thisdata)[0].files[0]);
 									fd.append( "action", "acf7_db_edit_scr_file_upload");
 									fd.append( "fid", fid);
 									fd.append( "rid", rid);
 									fd.append( "field", field);
-									
+
 									jQuery.ajax({
 										url: ajaxurl,
 										type: 'POST',
@@ -432,10 +442,10 @@ function add_remove_file(index,filename){
 											}
 											else{
 												dataArr = data.split("~~@@~~&&~~");
-												
+
 												var filename = dataArr[0];
 												var el = dataArr[1];
-												
+
 												jQuery('form#cf7d-modal-form-edit-value .field-' + index).attr('value', filename);
 												jQuery('form#cf7d-modal-form-edit-value .field-' + index).css("border","");
 												jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().append('<a class="margin_left" href="'+el+'" target="_blank" download >Download</a>');
@@ -443,11 +453,11 @@ function add_remove_file(index,filename){
 												jQuery('form#cf7d-modal-form-edit-value .field-' + index).show();
 												jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().find('.field-'+index+'-val').remove();
 												jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().find('span.margin_left').remove();
-												
+
 												// Calling function which will handle the removal and new upload of the files
 												add_remove_file(index,filename);
 											}
-											
+
 											document.getElementById('overlayLoader').style.display = "none";
 										},
 
@@ -468,7 +478,7 @@ function add_remove_file(index,filename){
 							return false;
 						},
 					});
-					
+
 				}
 			});
 		});
@@ -478,26 +488,26 @@ function add_remove_file(index,filename){
 		jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().find('a').remove();
 		jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().append('<span class="margin_left">Maximum file size allowed : 7.60 MB.</span><span class="margin_left" style="display: block;">It is possible that server has limit less than 7.60 MB, in that case it can terminate the request. It is advisable to keep upload file size as minimum as possible.</span>');
 		jQuery('form#cf7d-modal-form-edit-value .field-' + index).hide();
-		
+
 		document.getElementById('overlayLoader').style.display = "none";
-		
+
 		jQuery(".field-"+index+"-val").change(function(){
 			var thisdata = jQuery(this);
 			var fileName = jQuery(thisdata).val();
 			var checkvalidate = 1;
-			
+
 			if(fileName != "" && fileName != undefined){
 				var fd = new FormData();
 				var fid = jQuery("input[name='fid']").val();
 				var rid = jQuery("input[name='rid']").val();
 				var field = index;
-				
+
 				fd.append( "image", jQuery(thisdata)[0].files[0]);
 				fd.append( "action", "acf7_db_edit_scr_file_upload");
 				fd.append( "fid", fid);
 				fd.append( "rid", rid);
 				fd.append( "field", field);
-				
+
 				jQuery.ajax({
 					url: ajaxurl,
 					type: 'POST',
@@ -520,10 +530,10 @@ function add_remove_file(index,filename){
 						}
 						else{
 							dataArr = data.split("~~@@~~&&~~");
-							
+
 							var filename = dataArr[0];
 							var el = dataArr[1];
-							
+
 							jQuery('form#cf7d-modal-form-edit-value .field-' + index).attr('value', filename);
 							jQuery('form#cf7d-modal-form-edit-value .field-' + index).css("border","");
 							jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().append('<a class="margin_left" href="'+el+'" target="_blank" download >Download</a>');
@@ -531,11 +541,11 @@ function add_remove_file(index,filename){
 							jQuery('form#cf7d-modal-form-edit-value .field-' + index).show();
 							jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().find('.field-'+index+'-val').remove();
 							jQuery('form#cf7d-modal-form-edit-value .field-' + index).parent().find('span.margin_left').remove();
-							
+
 							// Calling function which will handle the removal and new upload of the files
 							add_remove_file(index,filename);
 						}
-						
+
 						document.getElementById('overlayLoader').style.display = "none";
 					},
 
@@ -554,13 +564,13 @@ function add_remove_file(index,filename){
 /**************** Check fields key related match key value empty or not *************************/
 jQuery(document).ready(function() {
 
-	//Get current page information 
+	//Get current page information
 	var active_sub_menu = jQuery('.pagination-links').find('span');
 	if(active_sub_menu.hasClass('current') ){ // .hasClass() returns BOOLEAN true/false
 		page_id = parseInt(jQuery('.pagination-links .current').html());
 		jQuery('.pagination-links .current').html('<input type="number" step="1" min="1" class="tiny-text" name="current_page" id="current_page" value="'+page_id+'" size="1" aria-describedby="table-paging">');
 	}
-	
+
 	//When enter key press on page number text field then form submit with new information
 	jQuery('#current_page').keydown(function(e){
 		if(e.which === 13){
@@ -569,18 +579,18 @@ jQuery(document).ready(function() {
 			var totalPage = parseInt(jQuery('#totalPage').val().trim());
 			if(new_val <= totalPage){
 				jQuery('#cpage').val(new_val);
-				document.getElementById('cf7d-admin-action-frm').submit();	
+				document.getElementById('cf7d-admin-action-frm').submit();
 			}
 		  }
 		  return false;
 		}
   });
-	
+
 	jQuery('#import_sheet').on('click',function(){
 		var count = 0;
 		jQuery(".match-key").each(function() {
 			if(jQuery(this).val()){
-				count ++;	
+				count ++;
 			}
 		});
 		if(count){
@@ -609,9 +619,9 @@ function get_list_fields(form_id){
 			document.getElementById('overlayLoader').style.display = "block";
 		},
 		success: function(data) {
-			
+
 			alert(data);
-			
+
 			document.getElementById('overlayLoader').style.display = "none";
 		},
 		error: function(data){

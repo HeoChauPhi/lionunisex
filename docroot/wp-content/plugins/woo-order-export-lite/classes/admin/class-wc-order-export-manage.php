@@ -43,19 +43,6 @@ class WC_Order_Export_Manage {
 		return $name;
 	}
 
-	static function remove_settings() {
-		$options = array(
-			self::settings_name_now,
-			self::settings_name_cron,
-			self::settings_name_profiles,
-			self::settings_name_actions,
-		);
-
-		foreach ( $options as $option ) {
-			delete_option( $option );
-		}
-	}
-
 	// arrays
 	static function get_export_settings_collection( $mode ) {
 		$name = self::get_settings_name_for_mode( $mode );
@@ -64,9 +51,9 @@ class WC_Order_Export_Manage {
 	}
 
 	static function save_export_settings_collection( $mode, $jobs ) {
-		$name = self::get_settings_name_for_mode( $mode );
+		$name   = self::get_settings_name_for_mode( $mode );
 		$result = update_option( $name, $jobs, false );
-		
+
 		if ( $mode == self::EXPORT_SCHEDULE ) {
 			WC_Order_Export_Cron::try_install_job( true ); // must delete existing job!
 		}
@@ -93,6 +80,7 @@ class WC_Order_Export_Manage {
 			'product_categories',
 			'product_vendors',
 			'products',
+			'exclude_products',
 			'shipping_locations',
 			'shipping_methods',
 			'user_roles',
@@ -122,7 +110,7 @@ class WC_Order_Export_Manage {
 		}
 
 		$settings                               = self::get( $in['mode'], $in['id'] );
-		$settings['id']                         = (int)$in['id'];
+		$settings['id']                         = (int) $in['id'];
 		$settings['duplicated_fields_settings'] = isset( $in['duplicated_fields_settings'] ) ? $in['duplicated_fields_settings'] : array();
 
 		// setup new values for same keys
@@ -181,7 +169,38 @@ class WC_Order_Export_Manage {
 		return self::apply_defaults( $mode, $settings );
 	}
 
+
+	public static function get_defaults_filters() {
+
+	    return array(
+		'statuses'		 => array(),
+		'from_date'		 => '',
+		'to_date'		 => '',
+		'shipping_locations'	 => array(),
+		'shipping_methods'	 => array(),
+		'item_names'		 => array(),
+		'item_metadata'		 => array(),
+		'user_roles'		 => array(),
+		'user_names'		 => array(),
+		'user_custom_fields'	 => array(),
+		'billing_locations'	 => array(),
+		'payment_methods'	 => array(),
+		'any_coupon_used'	 => 0,
+		'coupons'		 => array(),
+		'order_custom_fields'	 => array(),
+		'product_categories'	 => array(),
+		'product_vendors'	 => array(),
+		'products'		 => array(),
+		'exclude_products'	 => array(),
+		'product_taxonomies'	 => array(),
+		'product_custom_fields'	 => array(),
+		'product_attributes'	 => array(),
+		'product_itemmeta'	 => array(),
+	    );
+	}
+
 	private static function get_defaults( $mode ) {
+		$settings = WC_Order_Export_Main_Settings::get_settings();
 		return array(
 			'version'                                  => '2.0',
 			'mode'                                     => $mode,
@@ -191,7 +210,7 @@ class WC_Order_Export_Manage {
 			'from_status'                              => array(),
 			'to_status'                                => array(),
 			'change_order_status_to'                   => '',
-			'statuses'                                 => array(),
+			'statuses'                                 => ($mode == "now" OR $mode == "profiles") ? array("wc-pending","wc-processing","wc-on-hold","wc-completed") : array(),
 			'from_date'                                => '',
 			'to_date'                                  => '',
 			'shipping_locations'                       => array(),
@@ -209,6 +228,7 @@ class WC_Order_Export_Manage {
 			'product_categories'                       => array(),
 			'product_vendors'                          => array(),
 			'products'                                 => array(),
+			'exclude_products'			   => array(),
 			'product_taxonomies'                       => array(),
 			'product_custom_fields'                    => array(),
 			'product_attributes'                       => array(),
@@ -220,6 +240,8 @@ class WC_Order_Export_Manage {
 			'format_xls_auto_width'                    => 1,
 			'format_xls_direction_rtl'                 => 0,
 			'format_xls_force_general_format'          => 0,
+			'format_xls_row_images_width'              => 50,
+			'format_xls_row_images_height'             => 50,
 			'format_csv_enclosure'                     => '"',
 			'format_csv_delimiter'                     => ',',
 			'format_csv_linebreak'                     => '\r\n',
@@ -257,31 +279,48 @@ class WC_Order_Export_Manage {
 			'format_pdf_table_header_background_color' => '#FFFFFF',
 			'format_pdf_table_row_text_color'          => '#000000',
 			'format_pdf_table_row_background_color'    => '#FFFFFF',
+			'format_pdf_logo_source_id'                => 0,
 			'format_pdf_logo_source'                   => '',
 			'format_pdf_logo_width'                    => 0,
 			'format_pdf_logo_height'                   => 15,
 			'format_pdf_logo_align'                    => 'R',
+			'format_pdf_row_images_width'              => 15,
+			'format_pdf_row_images_height'             => 15,
 
-			'all_products_from_order'                  => 1,
-			'skip_refunded_items'                      => 1,
-			'skip_suborders'                           => 0,
-			'export_refunds'                           => 0,
-			'date_format'                              => 'Y-m-d',
-			'time_format'                              => 'H:i',
-			'sort_direction'                           => 'DESC',
-			'sort'                                     => 'order_id',
-			'format_number_fields'                     => 0,
-			'export_all_comments'                      => 0,
-			'export_refund_notes'                      => 0,
-			'strip_tags_product_fields'                => 0,
-			'cleanup_phone'                            => 0,
-			'enable_debug'                             => 0,
-			'format_json_start_tag'                    => '[',
-			'format_json_end_tag'                      => ']',
-			'custom_php'                               => 0,
-			'custom_php_code'                          => '',
-			'mark_exported_orders'                     => 0,
-			'export_unmarked_orders'                   => 0,
+			'format_html_display_column_names'		 => 1,
+			'format_html_repeat_header_last_line'		 => 0,
+			'format_html_font_size'				 => 13,
+			'format_html_header_text'			 => '',
+			'format_html_footer_text'			 => '',
+			'format_html_cols_align'			 => 'L',
+			'format_html_header_text_color'			 => '#000000',
+			'format_html_footer_text_color'			 => '#000000',
+			'format_html_table_header_text_color'		 => '#000000',
+			'format_html_table_header_background_color'	 => '#FFFFFF',
+			'format_html_table_row_text_color'		 => '#000000',
+			'format_html_table_row_background_color'	 => '#FFFFFF',
+			'format_html_custom_css'			 => $settings['default_html_css'],
+
+			'all_products_from_order'   => 1,
+			'skip_refunded_items'       => 1,
+			'skip_suborders'            => 0,
+			'export_refunds'            => 0,
+			'date_format'               => 'Y-m-d',
+			'time_format'               => 'H:i',
+			'sort_direction'            => 'DESC',
+			'sort'                      => 'order_id',
+			'format_number_fields'      => 0,
+			'export_all_comments'       => 0,
+			'export_refund_notes'       => 0,
+			'strip_tags_product_fields' => 0,
+			'cleanup_phone'             => 0,
+			'enable_debug'              => 0,
+			'format_json_start_tag'     => '[',
+			'format_json_end_tag'       => ']',
+			'custom_php'                => 0,
+			'custom_php_code'           => '',
+			'mark_exported_orders'      => 0,
+			'export_unmarked_orders'    => 0,
 
 			'summary_report_by_products' => 0,
 			'duplicated_fields_settings' => array(
@@ -301,6 +340,7 @@ class WC_Order_Export_Manage {
 						'group_by'       => 'product',
 					),
 			),
+			'summary_report_by_customers' => 0,
 		);
 	}
 
@@ -408,41 +448,6 @@ class WC_Order_Export_Manage {
 		}, array_keys( $fields ), $fields );
 	}
 
-	static function merge_settings_and_default_new( &$opt, $defaults ) {
-
-		$opt      = self::move_fields_key( $opt );
-		$defaults = self::move_fields_key( $defaults );
-
-
-		foreach ( $defaults as $v ) {
-			$exists = false;
-			foreach ( $opt as $num_index => $option ) {
-				if ( $v['key'] == $option['key'] ) {
-					//set default attribute OR add to option
-					if ( isset( $v['default'] ) ) {
-						$option['default'] = $v['default'];
-					}
-					//set default format OR add to option
-					if ( isset( $v['format'] ) ) {
-						$option['format'] = $v['format'];
-					}
-					// overwrite labels for localization
-					$option['label'] = $v['label'];
-
-					$exists = true;
-					break;
-				}
-			};
-
-			if ( ! $exists ) {
-				if ( self::$edit_existing_job AND $v['checked'] == "1" ) {
-					$v['checked'] = "0";
-				}
-				$opt[] = $v;
-			}
-		};
-	}
-
 	public static function make_all_fields( $format ) {
 		$order_fields = array();
 		foreach ( array_keys( WC_Order_Export_Data_Extractor_UI::get_order_segments() ) as $segment ) {
@@ -460,60 +465,32 @@ class WC_Order_Export_Manage {
 				$filter = "woe_get_order_fields_" . $segment;
 			}
 
-			if ( method_exists( 'WC_Order_Export_Data_Extractor_UI', $method ) ) {
-				// woe_get_order_fields_common	filter
-				$segment_fields         = array();
-				$default_segment_fields = array_merge(
-					WC_Order_Export_Data_Extractor_UI::$method( $format ),
-					apply_filters( $filter, array(), $format )
-				);
-				foreach ( $default_segment_fields as $key => $value ) {
-					$order_field            = $value;
-					$order_field['colname'] = $value['label'];
-					$order_field['key']     = $key;
-					$order_field['default'] = 1;
-					unset( $order_field['checked'] );
-					$segment_fields[] = $order_field;
-				}
+			// woe_get_order_fields_common	filter
+			$segment_fields         = array();
+			$default_segment_fields = array();
 
-				$order_fields[ $segment ] = $segment_fields;
+			if ( method_exists( 'WC_Order_Export_Data_Extractor_UI', $method ) ) {
+			    $default_segment_fields = WC_Order_Export_Data_Extractor_UI::$method( $format );
 			}
+
+			$default_segment_fields = array_merge(
+			    $default_segment_fields,
+			    apply_filters( $filter, array(), $format )
+			);
+
+			foreach ( $default_segment_fields as $key => $value ) {
+				$order_field            = $value;
+				$order_field['colname'] = $value['label'];
+				$order_field['key']     = $key;
+				$order_field['default'] = 1;
+				unset( $order_field['checked'] );
+				$segment_fields[] = $order_field;
+			}
+
+			$order_fields[ $segment ] = $segment_fields;
 		}
 
 		return $order_fields;
-	}
-
-	private static function process_fields( $fields ) {
-
-		return array_map( function ( $key, $value ) {
-			if ( ! key_exists( 'key', $value ) ) {
-				$value['key'] = $key;
-			}
-
-			return $value;
-		}, array_keys( $fields ), $fields );
-	}
-
-	static function merge_settings_and_default( &$opt, $defaults ) {
-		foreach ( $defaults as $k => $v ) {
-			if ( isset( $opt[ $k ] ) ) {
-				//set default attribute OR add to option
-				if ( isset( $v['default'] ) ) {
-					$opt[ $k ]['default'] = $v['default'];
-				}
-				//set default format OR add to option
-				if ( isset( $v['format'] ) ) {
-					$opt[ $k ]['format'] = $v['format'];
-				}
-				// overwrite labels for localization
-				$opt[ $k ]['label'] = $v['label'];
-			} else {
-				if ( self::$edit_existing_job AND $v['checked'] == "1" ) {
-					$v['checked'] = "0";
-				}
-				$opt[ $k ] = $v;
-			}
-		}
 	}
 
 	static function save_export_settings( $mode, $id, $options ) {
@@ -522,15 +499,15 @@ class WC_Order_Export_Manage {
 			$all_jobs = $options;// just replace
 		} elseif ( $mode == self::EXPORT_SCHEDULE ) {
 			if ( $id ) {
-				$options['schedule']['last_run'] = isset( $all_jobs[ $id ] ) ? $all_jobs[ $id ]['schedule']['last_run'] : current_time( "timestamp", 0 );
+				$options['schedule']['last_run']         = isset( $all_jobs[ $id ] ) ? $all_jobs[ $id ]['schedule']['last_run'] : current_time( "timestamp", 0 );
 				$options['schedule']['last_report_sent'] = isset( $all_jobs[ $id ] ) ? $all_jobs[ $id ]['schedule']['last_report_sent'] : current_time( "timestamp", 0 );
-				$options['schedule']['next_run'] = WC_Order_Export_Cron::next_event_timestamp_for_schedule( $options['schedule'], $id );
-				$all_jobs[ $id ]                 = $options;
+				$options['schedule']['next_run']         = WC_Order_Export_Cron::next_event_timestamp_for_schedule( $options['schedule'], $id );
+				$all_jobs[ $id ]                         = $options;
 			} else {
-				$options['schedule']['last_run'] = current_time( "timestamp", 0 );
+				$options['schedule']['last_run']         = current_time( "timestamp", 0 );
 				$options['schedule']['last_report_sent'] = current_time( "timestamp", 0 );
-				$options['schedule']['next_run'] = WC_Order_Export_Cron::next_event_timestamp_for_schedule( $options['schedule'] );
-				$all_jobs[]                      = $options; // new job
+				$options['schedule']['next_run']         = WC_Order_Export_Cron::next_event_timestamp_for_schedule( $options['schedule'] );
+				$all_jobs[]                              = $options; // new job
 				end( $all_jobs );
 				$id = key( $all_jobs );
 			}
@@ -548,64 +525,6 @@ class WC_Order_Export_Manage {
 
 		return $id;
 	}
-
-	static function clone_export_settings( $mode, $id ) {
-		return self::advanced_clone_export_settings( $id, $mode, $mode );
-	}
-
-	static function advanced_clone_export_settings(
-		$id,
-		$mode_in = self::EXPORT_SCHEDULE,
-		$mode_out = self::EXPORT_SCHEDULE
-	) {
-		$all_jobs_in = self::get_export_settings_collection( $mode_in );
-		//new settings
-		$settings         = $all_jobs_in[ $id ];
-		$settings['mode'] = $mode_out;
-
-		if ( $mode_in !== $mode_out ) {
-			$all_jobs_out = self::get_export_settings_collection( $mode_out );
-		} else {
-			$mode_out          = $mode_in;
-			$all_jobs_out      = $all_jobs_in;
-			$settings['title'] .= " [cloned]"; //add note
-		}
-
-		if ( $mode_in === self::EXPORT_PROFILE && $mode_out === self::EXPORT_SCHEDULE ) {
-			if ( ! isset( $settings['destination'] ) ) {
-				$settings['destination'] = array(
-					'type' => 'folder',
-					'path' => get_home_path(),
-				);
-			}
-
-			if ( ! isset( $settings['export_rule'] ) ) {
-				$settings['export_rule'] = 'last_run';
-			}
-
-			if ( ! isset( $settings['export_rule_field'] ) ) {
-				$settings['export_rule_field'] = 'modified';
-			}
-
-			if ( ! isset( $settings['schedule'] ) ) {
-				$settings['schedule'] = array(
-					'type'   => 'schedule-1',
-					'run_at' => '00:00',
-				);
-			}
-
-			unset( $settings['use_as_bulk'] );
-		}
-
-		end( $all_jobs_out );
-		$next_id                  = key( $all_jobs_out ) + 1;
-		$all_jobs_out[ $next_id ] = $settings;
-
-		self::save_export_settings_collection( $mode_out, $all_jobs_out );
-
-		return $next_id;
-	}
-
 
 	static function set_correct_file_ext( &$settings ) {
 		if ( $settings['format'] == 'XLS' AND ! $settings['format_xls_use_xls_format'] ) {
@@ -862,6 +781,7 @@ class WC_Order_Export_Manage {
 		$settings['order_coupon_fields']  = $is_flat_format ? array() : $order_coupon_fields;
 
 		unset( $duplicated_fields_settings, $order_coupon_fields, $order_product_fields, $order_fields );
+
 		return $settings;
 	}
 

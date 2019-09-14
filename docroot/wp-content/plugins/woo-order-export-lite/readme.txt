@@ -5,7 +5,7 @@ Tags: woocommerce,export,order,xls,csv,xml,woo export lite,export orders,orders 
 Requires PHP: 5.4.0
 Requires at least: 4.7
 Tested up to: 5.2
-Stable tag: 2.1.1
+Stable tag: 3.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,7 +32,7 @@ Export any custom field assigned to orders/products/coupons is easy and you can 
 * customer details (both shipping and billing)
 * product attributes
 * coupon details
-* XLS, CSV, TSV, XML and JSON formats
+* XLS, CSV, TSV, PDF, HTML, XML and JSON formats
 
 = Use this plugin to export orders for =
 
@@ -68,14 +68,17 @@ Check [some snippets](https://algolplus.com/plugins/snippets-plugins/) for popul
 = I want to add a product attribute to the export  =
 Check screenshot #5! You should open section "Set up fields", open section "Products"(right column), click button "Add field", select field in 2nd dropdown, type column title and press button "Confirm".
 
+= Same order was exported many times =
+You should open section "Set up fields to export" and set "Fill order columns for" to  "1st row only". The plugin repeats common information for each order item (by default).
+
+= I see only GREEN fields in section "Set up fields"  =
+Please, unmark checkbox "Summary Report By Products" (it's below date range)
+
+= Red text flashes at bottom during page loading = 
+It's a normal situation. The plugin hides this warning on successful load. 
+
 = I can't filter/export custom attribute for Simple Product =
 I'm sorry, but it's impossible. You should add this attribute to Products>Attributes at first and use "Filter by Product Taxonomies".
-
-= Plugin produces unreadable XLS file =
-The theme or another plugin outputs some lines. Usually, there are extra empty lines at the end of functions.php(in active theme).
-
-= I can't export Excel file (blank message or error 500) =
-Please, increase "memory_limit" upto 256M or ask hosting support to do it.
 
 = How can I add a Gravity Forms field to export? =
 Open order, look at items and remember meta name.
@@ -83,11 +86,14 @@ Visit WooCommerce>Export Orders,
 open section "Set up fields", open section "Products"(at right), click button "Add field",
 select SAME name in second dropdown (screenshot #5)
 
+= Plugin produces unreadable XLS file =
+The theme or another plugin outputs some lines. Usually, there are extra empty lines at the end of functions.php(in active theme).
+
+= I can't export Excel file (blank message or error 500) =
+Please, increase "memory_limit" upto 256M or ask hosting support to do it.
+
 = When exporting .csv containing european special characters , I want to open this csv in Excel without extra actions =
 You  should open tab "CSV" and set up ISO-8859-1 as codepage.
-
-= Red text flashes at bottom during page loading = 
-It's a normal situation. The plugin hides this warning on successful load. 
 
 = Can I request any new feature ? =
 Yes, you can email a request to aprokaev@gmail.com. We intensively develop this plugin.
@@ -103,6 +109,41 @@ Yes, you can email a request to aprokaev@gmail.com. We intensively develop this 
 
 == Changelog ==
 
+= 3.0.3 - 2019-08-29 =
+* Fixed CRITICAL bug - export wrong data if user added customer field "First Order Date" or "Last Order Date"
+* Fixed bug - customer fields "First Order Date" or "Last Order Date" were empty for guests
+* Fixed bug - wrong height for cells (PDF format only)
+
+= 3.0.2 - 2019-08-20 =
+* Added "Summary by customers" report 
+* Format PDF supports UTF8 chars
+* Added filter "Exclude products" to section "Filter by product"
+* New tab "Other items" (in section "Setup fields")  allows to export tax/fee/shipping
+* Fixed bug - XLS export stops at wrong dates
+* Fixed bug - button "ESC" doesn't abort export (Safari only)
+
+= 3.0.1 - 2019-07-22 =
+* Added product field "Product Name (main)" to export name of variable product (not name of variation!)
+* Added summary product fields to export discounts and refunds
+* Fixed bug - bulk exporting from orders page didn't work if you set date range filter at page "Export Now"
+* Fixed bug - it was impossible to add custom field at tab "User"
+* Fixed bug - filter "User roles" applied incorrectly
+* Fixed bug - filter "Item meta" showed wrong results if you tried to filter by different meta keys
+
+= 3.0.0 - 2019-07-03 =
+* New format - **HTML**
+* Added order field "Link to edit order" (useful for HTML format)
+* Added product field "Embedded Product Image" (works for XLS and PDF formats only!)
+* Added order fields (for customer) -  "First Order Date", "Last Order Date"
+* Added 'Hide unused' for order/product/coupon fields (dropdowns filtered by matching orders)
+* Allow to sort orders by any custom field
+* Fixed bug - fields with prefix "USER_" were shown for all tabs in section "Setup fields" 
+* Fixed bug - the plugin exported all orders by default (including cancelled and refunded) 
+* Fixed bug - bulk export didn't sort orders
+* Fixed bug - incompatibility with some coupon plugins
+* Fixed bug - tab "Tools" didn't show error if JSON is not valid
+* Removed a lot of outdated code
+
 = 2.1.1 - 2019-02-14 =
 * Fixed critical bug - new version damages CSV and TSV parameters, so "Bulk action" doesn't work
 
@@ -113,7 +154,7 @@ Yes, you can email a request to aprokaev@gmail.com. We intensively develop this 
 * Section "Setup fields" works on phone/tablet
 * New XLS option to avoid formatting - "Force general format for all cells"
 * Fixed bug - fields "Summary Report Total xxxx" stayed at bottom
-* Fixed bug -  "Summary report" was not sorted by item name
+* Fixed bug - "Summary report" was not sorted by item name
 * Fixed bug - fields reset when  user switches between flat formats
 * Fixed bug - field "full categories" was empty for variations
 * Tested for jQuery 3.0+

@@ -9,6 +9,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
+use \Automattic\WooCommerce\Admin\Loader;
+
 /**
  * Format a number using the decimal and thousands separator settings in WooCommerce.
  *
@@ -16,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
  * @return string
  */
 function wc_admin_number_format( $number ) {
-	$currency_settings = WC_Admin_Loader::get_currency_settings();
+	$currency_settings = Loader::get_currency_settings();
 	return number_format(
 		$number,
 		0,
@@ -34,11 +36,33 @@ function wc_admin_number_format( $number ) {
  *
  * @return string       Fully qualified URL pointing to the desired path.
  */
-function wc_admin_url( $path, $query = array() ) {
+function wc_admin_url( $path = null, $query = array() ) {
 	if ( ! empty( $query ) ) {
 		$query_string = http_build_query( $query );
-		$path         = $path . '?' . $query_string;
+		$path         = $path ? '&path=' . $path . '&' . $query_string : '';
 	}
 
-	return admin_url( 'admin.php?page=wc-admin#' . $path, dirname( __FILE__ ) );
+	return admin_url( 'admin.php?page=wc-admin' . $path, dirname( __FILE__ ) );
+}
+
+/**
+ * Record an event using Tracks.
+ *
+ * @internal WooCommerce core only includes Tracks in admin, not the REST API, so we need to include it.
+ * @param string $event_name Event name for tracks.
+ * @param array  $properties Properties to pass along with event.
+ */
+function wc_admin_record_tracks_event( $event_name, $properties = array() ) {
+	if ( ! class_exists( 'WC_Tracks' ) ) {
+		if ( ! defined( 'WC_ABSPATH' ) || ! file_exists( WC_ABSPATH . 'includes/tracks/class-wc-tracks.php' ) ) {
+			return;
+		}
+		include_once WC_ABSPATH . 'includes/tracks/class-wc-tracks.php';
+		include_once WC_ABSPATH . 'includes/tracks/class-wc-tracks-event.php';
+		include_once WC_ABSPATH . 'includes/tracks/class-wc-tracks-client.php';
+		include_once WC_ABSPATH . 'includes/tracks/class-wc-tracks-footer-pixel.php';
+		include_once WC_ABSPATH . 'includes/tracks/class-wc-site-tracking.php';
+	}
+
+	WC_Tracks::record_event( $event_name, $properties );
 }

@@ -141,7 +141,6 @@ trait WOE_Order_Export_Plain_Format {
 		$combinations = array();
 
 		$p_combinations = array();
-		$p_field_ids    = array();
 		if ( $repeat_products ) {
 			foreach ( self::get_array_from_array( $row, 'products' ) as $products_fields_item ) {
 				$result_tmp = array();
@@ -149,7 +148,6 @@ trait WOE_Order_Export_Plain_Format {
 					if ( isset( $this->labels['products']->$field_name ) ) // label must be assigned!
 					{
 						$result_tmp[ 'plain_products_' . $field_name ] = $products_field_value;
-						$p_field_ids[]                                 = 'plain_products_' . $field_name;
 					}
 				}
 
@@ -158,7 +156,6 @@ trait WOE_Order_Export_Plain_Format {
 		}
 
 		$c_combinations = array();
-		$c_field_ids    = array();
 		if ( $repeat_coupons ) {
 			foreach ( self::get_array_from_array( $row, 'coupons' ) as $coupons_fields_item ) {
 				$result_tmp = array();
@@ -166,7 +163,6 @@ trait WOE_Order_Export_Plain_Format {
 					if ( isset( $this->labels['coupons']->$field_name ) ) // label must be assigned!
 					{
 						$result_tmp[ 'plain_coupons_' . $field_name ] = $coupons_field_value;
-						$c_fields_id[]                                = 'plain_coupons_' . $field_name;
 					}
 				}
 
@@ -213,12 +209,18 @@ trait WOE_Order_Export_Plain_Format {
 		// exclude product and coupon fields from first row when item rows start from new line
 		// to prevent empty extra delimiters in output csv
 		if ( $item_rows_start_from_new_line ) {
-			foreach ( $p_field_ids as $key ) {
-				unset( $row[ $key ] );
+			foreach ( $this->labels['products']->to_Array() as $key => $label ) {
+				$key = 'plain_products_' . $key;
+				if ( isset( $row[ $key ] ) ) {
+					unset( $row[ $key ] );
+				}
 			}
-
-			foreach ( $c_field_ids as $key ) {
-				unset( $row[ $key ] );
+			
+			foreach ( $this->labels['coupons']->to_Array() as $key => $label ) {
+				$key = 'plain_coupons_' . $key;
+				if ( isset( $row[ $key ] ) ) {
+					unset( $row[ $key ] );
+				}
 			}
 		}
 

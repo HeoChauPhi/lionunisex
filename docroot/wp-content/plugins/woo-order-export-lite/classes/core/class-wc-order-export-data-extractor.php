@@ -110,13 +110,99 @@ class WC_Order_Export_Data_Extractor {
 
 		$metas = get_transient( $transient_key );
 		if ( $metas === false ) {
-			// WP internal table, take all metas
-			$metas = $wpdb->get_col( "SELECT DISTINCT meta.meta_key FROM {$wpdb->prefix}woocommerce_order_itemmeta meta inner join {$wpdb->prefix}woocommerce_order_items item on item.order_item_id=meta.order_item_id and item.order_item_type = 'line_item' " );
-			sort( $metas );
-			set_transient( $transient_key, $metas, 60 ); //valid for a minute
+			$total_orders = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts}  WHERE post_type = '" . self::$object_type . "'" );
+			if ( $total_orders < self::HUGE_SHOP_ORDERS ) {
+				// WP internal table, take all metas
+				$metas = $wpdb->get_col( "SELECT DISTINCT meta.meta_key FROM {$wpdb->prefix}woocommerce_order_itemmeta meta inner join {$wpdb->prefix}woocommerce_order_items item on item.order_item_id=meta.order_item_id and item.order_item_type = 'line_item' " );
+				sort( $metas );
+				set_transient( $transient_key, $metas, 60 ); //valid for a minute
+			} else {
+				$limit = self::HUGE_SHOP_ORDERS;
+				$order_ids = $wpdb->get_col( "SELECT  ID FROM {$wpdb->posts} WHERE post_type = '" . self::$object_type . "' AND post_status IN('wc-on-hold','wc-processing','wc-completed')  ORDER BY post_date DESC LIMIT {$limit}" );
+				$order_ids   = join( ",", $order_ids );
+				$metas = $wpdb->get_col( "SELECT DISTINCT meta.meta_key FROM {$wpdb->prefix}woocommerce_order_itemmeta meta inner join {$wpdb->prefix}woocommerce_order_items item on item.order_item_id=meta.order_item_id and item.order_item_type = 'line_item' WHERE item.order_id IN ($order_ids)" );
+				sort( $metas );
+				set_transient( $transient_key, $metas, 60 ); //valid for a minute
+			}
 		}
 
 		return apply_filters( 'woe_get_product_itemmeta', $metas );
+	}
+
+	public static function get_order_shipping_items() {
+		global $wpdb;
+		$transient_key = 'woe_get_order_shipping_items_result';
+
+		$metas = false; //get_transient( $transient_key );
+		if ( $metas === false ) {
+			$total_orders = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts}  WHERE post_type = '" . self::$object_type . "'" );
+			if ( $total_orders < self::HUGE_SHOP_ORDERS ) {
+				// WP internal table, take all metas
+				$metas = $wpdb->get_col( "SELECT DISTINCT order_item_name FROM {$wpdb->prefix}woocommerce_order_items WHERE order_item_type = 'shipping' AND order_item_name <> '' " );
+				sort( $metas );
+				set_transient( $transient_key, $metas, 60 ); //valid for a minute
+
+			} else {
+				$limit = self::HUGE_SHOP_ORDERS;
+				$order_ids = $wpdb->get_col( "SELECT  ID FROM {$wpdb->posts} WHERE post_type = '" . self::$object_type . "' AND post_status IN('wc-on-hold','wc-processing','wc-completed')  ORDER BY post_date DESC LIMIT {$limit}" );
+				$order_ids   = join( ",", $order_ids );
+				$metas = $wpdb->get_col( "SELECT DISTINCT order_item_name FROM {$wpdb->prefix}woocommerce_order_items WHERE order_item_type = 'shipping' AND order_id IN ($order_ids) AND order_item_name <> '' " );
+				sort( $metas );
+				set_transient( $transient_key, $metas, 60 ); //valid for a minute
+			}
+		}
+
+		return apply_filters( 'woe_get_order_shipping_items', $metas );
+	}
+
+	public static function get_order_fee_items() {
+		global $wpdb;
+		$transient_key = 'woe_get_order_fee_items_result';
+
+		$metas = get_transient( $transient_key );
+		if ( $metas === false ) {
+			$total_orders = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts}  WHERE post_type = '" . self::$object_type . "'" );
+			if ( $total_orders < self::HUGE_SHOP_ORDERS ) {
+				// WP internal table, take all metas
+				$metas = $wpdb->get_col( "SELECT DISTINCT order_item_name FROM {$wpdb->prefix}woocommerce_order_items WHERE order_item_type = 'fee' AND order_item_name <> '' " );
+				sort( $metas );
+				set_transient( $transient_key, $metas, 60 ); //valid for a minute
+			} else {
+				$limit = self::HUGE_SHOP_ORDERS;
+				$order_ids = $wpdb->get_col( "SELECT  ID FROM {$wpdb->posts} WHERE post_type = '" . self::$object_type . "' AND post_status IN('wc-on-hold','wc-processing','wc-completed')  ORDER BY post_date DESC LIMIT {$limit}" );
+				$order_ids   = join( ",", $order_ids );
+				$metas = $wpdb->get_col( "SELECT DISTINCT order_item_name FROM {$wpdb->prefix}woocommerce_order_items WHERE order_item_type = 'fee' AND order_id IN ($order_ids) AND order_item_name <> '' " );
+				sort( $metas );
+				set_transient( $transient_key, $metas, 60 ); //valid for a minute
+			}
+		}
+
+		return apply_filters( 'woe_get_order_fee_items', $metas );
+	}
+
+	public static function get_order_tax_items() {
+		global $wpdb;
+		$transient_key = 'woe_get_order_tax_items_result';
+
+		$metas = get_transient( $transient_key );
+		if ( $metas === false ) {
+			$total_orders = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts}  WHERE post_type = '" . self::$object_type . "'" );
+			if ( $total_orders < self::HUGE_SHOP_ORDERS ) {
+				// WP internal table, take all metas
+				$metas = $wpdb->get_col( "SELECT DISTINCT order_item_name FROM {$wpdb->prefix}woocommerce_order_items WHERE order_item_type = 'tax' AND order_item_name <> '' " );
+				sort( $metas );
+				set_transient( $transient_key, $metas, 60 ); //valid for a minute
+			} else {
+				$limit = self::HUGE_SHOP_ORDERS;
+				$order_ids = $wpdb->get_col( "SELECT  ID FROM {$wpdb->posts} WHERE post_type = '" . self::$object_type . "' AND post_status IN('wc-on-hold','wc-processing','wc-completed')  ORDER BY post_date DESC LIMIT {$limit}" );
+				$order_ids   = join( ",", $order_ids );
+				$metas = $wpdb->get_col( "SELECT DISTINCT order_item_name FROM {$wpdb->prefix}woocommerce_order_items WHERE order_item_type = 'tax' AND order_id IN ($order_ids) AND order_item_name <> '' " );
+				sort( $metas );
+				set_transient( $transient_key, $metas, 60 ); //valid for a minute
+			}
+		}
+
+		return apply_filters( 'woe_get_order_tax_items', $metas );
 	}
 
 	public static function get_product_taxonomies() {
@@ -287,7 +373,7 @@ class WC_Order_Export_Data_Extractor {
 		if ( $settings['product_attributes'] ) {
 			$attrs        = self::get_product_attributes();
 			$names2fields = array_flip( $attrs );
-			$filters      = self::parse_complex_pairs( $settings['product_attributes'], $attrs );
+			$filters      = self::parse_complex_pairs( $settings['product_attributes']);
 			foreach ( $filters as $operator => $fields ) {
 				foreach ( $fields as $field => $values ) {
 					$field = $names2fields[ $field ];
@@ -316,8 +402,7 @@ class WC_Order_Export_Data_Extractor {
 				$settings['product_itemmeta'][] = esc_html( $value );
 			}
 
-			$itemmeta = self::get_product_itemmeta();
-			$filters  = self::parse_complex_pairs( $settings['product_itemmeta'], $itemmeta );
+			$filters  = self::parse_complex_pairs( $settings['product_itemmeta'] );
 			foreach ( $filters as $operator => $fields ) {
 				foreach ( $fields as $field => $values ) {
 					;
@@ -396,16 +481,19 @@ class WC_Order_Export_Data_Extractor {
 			$left_join_product_meta = "";
 			if ( $settings['product_custom_fields'] ) {
 				$left_join_product_meta = $product_meta_where = array();
-				$cf_names               = self::get_product_custom_fields();
-				$filters                = self::parse_complex_pairs( $settings['product_custom_fields'], $cf_names );
+				$filters                = self::parse_complex_pairs( $settings['product_custom_fields']);
 				$pos                    = 1;
 				foreach ( $filters as $operator => $fields ) {
 					foreach ( $fields as $field => $values ) {
 						if ( $values ) {
-							$left_join_product_meta[] = "LEFT JOIN {$wpdb->postmeta} AS productmeta_cf_{$pos} ON productmeta_cf_{$pos}.post_id = products.ID";
+							$left_join_product_meta[] = "LEFT JOIN {$wpdb->postmeta} AS productmeta_cf_{$pos} ON productmeta_cf_{$pos}.post_id = products.ID AND productmeta_cf_{$pos}.meta_key='$field'";
 							if ( $operator == 'IN' OR $operator == 'NOT IN' ) {
 								$values               = self::sql_subset( $values );
-								$product_meta_where[] = " (productmeta_cf_{$pos}.meta_key='$field'  AND productmeta_cf_{$pos}.meta_value $operator ($values)) ";
+								$product_meta_where[] = " productmeta_cf_{$pos}.meta_value $operator ($values) ";
+							} elseif ( $operator == 'NOT SET' ) {
+							    $product_meta_where [] = " productmeta_cf_{$pos}.meta_value IS NULL ";
+							} elseif ( $operator == 'IS SET' ) {
+							    $product_meta_where [] = " productmeta_cf_{$pos}.meta_value IS NOT NULL ";
 							} elseif ( in_array( $operator, self::$operator_must_check_values ) ) {
 								$pairs = array();
 								foreach ( $values as $v ) {
@@ -413,7 +501,7 @@ class WC_Order_Export_Data_Extractor {
 										$operator, $v );
 								}
 								$pairs                = join( "OR", $pairs );
-								$product_meta_where[] = " (productmeta_cf_{$pos}.meta_key='$field'  AND  ($pairs) ) ";
+								$product_meta_where[] = " ($pairs) ";
 							}
 							$pos ++;
 						}//if values
@@ -461,17 +549,28 @@ class WC_Order_Export_Data_Extractor {
 		if ( $settings['product_taxonomies'] ) {
 			$attrs        = self::get_product_taxonomies();
 			$names2fields = array_flip( $attrs );
-			$filters      = self::parse_complex_pairs( $settings['product_taxonomies'], $attrs );
+			$filters      = self::parse_complex_pairs( $settings['product_taxonomies']);
 			//print_r($filters );die();
 			foreach ( $filters as $operator => $fields ) {
 				foreach ( $fields as $label => $values ) {
 					$field  = $names2fields[ $label ];
 					$values = self::sql_subset( $values );
 					if ( $values ) {
-						$label          = esc_sql( $label );
-						$taxonomy_where .= " AND orderitemmeta_product.meta_value  $operator (SELECT  object_id FROM {$wpdb->term_relationships} AS `{$field}_rel`
-							INNER JOIN {$wpdb->term_taxonomy} AS `{$field}_cat` ON `{$field}_cat`.term_taxonomy_id = `{$field}_rel`.term_taxonomy_id
-							WHERE `{$field}_cat`.taxonomy='$label' AND  `{$field}_cat`.term_id IN (SELECT term_id FROM {$wpdb->terms} WHERE name IN ($values) ) )";
+						$label = esc_sql( $label );
+
+						if ($operator == 'NOT SET') {
+						    $taxonomy_where .= " AND NOT ( orderitemmeta_product.meta_key IN('_product_id') AND orderitemmeta_product.meta_value IN (SELECT  object_id FROM {$wpdb->term_relationships} AS `{$field}_rel`
+							    INNER JOIN {$wpdb->term_taxonomy} AS `{$field}_cat` ON `{$field}_cat`.term_taxonomy_id = `{$field}_rel`.term_taxonomy_id
+							    WHERE `{$field}_cat`.taxonomy='$label' AND  `{$field}_cat`.term_id IN (SELECT term_id FROM {$wpdb->terms} ) ))";
+						} elseif ($operator == 'IS SET') {
+						    $taxonomy_where .= " AND ( orderitemmeta_product.meta_key IN('_product_id') AND orderitemmeta_product.meta_value IN (SELECT  object_id FROM {$wpdb->term_relationships} AS `{$field}_rel`
+							    INNER JOIN {$wpdb->term_taxonomy} AS `{$field}_cat` ON `{$field}_cat`.term_taxonomy_id = `{$field}_rel`.term_taxonomy_id
+							    WHERE `{$field}_cat`.taxonomy='$label' AND  `{$field}_cat`.term_id IN (SELECT term_id FROM {$wpdb->terms} ) ))";
+						} else {
+						    $taxonomy_where .= " AND ( orderitemmeta_product.meta_key IN('_product_id') AND orderitemmeta_product.meta_value  $operator (SELECT  object_id FROM {$wpdb->term_relationships} AS `{$field}_rel`
+							    INNER JOIN {$wpdb->term_taxonomy} AS `{$field}_cat` ON `{$field}_cat`.term_taxonomy_id = `{$field}_rel`.term_taxonomy_id
+							    WHERE `{$field}_cat`.taxonomy='$label' AND  `{$field}_cat`.term_id IN (SELECT term_id FROM {$wpdb->terms} WHERE name IN ($values) ) ))";
+						}
 					}
 				}
 			}
@@ -511,8 +610,17 @@ class WC_Order_Export_Data_Extractor {
 				$exact_product_where = "AND orderitemmeta_product.meta_value IN ($values)";
 			}
 		}
+
+		$exclude_product_where = '';
+		if ( $settings['exclude_products'] ) {
+			$values = self::sql_subset( $settings['exclude_products'] );
+			if ( $values ) {
+				$exclude_product_where = "AND (orderitemmeta_product.meta_key = '_product_id' AND orderitemmeta_product.meta_value NOT IN ($values))";
+			}
+		}
+
 		$product_where = join( " ",
-			array_filter( array( $taxonomy_where, $product_category_where, $exact_product_where ) ) );
+			array_filter( array( $taxonomy_where, $product_category_where, $exact_product_where, $exclude_product_where ) ) );
 
 		//skip empty values
 		if ( $product_where ) {
@@ -552,7 +660,7 @@ class WC_Order_Export_Data_Extractor {
 		if ( $settings['product_attributes'] ) {
 			$attrs        = self::get_product_attributes();
 			$names2fields = @array_flip( $attrs );
-			$filters      = self::parse_complex_pairs( $settings['product_attributes'], $attrs );
+			$filters      = self::parse_complex_pairs( $settings['product_attributes']);
 			foreach ( $filters as $operator => $fields ) {
 				foreach ( $fields as $field => $values ) {
 					$field = $names2fields[ $field ];
@@ -581,8 +689,7 @@ class WC_Order_Export_Data_Extractor {
 				$settings['product_itemmeta'][] = esc_html( $value );
 			}
 
-			$itemmeta = self::get_product_itemmeta();
-			$filters  = self::parse_complex_pairs( $settings['product_itemmeta'], $itemmeta );
+			$filters  = self::parse_complex_pairs( $settings['product_itemmeta']);
 			foreach ( $filters as $operator => $fields ) {
 				foreach ( $fields as $field => $values ) {
 					;
@@ -669,23 +776,67 @@ class WC_Order_Export_Data_Extractor {
 
 		// check item names ?
 		if ( ! empty( $settings['item_names'] ) ) {
-			$filters = self::parse_complex_pairs( $settings['item_names'],
-				array( 'coupon', 'fee', 'line_item', 'shipping', 'tax' ) );
+			$order_items_name_where = array();
+
+			$order_items_name_joins = array();
+
+			$pos = 0;
+
+			$filters = self::parse_complex_pairs( $settings['item_names'], array( 'coupon', 'fee', 'line_item', 'shipping', 'tax' ) );
 			foreach ( $filters as $operator => $fields ) {
 				foreach ( $fields as $field => $values ) {
 					if ( $values ) {
 						if ( $operator == 'IN' OR $operator == 'NOT IN' ) {
-							$values            = self::sql_subset( $values );
-							$where_item_names  = " SELECT order_id FROM {$wpdb->prefix}woocommerce_order_items WHERE order_item_type='$field' AND order_item_name $operator ($values) ";
-							$order_items_where .= " AND orders.ID IN ($where_item_names)";
+
+							$values = self::sql_subset( $values );
+
+							if (!$pos) {
+							    $order_items_name_where[]  = "items.order_item_type='$field' AND items.order_item_name $operator ($values)";
+							} else {
+							    $order_items_name_joins[]  = "JOIN {$wpdb->prefix}woocommerce_order_items as items_{$pos} ON items.order_id = items_{$pos}.order_id AND items_{$pos}.order_item_type='$field' AND items_{$pos}.order_item_name $operator ($values)";
+
+							}
+						} elseif ( in_array( $operator, self::$operator_must_check_values ) ) {
+
+							$pairs = array();
+							foreach ( $values as $v ) {
+								if (!$pos) {
+								    $pairs[] = self::operator_compare_field_and_value( "items.order_item_name", $operator, $v );
+								} else {
+								    $pairs[] = self::operator_compare_field_and_value( "items_{$pos}.order_item_name", $operator, $v );
+								}
+							}
+							$pairs = join( "OR", $pairs );
+
+							if (!$pos) {
+							    $order_items_name_where[]  = "items.order_item_type='$field' AND ({$pairs})";
+							} else {
+							    $order_items_name_joins[]  = "JOIN {$wpdb->prefix}woocommerce_order_items as items_{$pos} ON items.order_id = items_{$pos}.order_id AND items_{$pos}.order_item_type='$field' AND ({$pairs})";
+							}
+
 						}
+
+						$pos++;
+
 					}//if values
 				}
 			}
+
+			$order_items_name_where_sql = join( " OR ", $order_items_name_where );
+
+			$order_items_name_joins_sql = implode(' ', $order_items_name_joins);
+
+			$where_item_names = " SELECT items.order_id FROM {$wpdb->prefix}woocommerce_order_items as items {$order_items_name_joins_sql} WHERE {$order_items_name_where_sql}";
+
+			$order_items_where .= " AND orders.ID IN ($where_item_names)";
 		}
 
 		// check item metadata
 		if ( ! empty( $settings['item_metadata'] ) ) {
+
+			$order_items_metadata_joins = array();
+			$pos = 1;
+
 			$filters = self::parse_complex_pairs( $settings['item_metadata'] );
 			foreach ( $filters as $operator => $fields ) {
 				foreach ( $fields as $field => $values ) {
@@ -693,37 +844,64 @@ class WC_Order_Export_Data_Extractor {
 						self::extract_item_type_and_key( $field, $type, $key );
 						$key = esc_sql( $key );
 						if ( $operator == 'IN' OR $operator == 'NOT IN' ) {
-							$values              = self::sql_subset( $values );
-							$where_item_metadata = " SELECT order_id FROM {$wpdb->prefix}woocommerce_order_items AS items
-												JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS meta ON meta.order_item_id = items.order_item_id
-												WHERE order_item_type='$type' AND meta_key='$key' AND meta_value $operator ($values) ";
-							$order_items_where   .= " AND orders.ID IN ($where_item_metadata)";
+
+							$values = self::sql_subset( $values );
+
+							$order_items_metadata_joins[] = "JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS meta_{$pos} ON meta_{$pos}.order_item_id = items.order_item_id AND items.order_item_type='$type' AND meta_{$pos}.meta_key='$key' AND meta_{$pos}.meta_value $operator ($values)";
+
+						} elseif ( in_array( $operator, self::$operator_must_check_values ) ) {
+							$pairs = array();
+							foreach ( $values as $v ) {
+								$pairs[] = self::operator_compare_field_and_value( "meta_{$pos}.meta_value", $operator, $v );
+							}
+							$pairs = join( "OR", $pairs );
+
+							$order_items_metadata_joins[] = "JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS meta_{$pos} ON meta_{$pos}.order_item_id = items.order_item_id AND items.order_item_type='$type' AND meta_{$pos}.meta_key='$key' AND ({$pairs})";
 						}
+
+						$pos++;
+
 					}//if values
 				}
 			}
+
+			$order_items_metadata_joins_sql = implode(' ', $order_items_metadata_joins);
+			$where_item_metadata = " SELECT order_id FROM {$wpdb->prefix}woocommerce_order_items AS items {$order_items_metadata_joins_sql}";
+
+			$order_items_where .= " AND orders.ID IN ($where_item_metadata)";
 		}
 
+
+		$left_join_order_meta_order_id = self::$object_type === 'shop_order' ? 'ID' : 'post_parent';
 
 		// pre top
 		$left_join_order_meta = $order_meta_where = $user_meta_where = $inner_join_user_meta = array();
 		//add filter by custom fields in order
 
+		if ( $settings['sort'] ) {
+			$sort_field = $settings['sort'];
+
+			if ( ! in_array( $settings['sort'], WC_Order_Export_Engine::get_wp_posts_fields() ) ) {
+				$pos = "sort";
+				$left_join_order_meta[] = "LEFT JOIN {$wpdb->postmeta} AS ordermeta_cf_{$pos} " .
+				                          "ON ordermeta_cf_{$pos}.post_id = orders.{$left_join_order_meta_order_id} AND ordermeta_cf_{$pos}.meta_key='{$sort_field}'";
+			}
+		}
+
 		if ( $settings['export_unmarked_orders'] ) {
 			$pos                    = "export_unmarked_orders";
 			$field                  = "woe_order_exported";
-			$left_join_order_meta[] = "LEFT JOIN {$wpdb->postmeta} AS ordermeta_cf_{$pos} ON ordermeta_cf_{$pos}.post_id = orders.ID AND ordermeta_cf_{$pos}.meta_key='$field'";
+			$left_join_order_meta[] = "LEFT JOIN {$wpdb->postmeta} AS ordermeta_cf_{$pos} ON ordermeta_cf_{$pos}.post_id = orders.{$left_join_order_meta_order_id} AND ordermeta_cf_{$pos}.meta_key='$field'";
 			$order_meta_where []    = " ( ordermeta_cf_{$pos}.meta_value IS NULL ) ";
 		}
 
 		if ( $settings['order_custom_fields'] ) {
-			$cf_names = self::get_order_custom_fields();
-			$filters  = self::parse_complex_pairs( $settings['order_custom_fields'], $cf_names );
+			$filters  = self::parse_complex_pairs( $settings['order_custom_fields'] );
 			$pos      = 1;
 			foreach ( $filters as $operator => $fields ) {
 				foreach ( $fields as $field => $values ) {
 					if ( $values ) {
-						$left_join_order_meta[] = "LEFT JOIN {$wpdb->postmeta} AS ordermeta_cf_{$pos} ON ordermeta_cf_{$pos}.post_id = orders.ID AND ordermeta_cf_{$pos}.meta_key='$field'";
+						$left_join_order_meta[] = "LEFT JOIN {$wpdb->postmeta} AS ordermeta_cf_{$pos} ON ordermeta_cf_{$pos}.post_id = orders.{$left_join_order_meta_order_id} AND ordermeta_cf_{$pos}.meta_key='$field'";
 						if ( $operator == 'IN' OR $operator == 'NOT IN' ) {
 							$values              = self::sql_subset( $values );
 							$order_meta_where [] = " ( ordermeta_cf_{$pos}.meta_value $operator ($values) ) ";
@@ -746,8 +924,7 @@ class WC_Order_Export_Data_Extractor {
 			}
 		}
 		if ( ! empty( $settings['user_custom_fields'] ) ) {
-			$cf_names = self::get_user_custom_fields();
-			$filters  = self::parse_complex_pairs( $settings['user_custom_fields'], $cf_names );
+			$filters  = self::parse_complex_pairs( $settings['user_custom_fields'] );
 			$pos      = 1;
 			foreach ( $filters as $operator => $fields ) {
 				foreach ( $fields as $field => $values ) {
@@ -781,7 +958,7 @@ class WC_Order_Export_Data_Extractor {
 				foreach ( $fields as $field => $values ) {
 					$values = self::sql_subset( $values );
 					if ( $values ) {
-						$left_join_order_meta[] = "LEFT JOIN {$wpdb->postmeta} AS ordermeta_{$field} ON ordermeta_{$field}.post_id = orders.ID";
+						$left_join_order_meta[] = "LEFT JOIN {$wpdb->postmeta} AS ordermeta_{$field} ON ordermeta_{$field}.post_id = orders.{$left_join_order_meta_order_id}";
 						$order_meta_where []    = " (ordermeta_{$field}.meta_key='_shipping_$field'  AND ordermeta_{$field}.meta_value $operator ($values)) ";
 					}
 				}
@@ -794,7 +971,7 @@ class WC_Order_Export_Data_Extractor {
 				foreach ( $fields as $field => $values ) {
 					$values = self::sql_subset( $values );
 					if ( $values ) {
-						$left_join_order_meta[] = "LEFT JOIN {$wpdb->postmeta} AS ordermeta_{$field} ON ordermeta_{$field}.post_id = orders.ID";
+						$left_join_order_meta[] = "LEFT JOIN {$wpdb->postmeta} AS ordermeta_{$field} ON ordermeta_{$field}.post_id = orders.{$left_join_order_meta_order_id}";
 						$order_meta_where []    = " (ordermeta_{$field}.meta_key='_billing_$field'  AND ordermeta_{$field}.meta_value $operator ($values)) ";
 					}
 				}
@@ -816,7 +993,7 @@ class WC_Order_Export_Data_Extractor {
 
 			$roles_where = array();
 			foreach ( $settings['user_roles'] as $role ) {
-				$roles_where[] = "( usermeta_cf_role.meta_value LIKE '%$role%' )";
+				$roles_where[] = "( usermeta_cf_role.meta_value LIKE '%\"$role\"%' )";
 			}
 			$user_meta_where[] = "(" . join( ' OR ', $roles_where ) . ")";
 		}
@@ -840,7 +1017,7 @@ class WC_Order_Export_Data_Extractor {
 			$field  = 'customer_user';
 			$values = self::sql_subset( $user_ids );
 			if ( $values ) {
-				$left_join_order_meta[] = "LEFT JOIN {$wpdb->postmeta} AS ordermeta_{$field} ON ordermeta_{$field}.post_id = orders.ID";
+				$left_join_order_meta[] = "LEFT JOIN {$wpdb->postmeta} AS ordermeta_{$field} ON ordermeta_{$field}.post_id = orders.{$left_join_order_meta_order_id}";
 				$order_meta_where []    = " (ordermeta_{$field}.meta_key='_customer_user'  AND ordermeta_{$field}.meta_value in ($values)) ";
 			}
 		}
@@ -850,7 +1027,7 @@ class WC_Order_Export_Data_Extractor {
 			$field  = 'payment_method';
 			$values = self::sql_subset( $settings['payment_methods'] );
 
-			$left_join_order_meta[] = "LEFT JOIN {$wpdb->postmeta} AS ordermeta_{$field} ON ordermeta_{$field}.post_id = orders.ID";
+			$left_join_order_meta[] = "LEFT JOIN {$wpdb->postmeta} AS ordermeta_{$field} ON ordermeta_{$field}.post_id = orders.{$left_join_order_meta_order_id}";
 			$order_meta_where []    = " (ordermeta_{$field}.meta_key='_{$field}'  AND ordermeta_{$field}.meta_value in ($values)) ";
 		}
 		$order_meta_where = join( " AND ",
@@ -902,6 +1079,18 @@ class WC_Order_Export_Data_Extractor {
 
 	private static function apply_order_filters_to_sql( &$where, $settings ) {
 		global $wpdb;
+
+		if ( ! empty( $settings['order_ids'] ) ) {
+			$order_ids = $settings['order_ids'];
+
+			if ( is_array( $settings['order_ids'] ) && count( array_filter( array_map( 'is_numeric', $order_ids ) ) ) === count( $order_ids ) ) {
+				$order_ids_str = self::sql_subset( $order_ids );
+				if ( $order_ids_str ) {
+					$where[] = "orders.id IN ($order_ids_str)";
+				}
+			}
+		}
+
 		//default filter by date
 		if ( ! isset( $settings['export_rule_field'] ) ) {
 			$settings['export_rule_field'] = 'modified';
@@ -956,6 +1145,7 @@ class WC_Order_Export_Data_Extractor {
 
 	public static function get_date_range( $settings, $is_for_sql, $use_timestamps = false ) {
 		$result = array();
+		$diff_utc = current_time( "timestamp" ) - current_time( "timestamp", 1 );
 
 		// fixed date range 
 		if ( ! empty( $settings['from_date'] ) OR ! empty( $settings['to_date'] ) ) {
@@ -968,7 +1158,8 @@ class WC_Order_Export_Data_Extractor {
 				}
 				if ( $is_for_sql ) {
 					if ( $use_timestamps ) {
-						$from_date = mysql2date( 'U', $from_date );
+						$from_date = mysql2date( 'G', $from_date );
+						$from_date -= $diff_utc;
 					}
 					$from_date = sprintf( ">='%s'", $from_date );
 				}
@@ -984,7 +1175,8 @@ class WC_Order_Export_Data_Extractor {
 				}
 				if ( $is_for_sql ) {
 					if ( $use_timestamps ) {
-						$to_date = mysql2date( 'U', $to_date );
+						$to_date = mysql2date( 'G', $to_date );
+						$to_date -= $diff_utc;
 					}
 					$to_date = sprintf( "<='%s'", $to_date );
 				}
@@ -1090,7 +1282,8 @@ class WC_Order_Export_Data_Extractor {
 		if ( isset( $from_date ) AND $from_date ) {
 			if ( $is_for_sql ) {
 				if ( $use_timestamps ) {
-					$from_date = mysql2date( 'U', $from_date );
+					$from_date = mysql2date( 'G', $from_date );
+					$from_date -= $diff_utc;
 				}
 				$from_date = sprintf( ">='%s'", $from_date );
 			}
@@ -1100,7 +1293,8 @@ class WC_Order_Export_Data_Extractor {
 		if ( isset( $to_date ) AND $to_date ) {
 			if ( $is_for_sql ) {
 				if ( $use_timestamps ) {
-					$to_date = mysql2date( 'U', $to_date );
+					$to_date = mysql2date( 'G', $to_date );
+					$to_date -= $diff_utc;
 				}
 				$to_date = sprintf( "<='%s'", $to_date );
 			}
@@ -1179,8 +1373,9 @@ class WC_Order_Export_Data_Extractor {
 		$coupons = array();
 		foreach ( $order->get_items( 'coupon' ) as $item ) {
 			$coupon_meta     = array();
-			$get_coupon_meta = ( array_diff( $labels->get_keys(),
-				array( 'code', 'discount_amount', 'discount_amount_tax', 'excerpt' ) ) );
+			$get_coupon_meta = ( array_diff( $labels->get_keys(), array( 'code', 'discount_amount', 'discount_amount_tax', 'excerpt' ) ) );
+			$coupon_object = new WC_Coupon( $item['name'] );
+
 			if ( $get_coupon_meta ) {
 				$recs = $wpdb->get_results( $wpdb->prepare( "SELECT meta_value,meta_key FROM {$wpdb->postmeta} AS meta
 					JOIN {$wpdb->posts} AS posts ON posts.ID = meta.post_id
@@ -1188,6 +1383,10 @@ class WC_Order_Export_Data_Extractor {
 				foreach ( $recs as $rec ) {
 					$coupon_meta[ $rec->meta_key ] = $rec->meta_value;
 				}
+
+				foreach ( $coupon_object->get_meta_data() as $meta) {
+					$coupon_meta[ $meta->key ] = $meta->value;
+				};
 			}
 
 			$row = array();
@@ -1198,6 +1397,9 @@ class WC_Order_Export_Data_Extractor {
 					$row['code'] = $item["name"];
 				} elseif ( $field == 'discount_amount_plus_tax' ) {
 					$row['discount_amount_plus_tax'] = $item["discount_amount"] + $item["discount_amount_tax"];
+				} elseif ( $field == 'excerpt' ) {
+					$post          = get_page_by_title( $item['name'], OBJECT, 'shop_' . $item['type'] );
+					$row[ $field ] = $post ? $post->post_excerpt : '';
 				} elseif ( isset( $coupon_meta[ $field ] ) ) {
 					$row[ $field ] = $coupon_meta[ $field ];
 				} elseif ( isset( $static_vals[ $field ] ) ) {
@@ -1205,14 +1407,9 @@ class WC_Order_Export_Data_Extractor {
 				} else {
 					$row[ $field ] = '';
 				}
-
+				
 				$row[ $field ] = apply_filters( "woe_get_order_coupon_value_{$field}", $row[ $field ], $order,
 					$item );
-
-				if ( $field == 'excerpt' ) {
-					$post          = get_page_by_title( $item['name'], OBJECT, 'shop_' . $item['type'] );
-					$row[ $field ] = $post ? $post->post_excerpt : '';
-				}
 			}
 			$row = apply_filters( 'woe_fetch_order_coupon', $row, $item, $coupon_meta );
 			if ( $row ) {
@@ -1258,8 +1455,10 @@ class WC_Order_Export_Data_Extractor {
 			) {
 				continue;
 			}
+			
 			$product   = $order->get_product_from_item( $item );
 			$product   = apply_filters( "woe_get_order_product", $product );
+			
 			$item_meta = get_metadata( 'order_item', $item_id );
 			foreach ( $item_meta as $key => $value ) {
 				$clear_key = wc_sanitize_taxonomy_name( $key );
@@ -1270,7 +1469,13 @@ class WC_Order_Export_Data_Extractor {
 						$item_meta[ 'attribute_' . $key ][0] = isset( $term->name ) ? $term->name : $value[0];
 					}
 				}
+				
+				//some plugins encode meta keys!
+				$key2 = html_entity_decode ($key,ENT_QUOTES);
+				if( !isset($item_meta[$key2]) )
+					$item_meta[$key2] = $item_meta[$key];
 			}
+			
 			$item_meta = apply_filters( "woe_get_order_product_item_meta", $item_meta );
 			$product   = apply_filters( "woe_get_order_product_and_item_meta", $product, $item_meta );
 			if ( $product ) {
@@ -1330,6 +1535,8 @@ class WC_Order_Export_Data_Extractor {
 					$row[ $field ] = $item["name"];
 				} elseif ( $field == 'product_name' ) {
 					$row[ $field ] = $product ? $product->get_name() : '';
+				} elseif ( $field == 'product_name_main' ) {
+					$row[ $field ] = $product ? $product->get_title() : '';
 				} elseif ( $field == 'product_variation' ) {
 					$row[ $field ] = self::get_product_variation( $item, $order, $item_id, $product );
 				} elseif ( $field == 'seller' ) {
@@ -1342,6 +1549,25 @@ class WC_Order_Export_Data_Extractor {
 					$row[ $field ] = $post ? $post->post_content : '';
 				} elseif ( $field == 'post_excerpt' ) {
 					$row[ $field ] = $post ? $post->post_excerpt : '';
+				} elseif ( $field == 'embedded_product_image' ) {
+					$row[ $field ] = "";
+
+					if ( $post && get_post_thumbnail_id( $post->ID ) ) {
+						$attachment_id = get_post_thumbnail_id( $post->ID );
+					} else {
+						$attachment_id = get_option( 'woocommerce_placeholder_image', 0 );
+					}
+
+					if ( is_array( $imagedata = wp_get_attachment_metadata( $attachment_id ) ) ) {
+						$file = get_attached_file( $attachment_id );
+						if ( ! empty( $imagedata['sizes']['woocommerce_thumbnail']['file'] ) ) {
+							$thumbnail_base_name = $imagedata['sizes']['woocommerce_thumbnail']['file'];
+
+							if ( ( $thumbfile = str_replace( basename( $file ), $thumbnail_base_name, $file ) ) && file_exists( $thumbfile ) ) {
+								$row[ $field ] = $thumbfile;
+							}
+						}
+					}
 				} elseif ( $field == 'type' ) {
 					$row[ $field ] = '';
 					if ( $product ) {
@@ -1401,7 +1627,7 @@ class WC_Order_Export_Data_Extractor {
 						$subtotal_amount = $item['line_subtotal'];
 						$subtotal_tax    = $item['line_subtotal_tax'];
 					}
-					$row[ $field ] = ( $subtotal_amount > 0 ) ? round( 100 * $subtotal_tax / $subtotal_amount, 2 ) : 0;
+					$row[ $field ] = ( $subtotal_amount <> 0 ) ? round( 100 * $subtotal_tax / $subtotal_amount, apply_filters('woe_tax_rate_rounding_precision', 2) ) : 0;
 				} elseif ( $field == 'product_url' ) {
 					$row[ $field ] = get_permalink( $product_id );
 				} elseif ( $field == 'sku' ) {
@@ -1411,11 +1637,23 @@ class WC_Order_Export_Data_Extractor {
 				} elseif ( $field == 'download_url' ) {
 					$row[ $field ] = '';
 					if ( $product AND $product->is_downloadable() ) {
-						$files = get_post_meta( $product_id, '_downloadable_files', true );
+						$files = get_post_meta( $product->get_id(), '_downloadable_files', true );
 						$links = array();
 						if ( $files ) {
 							foreach ( $files as $file ) {
 								$links[] = $file['file'];
+							}
+						}
+						$row[ $field ] = implode( "\n", $links );
+					}
+				} elseif ( $field == 'item_download_url' ) {
+					$row[ $field ] = '';
+					if ( $product AND $product->is_downloadable() ) {
+						$files = $item->get_item_downloads();
+						$links = array();
+						if ( $files ) {
+							foreach ( $files as $file ) {
+								$links[] = $file['download_url'];
 							}
 						}
 						$row[ $field ] = implode( "\n", $links );
@@ -1535,6 +1773,7 @@ class WC_Order_Export_Data_Extractor {
 		$options
 	) {
 		global $wp_roles;
+		global $wpdb;
 
 //		$extra_rows = array();
 		$row = array();
@@ -1596,12 +1835,12 @@ class WC_Order_Export_Data_Extractor {
 		}
 
 		// we know parent!
-		if (  ( $export['products'] || $options['include_products'] ) && ! empty( $labels['products'] )  || 
-		      isset( $labels['order']->count_unique_products ) || isset( $labels['order']->total_weight_items ) ) {
-		    //   no labels for products??
-			$tmp_labels = !empty($labels['products']) ? clone $labels['products'] : new WC_Order_Export_Labels();
+		if ( ( $export['products'] || $options['include_products'] ) && ! empty( $labels['products'] ) ||
+		     isset( $labels['order']->count_unique_products ) || isset( $labels['order']->total_weight_items ) ) {
+			//   no labels for products??
+			$tmp_labels = ! empty( $labels['products'] ) ? clone $labels['products'] : new WC_Order_Export_Labels();
 			//need qty?
-			if ( isset( $labels['order']->total_weight_items )  || isset( $labels['order']->count_unique_products ) ) {
+			if ( isset( $labels['order']->total_weight_items ) || isset( $labels['order']->count_unique_products ) ) {
 				if ( ! isset( $tmp_labels->qty ) ) {
 					$tmp_labels->qty = "";
 				}
@@ -1612,7 +1851,7 @@ class WC_Order_Export_Data_Extractor {
 					$tmp_labels->weight = "";
 				}
 			}
-			
+
 			$data['products'] = self::fetch_order_products(
 				$order,
 				$tmp_labels,
@@ -1640,7 +1879,8 @@ class WC_Order_Export_Data_Extractor {
 		// extra WP_User
 		$user = ! empty( $order_meta['_customer_user'] ) ? get_userdata( $order_meta['_customer_user'] ) : false;
 		// setup missed fields for full addresses
-		foreach ( array( '_billing_address_1', '_billing_address_2', '_shipping_address_1', '_shipping_address_2' ) as $optional_field ) {
+		$optional_fields = array( '_billing_address_1', '_billing_address_2', '_billing_first_name', '_billing_last_name', '_shipping_address_1', '_shipping_address_2', '_shipping_first_name', '_shipping_last_name' );
+		foreach ($optional_fields as $optional_field ) {
 			if ( ! isset( $order_meta[ $optional_field ] ) ) {
 				$order_meta[ $optional_field ] = '';
 			}
@@ -1653,6 +1893,69 @@ class WC_Order_Export_Data_Extractor {
 			if ( substr( $field, 0, 5 ) == "USER_" ) { //user field
 				$key           = substr( $field, 5 );
 				$row[ $field ] = $user ? $user->get( $key ) : '';
+			} elseif ( substr( $field, 0, 4 ) == "FEE_" ) {
+
+			    $key = substr( $field, 4 );
+
+			    $value = $wpdb->get_col( $wpdb->prepare(
+				"SELECT
+				    itemmeta.meta_value
+				FROM
+				    {$wpdb->prefix}woocommerce_order_items items
+				INNER JOIN
+				    {$wpdb->prefix}woocommerce_order_itemmeta itemmeta
+				ON
+				    items.order_item_id = itemmeta.order_item_id AND itemmeta.meta_key = '_fee_amount'
+				WHERE
+				    items.order_id = %s AND items.order_item_type = 'fee' AND items.order_item_name = %s",
+				$order_id,
+				$key
+			    ) );
+
+			    $row[ $field ] = isset($value[0]) ? $value[0] : '';
+
+			} elseif ( substr( $field, 0, 9 ) == "SHIPPING_" ) {
+
+			    $key = substr( $field, 9 );
+
+			    $value = $wpdb->get_col( $wpdb->prepare(
+				"SELECT
+				    itemmeta.meta_value
+				FROM
+				    {$wpdb->prefix}woocommerce_order_items items
+				INNER JOIN
+				    {$wpdb->prefix}woocommerce_order_itemmeta itemmeta
+				ON
+				    items.order_item_id = itemmeta.order_item_id AND itemmeta.meta_key = 'cost'
+				WHERE
+				    items.order_id = %s AND items.order_item_type = 'shipping' AND items.order_item_name = %s",
+				$order_id,
+				$key
+			    ) );
+
+			    $row[ $field ] = isset($value[0]) ? $value[0] : '';
+
+			} elseif ( substr( $field, 0, 4 ) == "TAX_" ) {
+
+			    $key = substr( $field, 4 );
+
+			    $value = $wpdb->get_col( $wpdb->prepare(
+				"SELECT
+				    itemmeta.meta_value
+				FROM
+				    {$wpdb->prefix}woocommerce_order_items items
+				INNER JOIN
+				    {$wpdb->prefix}woocommerce_order_itemmeta itemmeta
+				ON
+				    items.order_item_id = itemmeta.order_item_id AND itemmeta.meta_key = 'tax_amount'
+				WHERE
+				    items.order_id = %s AND items.order_item_type = 'tax' AND items.order_item_name = %s",
+				$order_id,
+				$key
+			    ) );
+
+			    $row[ $field ] = isset($value[0]) ? $value[0] : '';
+
 			} elseif ( $field == 'order_id' ) {
 				$row[ $field ] = $order_id;
 			} elseif ( $field == 'order_date' ) {
@@ -1729,6 +2032,14 @@ class WC_Order_Export_Data_Extractor {
 				$row[ $field ] = ( isset( $user->roles[0] ) && isset( $roles[ $user->roles[0] ] ) ) ? $roles[ $user->roles[0] ]['name'] : ""; // take first role Name
 			} elseif ( $field == 'customer_total_orders' ) {
 				$row[ $field ] = ( isset( $user->ID ) ) ? wc_get_customer_order_count( $user->ID ) : 0;
+			} elseif ( $field == 'customer_first_order_date' ) {
+				$first_order = self::get_customer_order( $user, $order_meta, 'first' );
+				$row[ $field ] = $first_order ? ( $first_order->get_date_created() ? gmdate( 'Y-m-d H:i:s',
+					$first_order->get_date_created()->getOffsetTimestamp() ) : '' ) : '';
+			} elseif ( $field == 'customer_last_order_date' ) {
+				$last_order = self::get_customer_order( $user, $order_meta, 'last' );
+				$row[ $field ] = $last_order? ( $last_order->get_date_created() ? gmdate( 'Y-m-d H:i:s',
+					$last_order->get_date_created()->getOffsetTimestamp() ) : '' ) : '';
 			} elseif ( $field == 'billing_address' ) {
 				$row[ $field ] = join( ", ",
 					array_filter( array( $order_meta["_billing_address_1"], $order_meta["_billing_address_2"] ) ) );
@@ -1752,22 +2063,22 @@ class WC_Order_Export_Data_Extractor {
 			} elseif ( $field == 'billing_citystatezip' ) {
 				$row[ $field ] = self::get_city_state_postcode_field_value( $order, 'billing' );
 			} elseif ( $field == 'billing_citystatezip_us' ) {
-				$row[ $field ] = self::get_city_state_postcode_field_value( $order, 'billing', true);
+				$row[ $field ] = self::get_city_state_postcode_field_value( $order, 'billing', true );
 			} elseif ( $field == 'shipping_citystatezip' ) {
 				$row[ $field ] = self::get_city_state_postcode_field_value( $order, 'shipping' );
 			} elseif ( $field == 'shipping_citystatezip_us' ) {
-				$row[ $field ] = self::get_city_state_postcode_field_value( $order, 'shipping', true);
+				$row[ $field ] = self::get_city_state_postcode_field_value( $order, 'shipping', true );
 			} elseif ( $field == 'products' OR $field == 'coupons' ) {
 				if ( isset( $data[ $field ] ) ) {
 					$row[ $field ] = $data[ $field ];
 				}
 			} elseif ( $field == 'shipping_method_title' ) {
 				$row[ $field ] = $order->get_shipping_method();
-			} elseif ( $field == 'shipping_method' ) {
+			} elseif ( $field == 'shipping_method' OR $field == 'shipping_method_only') {
 				$shipping_methods = $order->get_items( 'shipping' );
 				$shipping_method  = reset( $shipping_methods ); // take first entry
 				if ( ! empty( $shipping_method ) ) {
-					$row[ $field ] = $shipping_method['method_id'] . ':' . $shipping_method['instance_id'];
+					$row[ $field ] = $field == 'shipping_method_only' ? $shipping_method['method_id'] : $shipping_method['method_id'] . ':' . $shipping_method['instance_id'];
 				}
 			} elseif ( $field == 'coupons_used' ) {
 				$row[ $field ] = count( $data['coupons'] );
@@ -1828,6 +2139,12 @@ class WC_Order_Export_Data_Extractor {
 					}
 				}
 				$row[ $field ] = implode( "\n", $comments );
+			} elseif ( $field == 'embedded_edit_order_link' ) {
+				$row[ $field ] = sprintf(
+				    '<a href="%s" target="_blank">%s</a>',
+				    get_edit_post_link($order_id),
+				    __( 'Edit order', 'woo-order-export-lite' )
+				);
 			} elseif ( isset( $order_meta[ $field ] ) ) {
 				$field_data = array();
 				do_action( 'woocommerce_order_export_add_field_data', $field_data, $order_meta[ $field ], $field );
@@ -1859,19 +2176,19 @@ class WC_Order_Export_Data_Extractor {
 		}
 
 		//no labels - no data !
-		if( empty($labels['products']) ) {
-			$row['products']  = array();
+		if ( empty( $labels['products'] ) ) {
+			$row['products'] = array();
 		}
-		if( empty($labels['coupons']) ) {
-			$row['coupons']  = array();
+		if ( empty( $labels['coupons'] ) ) {
+			$row['coupons'] = array();
 		}
-		
+
 		$row = apply_filters( "woe_fetch_order", $row, $order );
 
 		return $row;
 	}
 
-	public static function get_city_state_postcode_field_value( $order, $type, $us_format = false  ) {
+	public static function get_city_state_postcode_field_value( $order, $type, $us_format = false ) {
 		if ( $type != 'shipping' && $type != 'billing' ) {
 			return null;
 		}
@@ -1886,13 +2203,14 @@ class WC_Order_Export_Data_Extractor {
 				'get_' . $field_name ) ? $order->{'get_' . $field_name}() : $order->{$field_name};
 		}
 
-		if( $us_format ) {
+		if ( $us_format ) {
 			//reformat as "Austin, TX 95076"
-			$parts[] = $citystatepostcode[ $type . '_city' ] ;
+			$parts[] = $citystatepostcode[ $type . '_city' ];
 			$parts[] = trim( $citystatepostcode[ $type . '_state' ] . " " . $citystatepostcode[ $type . '_postcode' ] );
 		} else {
 			$parts = $citystatepostcode;
-		}	
+		}
+
 		return join( ", ", $parts );
 	}
 
@@ -2012,6 +2330,48 @@ class WC_Order_Export_Data_Extractor {
 		}
 
 		return $shipping_methods;
+	}
+
+	private static function get_customer_order( $user, $order_meta, $first_or_last ) {
+		global $wpdb;
+
+		if( isset($user->ID)) {
+			$meta_key = "_customer_user";
+			$meta_value = $user->ID;
+		} elseif( !empty($order_meta["_billing_email"]) ) {
+			$meta_key = "_billing_email";
+			$meta_value = $order_meta["_billing_email"];
+		} else {
+			return false;
+		}
+		
+		if ( 'first' === $first_or_last ) {
+			$direction = 'ASC';
+		} else if ( 'last' === $first_or_last ) {
+			$direction = 'DESC';
+		} else {
+			return false;
+		}
+		
+
+		$order = $wpdb->get_var(
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
+			"SELECT posts.ID
+			FROM $wpdb->posts AS posts
+			LEFT JOIN {$wpdb->postmeta} AS meta on posts.ID = meta.post_id
+			WHERE meta.meta_key = '" . $meta_key ."'
+			AND   meta.meta_value = '" . esc_sql( $meta_value ) . "'
+			AND   posts.post_type = 'shop_order'
+			AND   posts.post_status IN ( '" . implode( "','", array_map( 'esc_sql', array_keys( wc_get_order_statuses() ) ) ) . "' )
+			ORDER BY posts.ID {$direction}"
+		// phpcs:enable
+		);
+
+		if ( ! $order ) {
+			return false;
+		}
+
+		return wc_get_order( absint( $order ) );
 	}
 
 }

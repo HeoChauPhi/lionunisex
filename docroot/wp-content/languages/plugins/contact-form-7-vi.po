@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Contact Form 7 - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2018-10-23 05:18:02+0000\n"
+"PO-Revision-Date: 2019-09-08 10:17:58+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,40 +11,173 @@ msgstr ""
 "Language: vi_VN\n"
 "Project-Id-Version: Plugins - Contact Form 7 - Stable (latest release)\n"
 
-#: includes/config-validator.php:581
+#: modules/recaptcha.php:499
+msgid "reCAPTCHA is active on this site."
+msgstr "reCAPTCHA đã kích hoạt ở trang web này."
+
+#: modules/recaptcha.php:156
+msgid "reCAPTCHA response token is empty."
+msgstr "reCAPTCHA response token trống."
+
+#: modules/constant-contact.php:473
+msgid "Configuration updated."
+msgstr "Đã cập nhật cấu hình."
+
+#: modules/constant-contact.php:494
+msgid "This site is connected to the Constant Contact API."
+msgstr "Trang web đã kết nối với Constant Contact API."
+
+#: modules/recaptcha.php:162
+msgid "reCAPTCHA score (%1$.2f) is lower than the threshold (%2$.2f)."
+msgstr "Điểm reCAPTCHA (%1$.2f) thấp hơn ngưỡng (%2$.2f)."
+
+#: modules/akismet.php:58
+msgid "Akismet returns a spam response."
+msgstr "Akismet trả về một phản hồi spam."
+
+#: includes/submission.php:326
+msgid "Blacklisted words are used."
+msgstr "Từ danh sách đen được sử dụng."
+
+#: includes/submission.php:317
+msgid "Submitted nonce is invalid."
+msgstr "Gửi nonce không hợp lệ."
+
+#: includes/submission.php:308
+msgid "User-Agent string is unnaturally short."
+msgstr "Chuỗi User-Agent ngắn một cách bất thường."
+
+#: modules/constant-contact.php:460
+msgid "Connection established."
+msgstr "Thiết lập kết nối thành công."
+
+#: modules/constant-contact.php:467
+msgid "Failed to establish connection. Please double-check your configuration."
+msgstr "Không thể thiết lập kết nối. Vui lòng kiểm tra lại cấu hình của bạn."
+
+#: modules/constant-contact.php:588
+msgid "Select lists to which newly added contacts are to belong."
+msgstr "Chọn danh sách mà các liên hệ mới được thêm vào sẽ thuộc về."
+
+#: modules/constant-contact.php:587
+msgctxt "Constant Contact"
+msgid "Contact Lists: Select lists to which newly added contacts are to belong."
+msgstr "Danh sách liên hệ: Chọn danh sách mà các liên hệ mới được thêm vào sẽ thuộc về."
+
+#: modules/constant-contact.php:565
+msgctxt "API keys"
+msgid "Reset Keys"
+msgstr "Đặt lại khóa"
+
+#: modules/constant-contact.php:584
+msgctxt "Constant Contact"
+msgid "Contact Lists"
+msgstr "Danh sách liên hệ"
+
+#: modules/constant-contact.php:570
+msgid "Connect to the Constant Contact API"
+msgstr "Kết nối Constant Contact API"
+
+#: modules/constant-contact.php:557
+msgid "Set this URL as the redirect URI."
+msgstr "Sử dụng URL này là URL chuyển hướng"
+
+#: modules/constant-contact.php:483
+msgid "https://contactform7.com/constant-contact-integration/"
+msgstr "https://contactform7.com/constant-contact-integration/"
+
+#: modules/constant-contact.php:481
+msgid "The Constant Contact integration module allows you to send contact data collected through your contact forms to the Constant Contact API. You can create reliable email subscription services in a few easy steps. For details, see %s."
+msgstr "Module Constant Contact cho phép  bạn gửi dữ liệu trong form liên hệ về Constant Contact API. Bạn có thể tạo dịch vụ theo dõi email trong vài bước. Để biết chi tiết, xem %s."
+
+#: modules/constant-contact.php:236
+msgid "Constant Contact"
+msgstr "Constant Contact"
+
+#: modules/constant-contact.php:9
+msgid "Email Marketing"
+msgstr "Email Marketing"
+
+#: modules/recaptcha.php:565
+msgctxt "API keys"
+msgid "Remove Keys"
+msgstr "Xóa Key"
+
+#: modules/recaptcha.php:570
+msgid "Save Changes"
+msgstr "Lưu thay đổi"
+
+#: modules/recaptcha.php:234 modules/recaptcha.php:492
+msgid "reCAPTCHA (v3)"
+msgstr "reCAPTCHA (v3)"
+
+#: modules/constant-contact.php:487
+msgid "Constant Contact Integration"
+msgstr "Tích hợp Constant Contact"
+
+#: modules/recaptcha.php:489
+msgid "reCAPTCHA protects you against spam and other types of automated abuse. With Contact Form 7&#8217;s reCAPTCHA integration module, you can block abusive form submissions by spam bots. For details, see %s."
+msgstr "reCAPTCHA bảo vệ bạn khỏi spam và các loại hình tin rác khác. Với Contact Form 7 &#8217;s tích hợp reCAPTCHA, bạn có thể chặn thông báo rác bởi các bot spam. Chi tiết, xem %s."
+
+#: modules/constant-contact.php:550
+msgid "Redirect URI"
+msgstr "Chuyển hướng URI"
+
+#: modules/constant-contact.php:516
+msgid "API Key"
+msgstr "Khóa API"
+
+#. translators: 1: response code, 2: message, 3: body, 4: URL
+#: includes/functions.php:384
+msgid "HTTP Response: %1$s %2$s %3$s from %4$s"
+msgstr "Phản hồi HTTP: %1$s %2$s %3$s từ %4$s"
+
+#: modules/recaptcha.php:231
+msgid "API keys for reCAPTCHA v3 are different from those for v2; keys for v2 don&#8217;t work with the v3 API. You need to register your sites again to get new keys for v3. For details, see %s."
+msgstr "Các khóa API cho reCAPTCHA v3 khác với các khóa cho v2; Các khóa cho v2 không hoạt động với API v3. Bạn cần đăng ký lại trang web của mình để nhận khóa mới cho v3. Để biết chi tiết, xem %s."
+
+#: modules/recaptcha.php:509 modules/constant-contact.php:504
+msgid "Setup Integration"
+msgstr "Thiết lập tích hợp"
+
+#: modules/constant-contact.php:533
+msgid "App Secret"
+msgstr "Ứng dụng bí mật"
+
+#: includes/config-validator.php:590
 msgid "It is not allowed to use files outside the wp-content directory."
 msgstr "Bạn không thể sử dụng file nằm ngoài thư mục wp-content."
 
-#: modules/acceptance.php:251
+#: modules/acceptance.php:266
 msgid "Make this checkbox optional"
 msgstr "Làm checkbox này là không bắt buộc"
 
-#: admin/edit-contact-form.php:170
+#: admin/edit-contact-form.php:184
 msgid "Do you need help?"
 msgstr "Bạn cần giúp đỡ?"
 
-#: admin/edit-contact-form.php:187
+#: admin/edit-contact-form.php:201
 msgid "https://wordpress.org/support/plugin/contact-form-7/"
 msgstr "https://wordpress.org/support/plugin/contact-form-7/"
 
-#: admin/edit-contact-form.php:191
+#: admin/edit-contact-form.php:205
 msgid "https://contactform7.com/custom-development/"
 msgstr "https://contactform7.com/custom-development/"
 
-#: admin/edit-contact-form.php:188
+#: admin/edit-contact-form.php:202
 msgid "Support Forums"
 msgstr "Diễn đàn hỗ trợ"
 
-#: admin/edit-contact-form.php:192
+#: admin/edit-contact-form.php:206
 msgid "Professional Services"
 msgstr "Dịch vụ riêng"
 
 #. translators: 1: FAQ, 2: Docs ("FAQ & Docs")
-#: admin/edit-contact-form.php:176
+#: admin/edit-contact-form.php:190
 msgid "%1$s &#38; %2$s"
 msgstr "%1$s &#38; %2$s"
 
-#: admin/edit-contact-form.php:172
+#: admin/edit-contact-form.php:186
 msgid "Here are some available options to help solve your problems."
 msgstr "Dưới đây là một số tùy chọn có sẵn để giúp giải quyết vấn đề của bạn."
 
@@ -60,40 +193,39 @@ msgstr "https://contactform7.com/editing-form-template/"
 msgid "https://contactform7.com/editing-messages/"
 msgstr "https://contactform7.com/editing-messages/"
 
-#: modules/acceptance.php:242
+#: modules/acceptance.php:257
 msgid "Condition"
 msgstr "Điều kiện"
 
-#: modules/acceptance.php:185
+#: modules/acceptance.php:200
 msgid "Not consented"
 msgstr "Không đồng ý"
 
-#: modules/acceptance.php:183
+#: modules/acceptance.php:198
 msgid "Consented"
 msgstr "Đã đồng ý"
 
-#. translators: 1: 'Consented' or 'Not consented', 2: conditions
-#: modules/acceptance.php:201
+#: modules/acceptance.php:216
 msgctxt "mail output for acceptance checkboxes"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#: includes/submission.php:205
+#: includes/submission.php:206
 msgid "Sending mail has been aborted."
 msgstr "Gửi mail đã bị hủy."
 
 #. translators: screen reader text
-#: admin/admin.php:327
+#: admin/admin.php:138
 msgid "(configuration error)"
 msgstr "(lỗi cấu hình)"
 
 #. translators: screen reader text
-#: admin/edit-contact-form.php:210
+#: admin/edit-contact-form.php:224
 msgid "(left and right arrow)"
 msgstr "(mũi tên trái và phải)"
 
 #. translators: 1: ◀ ▶ dashicon, 2: screen reader text for the dashicon
-#: admin/edit-contact-form.php:205
+#: admin/edit-contact-form.php:219
 msgid "%1$s %2$s keys switch panels"
 msgstr "%1$s %2$s phím chuyển đổi panels"
 
@@ -113,10 +245,11 @@ msgstr "Bạn có thể chỉnh sửa mẫu form tại đây. Để biết thêm
 msgid "Editing Form Template"
 msgstr "Chỉnh sửa mẫu form"
 
-#: admin/admin.php:320
+#: admin/admin.php:131
 msgid "How to resolve?"
 msgstr "Làm thế nào để giải quyết?"
 
+#. translators: %s: link labeled 'making a donation'
 #: admin/includes/welcome-panel.php:35
 msgid "making a donation"
 msgstr "quyên góp"
@@ -138,7 +271,7 @@ msgstr "Khó mà tiếp tục phát triển và hỗ trợ plugin này nếu kh�
 msgid "Deprecated settings are used."
 msgstr "Các cài đặt đã lỗi thời."
 
-#: includes/contact-form.php:296 includes/contact-form.php:709
+#: includes/contact-form.php:316 includes/contact-form.php:731
 msgid "This contact form is available only for logged in users."
 msgstr "Form này chỉ có sẵn đối với người dùng đã đăng nhập."
 
@@ -148,7 +281,7 @@ msgid "To use CAPTCHA, you need %s plugin installed."
 msgstr "Để sử dụng CAPTCHA, bạn cần cài đặt plugin %s."
 
 #. translators: %s: number of errors detected
-#: admin/includes/class-contact-forms-list-table.php:132
+#: admin/includes/class-contact-forms-list-table.php:136
 msgid "%s configuration error detected"
 msgid_plural "%s configuration errors detected"
 msgstr[0] "%s lỗi cấu hình được phát hiện"
@@ -188,7 +321,7 @@ msgstr "Các mục nhập email header không hợp lệ."
 msgid "You are not allowed to access contact forms."
 msgstr "Bạn không được phép truy cập các form."
 
-#: includes/config-validator.php:482
+#: includes/config-validator.php:488
 msgid "Invalid mailbox syntax is used in the %name% field."
 msgstr "Cú pháp không hợp lệ trong mục %name%."
 
@@ -205,42 +338,47 @@ msgid "HTML tags are used in a message."
 msgstr "Các thẻ HTML được sử dụng trong nội dung."
 
 #. translators: %names%: a list of form control names
-#: includes/config-validator.php:393
+#: includes/config-validator.php:398
 msgid "Unavailable names (%names%) are used for form controls."
 msgstr "Các biến không có sẵn (%names%) đang được sử dụng."
 
-#: includes/config-validator.php:563
+#: includes/config-validator.php:572
 msgid "Attachment file does not exist at %path%."
 msgstr "File đính kèm không tồn tại ở %path%."
 
-#: admin/admin.php:323
+#: admin/admin.php:134
 msgid "1 configuration error detected in this tab panel"
 msgstr "1 lỗi cấu hình được phát hiện trong bảng điều khiển tab này"
 
-#: admin/admin.php:322
+#: admin/admin.php:133
 msgid "%d configuration errors detected"
 msgstr "%d lỗi cấu hình được phát hiện"
 
-#: admin/admin.php:321
+#: admin/admin.php:132
 msgid "1 configuration error detected"
 msgstr "1 lỗi cấu hình được phát hiện"
 
-#: admin/admin.php:510 includes/rest-api.php:138 includes/rest-api.php:214
+#: admin/admin.php:512 includes/rest-api.php:138 includes/rest-api.php:214
 msgid "There was an error saving the contact form."
 msgstr "Đã xảy ra lỗi khi lưu form."
 
-#: admin/admin.php:324
+#: admin/admin.php:135
 msgid "%d configuration errors detected in this tab panel"
 msgstr "%d lỗi cấu hình được phát hiện trong bảng điều khiển tab này"
 
+#. translators: links labeled 1: 'Akismet', 2: 'reCAPTCHA', 3: 'comment
+#. blacklist'
 #: admin/includes/welcome-panel.php:26
 msgid "https://contactform7.com/comment-blacklist/"
 msgstr "https://contactform7.com/comment-blacklist/"
 
+#. translators: %s: link labeled 'Flamingo'
 #: admin/includes/welcome-panel.php:45
 msgid "Flamingo"
 msgstr "Flamingo"
 
+#. translators: links labeled 1: 'Akismet', 2: 'reCAPTCHA', 3: 'comment
+#. blacklist'
 #: admin/includes/welcome-panel.php:26
 msgid "comment blacklist"
 msgstr "danh sách đen bình luận"
@@ -249,7 +387,7 @@ msgstr "danh sách đen bình luận"
 msgid "Getting spammed? You have protection."
 msgstr "Bị spam? Hãy yên tâm, bạn sẽ được bảo vệ."
 
-#: includes/functions.php:365
+#: includes/functions.php:374
 msgid "%1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead."
 msgstr "%1$s đã <strong>quá cũ</strong> kể từ phiên bản Contact Form 7 %2$s! Hãy sử dụng %3$s."
 
@@ -280,23 +418,23 @@ msgstr "Bạn có thể cài plugin mở rộng %s để lưu lại các tin nh�
 msgid "Multiple form controls are in a single label element."
 msgstr "Nhiều mục đang nằm trong cùng một nhãn."
 
-#: admin/admin.php:429
+#: admin/includes/config-validator.php:129
 msgid "FAQ about Configuration Validator"
 msgstr "Câu hỏi thường gặp về Xác thực Cấu hình"
 
-#: admin/admin.php:429
+#: admin/includes/config-validator.php:128
 msgid "https://contactform7.com/configuration-validator-faq/"
 msgstr "https://contactform7.com/configuration-validator-faq/"
 
-#: modules/text.php:184
+#: modules/text.php:185
 msgid "The URL is invalid."
 msgstr "URL không hợp lệ."
 
-#: modules/number.php:121
+#: modules/number.php:122
 msgid "The number format is invalid."
 msgstr "Định dạng số không hợp lệ."
 
-#: modules/text.php:191
+#: modules/text.php:192
 msgid "The telephone number is invalid."
 msgstr "Số điện thoại không hợp lệ."
 
@@ -304,27 +442,27 @@ msgstr "Số điện thoại không hợp lệ."
 msgid "The file is too big."
 msgstr "File kích thước quá lớn."
 
-#: modules/date.php:123
+#: modules/date.php:124
 msgid "The date is before the earliest one allowed."
 msgstr "Ngày này trước ngày sớm nhất được cho phép."
 
-#: modules/date.php:128
+#: modules/date.php:129
 msgid "The date is after the latest one allowed."
 msgstr "Ngày này quá ngày gần nhất được cho phép."
 
-#: modules/text.php:177
+#: modules/text.php:178
 msgid "The e-mail address entered is invalid."
 msgstr "Địa chỉ e-mail không hợp lệ."
 
-#: modules/quiz.php:163
+#: modules/quiz.php:166
 msgid "The answer to the quiz is incorrect."
 msgstr "Câu trả lời chưa đúng."
 
-#: modules/number.php:131
+#: modules/number.php:132
 msgid "The number is larger than the maximum allowed."
 msgstr "Con số lớn hơn số lớn nhất cho phép."
 
-#: modules/number.php:126
+#: modules/number.php:127
 msgid "The number is smaller than the minimum allowed."
 msgstr "Con số nhỏ hơn số nhỏ nhất cho phép."
 
@@ -344,167 +482,112 @@ msgstr "Tải file lên không thành công."
 msgid "https://contactform7.com/configuration-errors/"
 msgstr "https://contactform7.com/configuration-errors/"
 
-#. translators: 1: blog name, 2: [your-subject]
-#: includes/contact-form-template.php:52 includes/contact-form-template.php:86
+#: includes/contact-form-template.php:52 includes/contact-form-template.php:87
 msgctxt "mail subject"
 msgid "%1$s \"%2$s\""
 msgstr "%1$s \"%2$s\""
 
-#: admin/admin.php:421
+#: admin/includes/config-validator.php:118
 msgid "Validate Configuration"
 msgstr "Xác thực Cấu hình"
 
-#: admin/admin.php:631
+#: admin/includes/config-validator.php:41
 msgid "Validate Contact Form 7 Configuration"
 msgstr "Xác thực Cấu hình Contact Form 7"
 
 #. translators: %s: number of contact forms
-#: admin/admin.php:412
+#: admin/includes/config-validator.php:109
 msgid "Validate %s Contact Form Now"
 msgid_plural "Validate %s Contact Forms Now"
 msgstr[0] "Xác thực %s form ngay"
 
-#: admin/admin.php:634
+#: admin/includes/config-validator.php:44
 msgid "Misconfiguration leads to mail delivery failure or other troubles. Validate your contact forms now."
 msgstr "Cấu hình sai dẫn đến lỗi gửi thư hay các lỗi khác. Hãy thử xác thực cấu hình các form liên hệ ngay bây giờ."
 
-#: admin/admin.php:212
+#: admin/includes/config-validator.php:66
 msgid "You are not allowed to validate configuration."
 msgstr "Bạn không được phép xác thực cấu hình."
 
 #. translators: %s: number of contact forms
-#: admin/admin.php:525
+#: admin/admin.php:527
 msgid "Configuration validation completed. %s invalid contact form was found."
 msgid_plural "Configuration validation completed. %s invalid contact forms were found."
 msgstr[0] "Xác thực cấu hình hoàn tất. %s form liên hệ bị lỗi đã được tìm thấy."
 
-#: admin/admin.php:533
+#: admin/admin.php:535
 msgid "Configuration validation completed. No invalid contact form was found."
 msgstr "Xác thực cấu hình hoàn tất. Không tìm thấy form liên lạc nào bị lỗi."
 
-#: includes/contact-form-template.php:146
+#: includes/contact-form-template.php:147
 msgid "Thank you for your message. It has been sent."
 msgstr "Xin cảm ơn, form đã được gửi thành công."
 
-#: includes/contact-form-template.php:153
-#: includes/contact-form-template.php:167
+#: includes/contact-form-template.php:154
+#: includes/contact-form-template.php:168
 msgid "There was an error trying to send your message. Please try again later."
 msgstr "Có lỗi xảy ra trong quá trình gửi. Xin vui lòng thử lại hoặc liên hệ người quản trị website."
 
-#: includes/contact-form-template.php:160
+#: includes/contact-form-template.php:161
 msgid "One or more fields have an error. Please check and try again."
 msgstr "Có một hoặc nhiều mục nhập có lỗi. Vui lòng kiểm tra và thử lại."
 
-#: includes/contact-form-template.php:174
+#: includes/contact-form-template.php:175
 msgid "You must accept the terms and conditions before sending your message."
 msgstr "Bạn phải chấp nhận điều khoản trước khi gửi form."
 
-#: includes/contact-form-template.php:181
+#: includes/contact-form-template.php:182
 msgid "The field is required."
 msgstr "Mục này là bắt buộc."
 
-#: includes/contact-form-template.php:188
+#: includes/contact-form-template.php:189
 msgid "The field is too long."
 msgstr "Nhập quá số kí tự cho phép."
 
-#: includes/contact-form-template.php:195
+#: includes/contact-form-template.php:196
 msgid "The field is too short."
 msgstr "Nhập ít hơn số kí tự tối thiểu."
 
-#: modules/date.php:118
+#: modules/date.php:119
 msgid "The date format is incorrect."
 msgstr "Định dạng ngày tháng không hợp lệ."
 
-#: includes/controller.php:64
-msgid "Please verify that you are not a robot."
-msgstr "Hãy xác nhận rằng bạn không phải là robot."
-
-#: modules/recaptcha.php:149
+#: modules/recaptcha.php:483
 msgid "Settings saved."
 msgstr "Đã lưu mọi cài đặt."
 
-#: admin/includes/welcome-panel.php:26 modules/recaptcha.php:23
-#: modules/recaptcha.php:189 modules/recaptcha.php:428
-#: modules/recaptcha.php:441 modules/recaptcha.php:451
+#. translators: links labeled 1: 'Akismet', 2: 'reCAPTCHA', 3: 'comment
+#. blacklist'
+#: modules/recaptcha.php:267 admin/includes/welcome-panel.php:26
 msgid "reCAPTCHA"
 msgstr "reCAPTCHA"
 
-#: admin/includes/welcome-panel.php:26 modules/recaptcha.php:189
-#: modules/recaptcha.php:441 modules/recaptcha.php:451
+#. translators: links labeled 1: 'Akismet', 2: 'reCAPTCHA', 3: 'comment
+#. blacklist'
+#: modules/recaptcha.php:233 modules/recaptcha.php:491
+#: admin/includes/welcome-panel.php:26
 msgid "https://contactform7.com/recaptcha/"
 msgstr "https://contactform7.com/recaptcha/"
 
-#: modules/recaptcha.php:465
-msgid "Normal"
-msgstr "Bình thường"
-
-#: modules/recaptcha.php:467
-msgid "Compact"
-msgstr "Gọn"
-
-#: modules/recaptcha.php:473 modules/recaptcha.php:476
-msgid "Theme"
-msgstr "Giao diện"
-
-#: modules/recaptcha.php:477
-msgid "Light"
-msgstr "Sáng"
-
-#: modules/recaptcha.php:479
-msgid "Dark"
-msgstr "Tối"
-
-#: modules/recaptcha.php:461 modules/recaptcha.php:464
-msgid "Size"
-msgstr "Kích cỡ"
-
-#: modules/recaptcha.php:143
+#: modules/recaptcha.php:477 modules/constant-contact.php:466
 msgid "ERROR"
 msgstr "LỖI"
 
-#: modules/recaptcha.php:144
+#: modules/recaptcha.php:478
 msgid "Invalid key values."
 msgstr "Giá trị key không hợp lệ."
 
-#: modules/recaptcha.php:155
-msgid "reCAPTCHA is a free service to protect your website from spam and abuse."
-msgstr "reCAPTCHA là một dịch vụ miễn phí nhằm bảo vệ trang web của bạn khỏi spam."
-
-#: modules/really-simple-captcha.php:243
+#: modules/really-simple-captcha.php:245
 msgid "CAPTCHA (Really Simple CAPTCHA)"
 msgstr "CAPTCHA (Really Simple CAPTCHA)"
 
-#: modules/recaptcha.php:187
-msgid "Configure Keys"
-msgstr "Cấu hình Key"
-
-#: modules/recaptcha.php:449
-msgid "Generate a form-tag for a reCAPTCHA widget. For more details, see %s."
-msgstr "Tạo ra một thẻ mẫu cho tích hợp chống spam reCAPTCHA. Để biết thêm chi tiết, xem %s."
-
-#: modules/recaptcha.php:441
-msgid "To use reCAPTCHA, first you need to install an API key pair. For more details, see %s."
-msgstr "Để sử dụng reCAPTCHA, trước tiên bạn phải  thiết lập key API. Để biết thêm chi tiết, xem %s."
-
-#: modules/recaptcha.php:170 modules/recaptcha.php:201
+#: modules/recaptcha.php:524
 msgid "Site Key"
 msgstr "Site Key"
 
-#: modules/recaptcha.php:174 modules/recaptcha.php:205
+#: modules/recaptcha.php:541
 msgid "Secret Key"
 msgstr "Secret Key"
-
-#: modules/recaptcha.php:180
-msgid "Reset Keys"
-msgstr "Reset Keys"
-
-#: modules/recaptcha.php:185
-msgid "To use reCAPTCHA, you need to install an API key pair."
-msgstr "Để sử dụng reCAPTCHA, bạn cần nhập key API."
-
-#: modules/recaptcha.php:189
-msgid "For more details, see %s."
-msgstr "Để biết thêm, xem %s."
 
 #: includes/contact-form-template.php:37
 msgid "(required)"
@@ -514,30 +597,32 @@ msgstr "(bắt buộc)"
 msgid "Acceptable file types"
 msgstr "Các định dạng file được chấp nhận"
 
-#: admin/includes/welcome-panel.php:26 modules/text.php:265
-#: modules/text.php:268
+#. translators: links labeled 1: 'Akismet', 2: 'reCAPTCHA', 3: 'comment
+#. blacklist'
+#: modules/text.php:266 modules/text.php:269
+#: admin/includes/welcome-panel.php:26
 msgid "Akismet"
 msgstr "Akismet"
 
-#: modules/really-simple-captcha.php:270 modules/recaptcha.php:223
+#: modules/recaptcha.php:9 modules/really-simple-captcha.php:272
 msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
-#: modules/date.php:175 modules/number.php:183 modules/text.php:258
-#: modules/textarea.php:161
+#: modules/date.php:176 modules/textarea.php:166 modules/number.php:184
+#: modules/text.php:259
 msgid "Default value"
 msgstr "Giá trị mặc định"
 
 #. translators: %s: [your-name] <[your-email]>
-#: includes/contact-form-template.php:57
+#: includes/contact-form-template.php:58
 msgid "From: %s"
 msgstr "Gửi đến từ: %s"
 
-#: modules/really-simple-captcha.php:287
+#: modules/really-simple-captcha.php:289
 msgid "Image settings"
 msgstr "Cấu hình cho ảnh"
 
-#: modules/really-simple-captcha.php:302
+#: modules/really-simple-captcha.php:304
 msgid "Input field settings"
 msgstr "Cấu hình cho ô trống"
 
@@ -545,43 +630,43 @@ msgstr "Cấu hình cho ô trống"
 msgid "Label"
 msgstr "Nhãn"
 
-#: includes/contact-form-template.php:62 includes/contact-form-template.php:91
+#: includes/contact-form-template.php:63 includes/contact-form-template.php:92
 msgid "Message Body:"
 msgstr "Nội dung thông điệp:"
 
-#: modules/acceptance.php:237 modules/checkbox.php:297 modules/date.php:170
-#: modules/file.php:237 modules/number.php:178 modules/quiz.php:197
-#: modules/really-simple-captcha.php:280 modules/select.php:181
-#: modules/text.php:253 modules/textarea.php:156
+#: modules/select.php:183 modules/quiz.php:200 modules/checkbox.php:302
+#: modules/date.php:171 modules/really-simple-captcha.php:282
+#: modules/textarea.php:161 modules/acceptance.php:252 modules/number.php:179
+#: modules/file.php:237 modules/text.php:254
 msgid "Name"
 msgstr "Tên"
 
-#: modules/quiz.php:187
+#: modules/quiz.php:190
 msgid "Quiz"
 msgstr "Câu hỏi"
 
-#: includes/contact-form-template.php:42 modules/submit.php:26
+#: modules/submit.php:26 includes/contact-form-template.php:42
 msgid "Send"
 msgstr "Gửi đi"
 
 #. translators: %s: [your-subject]
-#: includes/contact-form-template.php:60
+#: includes/contact-form-template.php:61
 msgid "Subject: %s"
 msgstr "Tiêu đề: %s"
 
-#: modules/really-simple-captcha.php:222
+#: modules/really-simple-captcha.php:224
 msgid "The code that sender entered does not match the CAPTCHA"
 msgstr "Mã người gửi nhập không khớp với CAPTCHA"
 
-#: modules/really-simple-captcha.php:360
+#: modules/really-simple-captcha.php:366
 msgid "This contact form contains CAPTCHA fields, but the necessary libraries (GD and FreeType) are not available on your server."
 msgstr "Biểu mẫu này có sử dụng ô CAPTCHA, song các thư viện cần thiết như GD và FreeType không được cài đặt trên máy chủ của bạn."
 
-#: modules/really-simple-captcha.php:353
+#: modules/really-simple-captcha.php:359
 msgid "This contact form contains CAPTCHA fields, but the temporary folder for the files (%s) does not exist or is not writable. You can create the folder or change its permission manually."
 msgstr "Biểu mẫu này có sử dụng ô CAPTCHA, song thư mục lưu file (%s) không tồn tại hoặc không thể ghi lên được. Bạn cần tự tạo folder đó hoặc thay đổi quyền hạn của nó."
 
-#: modules/file.php:301
+#: modules/file.php:305
 msgid "This contact form contains file uploading fields, but the temporary folder for the files (%s) does not exist or is not writable. You can create the folder or change its permission manually."
 msgstr "Biểu mẫu này có sử dụng ô tải file, song thư mục được lựa chọn để lưu các file tải lên (%s) không tồn tại hoặc không thể ghi được. Bạn cần tự tạo folder đó và thay đổi quyền hạn của nó."
 
@@ -605,7 +690,7 @@ msgstr "Thông điệp"
 msgid "Your Name"
 msgstr "Tên của bạn"
 
-#: modules/really-simple-captcha.php:224
+#: modules/really-simple-captcha.php:226
 msgid "Your entered code is incorrect."
 msgstr "Bạn đã nhập sai mã CAPTCHA."
 
@@ -618,11 +703,11 @@ msgstr "Tổng quan"
 msgid "For more information:"
 msgstr "Để thêm thông tin:"
 
-#: modules/quiz.php:177
+#: modules/quiz.php:180
 msgid "quiz"
 msgstr "câu hỏi"
 
-#. Author URI of the plugin/theme
+#. Author URI of the plugin
 msgid "https://ideasilo.wordpress.com/"
 msgstr "https://ideasilo.wordpress.com/"
 
@@ -630,11 +715,11 @@ msgstr "https://ideasilo.wordpress.com/"
 msgid "https://contactform7.com/submit-button/"
 msgstr "https://contactform7.com/submit-button/"
 
-#: modules/number.php:153
+#: modules/number.php:154
 msgid "https://contactform7.com/number-fields/"
 msgstr "https://contactform7.com/number-fields/"
 
-#: modules/quiz.php:187
+#: modules/quiz.php:190
 msgid "https://contactform7.com/quiz/"
 msgstr "https://contactform7.com/quiz/"
 
@@ -642,11 +727,11 @@ msgstr "https://contactform7.com/quiz/"
 msgid "https://contactform7.com/file-uploading-and-attachment/"
 msgstr "https://contactform7.com/file-uploading-and-attachment/"
 
-#: modules/checkbox.php:275 modules/select.php:161
+#: modules/select.php:163 modules/checkbox.php:280
 msgid "https://contactform7.com/checkboxes-radio-buttons-and-menus/"
 msgstr "https://contactform7.com/checkboxes-radio-buttons-and-menus/"
 
-#: modules/really-simple-captcha.php:270
+#: modules/really-simple-captcha.php:272
 msgid "https://contactform7.com/captcha/"
 msgstr "https://contactform7.com/captcha/"
 
@@ -654,31 +739,31 @@ msgstr "https://contactform7.com/captcha/"
 msgid "https://contactform7.com/additional-settings/"
 msgstr "https://contactform7.com/additional-settings/"
 
-#: modules/acceptance.php:227
+#: modules/acceptance.php:242
 msgid "https://contactform7.com/acceptance-checkbox/"
 msgstr "https://contactform7.com/acceptance-checkbox/"
 
-#: modules/text.php:233 modules/textarea.php:136
+#: modules/textarea.php:141 modules/text.php:234
 msgid "https://contactform7.com/text-fields/"
 msgstr "https://contactform7.com/text-fields/"
 
-#: modules/date.php:150
+#: modules/date.php:151
 msgid "https://contactform7.com/date-field/"
 msgstr "https://contactform7.com/date-field/"
 
-#. Author of the plugin/theme
+#. Author of the plugin
 msgid "Takayuki Miyoshi"
 msgstr "Takayuki Miyoshi"
 
-#: modules/text.php:207
+#: modules/text.php:208
 msgid "email"
 msgstr "email"
 
-#: modules/text.php:189
+#: modules/text.php:190
 msgid "Telephone number that the sender entered is invalid"
 msgstr "Số điện thoại không hợp lệ"
 
-#: modules/text.php:182
+#: modules/text.php:183
 msgid "URL that the sender entered is invalid"
 msgstr "URL không hợp lệ"
 
@@ -686,76 +771,76 @@ msgstr "URL không hợp lệ"
 msgid "submit"
 msgstr "gửi"
 
-#: modules/select.php:192
+#: modules/select.php:194
 msgid "Allow multiple selections"
 msgstr "Cho phép chọn nhiều một lúc"
 
-#: modules/select.php:193
+#: modules/select.php:195
 msgid "Insert a blank item as the first option"
 msgstr "Tạo một item trống làm lựa chọn đầu tiên"
 
-#: modules/quiz.php:207
+#: modules/quiz.php:210
 msgid "One pipe-separated question-answer pair (e.g. The capital of Brazil?|Rio) per line."
 msgstr "Một cặp câu hỏi và trả lời ngăn bằng gạch dọc mỗi dòng (ví dụ: Thủ đô của Việt Nam là gì? | Hà Nội)."
 
-#: modules/quiz.php:202 modules/quiz.php:205
+#: modules/quiz.php:205 modules/quiz.php:208
 msgid "Questions and answers"
 msgstr "Câu hỏi và trả lời"
 
-#: modules/quiz.php:185
+#: modules/quiz.php:188
 msgid "Generate a form-tag for a question-answer pair. For more details, see %s."
 msgstr "Tạo ra một thẻ mẫu cho một cặp câu hỏi và trả lời. Để biết thêm chi tiết, xem %s."
 
-#: modules/number.php:169
+#: modules/number.php:170
 msgid "Slider"
 msgstr "Thanh trượt"
 
-#: modules/number.php:168
+#: modules/number.php:169
 msgid "Spinbox"
 msgstr "Spinbox"
 
-#: modules/date.php:191 modules/number.php:199
+#: modules/date.php:192 modules/number.php:200
 msgid "Max"
 msgstr "Tối đa"
 
-#: modules/date.php:186 modules/number.php:194
+#: modules/date.php:187 modules/number.php:195
 msgid "Min"
 msgstr "Tối thiểu"
 
-#: modules/date.php:181 modules/date.php:184 modules/number.php:189
-#: modules/number.php:192
+#: modules/date.php:182 modules/date.php:185 modules/number.php:190
+#: modules/number.php:193
 msgid "Range"
 msgstr "Phạm vi"
 
-#: modules/date.php:150
+#: modules/date.php:151
 msgid "Date Field"
 msgstr "Ngày tháng"
 
-#: modules/date.php:148
+#: modules/date.php:149
 msgid "Generate a form-tag for a date input field. For more details, see %s."
 msgstr "Tạo ra một thẻ mẫu cho một mục nhập cho các giá trị ngày tháng. Để biết thêm chi tiết, xem %s."
 
-#: modules/date.php:140
+#: modules/date.php:141
 msgid "date"
 msgstr "ngày"
 
-#: modules/date.php:117
+#: modules/date.php:118
 msgid "Date format that the sender entered is invalid"
 msgstr "Định dạng ngày tháng không hợp lệ"
 
-#: modules/checkbox.php:309
+#: modules/checkbox.php:314
 msgid "Wrap each item with label element"
 msgstr "Bọc mỗi mục với nhãn của nó"
 
-#: modules/checkbox.php:308
+#: modules/checkbox.php:313
 msgid "Put a label first, a checkbox last"
 msgstr "Đặt nhãn trước, checkbox sau"
 
-#: modules/acceptance.php:257 modules/checkbox.php:318 modules/date.php:199
-#: modules/file.php:252 modules/number.php:207 modules/quiz.php:213
-#: modules/really-simple-captcha.php:290 modules/really-simple-captcha.php:305
-#: modules/recaptcha.php:485 modules/select.php:199 modules/submit.php:70
-#: modules/text.php:293 modules/textarea.php:167
+#: modules/select.php:201 modules/quiz.php:216 modules/checkbox.php:323
+#: modules/date.php:200 modules/really-simple-captcha.php:292
+#: modules/really-simple-captcha.php:307 modules/textarea.php:172
+#: modules/acceptance.php:272 modules/submit.php:70 modules/number.php:208
+#: modules/file.php:252 modules/text.php:294
 msgid "Id attribute"
 msgstr "Thuộc tính ID"
 
@@ -763,7 +848,7 @@ msgstr "Thuộc tính ID"
 msgid "Contact Form"
 msgstr "Form liên hệ"
 
-#: includes/contact-form-template.php:165
+#: includes/contact-form-template.php:166
 msgid "Submission was referred to as spam"
 msgstr "Nội dung gửi đến được xác định giống spam"
 
@@ -772,43 +857,43 @@ msgid "Available Actions"
 msgstr "Hành động có sẵn"
 
 #. translators: title of your first contact form. %d: number fixed to '1'
-#: settings.php:143
+#: settings.php:144
 msgid "Contact form %d"
 msgstr "Form liên hệ %d"
 
-#. Description of the plugin/theme
+#. Description of the plugin
 msgid "Just another contact form plugin. Simple but flexible."
 msgstr "Plugin mở rộng chức năng form liên hệ cho website. Đơn giản nhưng linh hoạt."
 
-#: modules/text.php:233 modules/textarea.php:136
+#: modules/textarea.php:141 modules/text.php:234
 msgid "Text Fields"
 msgstr "Mục nhập văn bản"
 
-#: modules/textarea.php:126
+#: modules/textarea.php:131
 msgid "text area"
 msgstr "văn bản dài"
 
-#: modules/text.php:230
+#: modules/text.php:231
 msgid "Generate a form-tag for a single-line telephone number input field. For more details, see %s."
 msgstr "Tạo ra một thẻ mẫu cho một mục nhập số điện thoại trên một dòng. Để biết thêm chi tiết, xem %s."
 
-#: modules/text.php:226
+#: modules/text.php:227
 msgid "Generate a form-tag for a single-line email address input field. For more details, see %s."
 msgstr "Tạo ra một thẻ mẫu cho một mục nhập địa chỉ email trên một dòng. Để biết thêm chi tiết, xem %s."
 
-#: modules/text.php:228
+#: modules/text.php:229
 msgid "Generate a form-tag for a single-line URL input field. For more details, see %s."
 msgstr "Tạo ra một thẻ mẫu cho một mục nhập địa chỉ URL trên một dòng. Để biết thêm chi tiết, xem %s."
 
-#: modules/text.php:224
+#: modules/text.php:225
 msgid "Generate a form-tag for a single-line plain text input field. For more details, see %s."
 msgstr "Tạo ra một thẻ mẫu cho một trường nhập văn bản trên một dòng. Để biết thêm chi tiết, xem %s."
 
-#: modules/textarea.php:134
+#: modules/textarea.php:139
 msgid "Generate a form-tag for a multi-line text input field. For more details, see %s."
 msgstr "Tạo ra một thẻ mẫu cho một mục nhập văn bản trên nhiều dòng. Để biết thêm chi tiết, xem %s."
 
-#: modules/text.php:209
+#: modules/text.php:210
 msgid "URL"
 msgstr "URL"
 
@@ -820,24 +905,24 @@ msgstr "Kích thước file (theo byte)"
 msgid "file"
 msgstr "file"
 
-#: modules/number.php:143
+#: modules/number.php:144
 msgid "number"
 msgstr "số"
 
-#: modules/number.php:153
+#: modules/number.php:154
 msgid "Number Fields"
 msgstr "Mục nhập số"
 
-#: modules/number.php:120
+#: modules/number.php:121
 msgid "Number format that the sender entered is invalid"
 msgstr "Định dạng số không hợp lệ"
 
 #. translators: %s: link labeled 'Really Simple CAPTCHA'
-#: modules/really-simple-captcha.php:257
+#: modules/really-simple-captcha.php:259
 msgid "To use CAPTCHA, you first need to install and activate %s plugin."
 msgstr "Để sử dụng CAPTCHA, bạn đầu tiên phải cài đặt và kích hoạt plugin %s."
 
-#: includes/contact-form.php:158
+#: includes/contact-form.php:174
 msgid "<code>%1$s</code> property of a <code>WPCF7_ContactForm</code> object is <strong>no longer accessible</strong>. Use <code>%2$s</code> method instead."
 msgstr "Thuộc tính <code>%1$s</code> của một <code>WPCF7_ContactForm</code> object <strong>không thể truy cập vào nữa</strong>. Thay vào đó hãy sử dụng phương án  <code>%2$s</code>."
 
@@ -845,118 +930,116 @@ msgstr "Thuộc tính <code>%1$s</code> của một <code>WPCF7_ContactForm</cod
 msgid "Submit Button"
 msgstr "Nút Gửi form"
 
-#: modules/checkbox.php:307 modules/select.php:191
+#: modules/select.php:193 modules/checkbox.php:312
 msgid "One option per line."
 msgstr "Mỗi dòng là một lựa chọn."
 
-#: modules/checkbox.php:290 modules/date.php:164 modules/file.php:231
-#: modules/number.php:172 modules/select.php:175 modules/text.php:247
-#: modules/textarea.php:150
+#: modules/select.php:177 modules/checkbox.php:295 modules/date.php:165
+#: modules/textarea.php:155 modules/number.php:173 modules/file.php:231
+#: modules/text.php:248
 msgid "Required field"
 msgstr "Mục bắt buộc"
 
-#: modules/checkbox.php:275 modules/select.php:161
+#: modules/select.php:163 modules/checkbox.php:280
 msgid "Checkboxes, Radio Buttons and Menus"
 msgstr "Lựa chọn checkbox, radio và menu"
 
-#: modules/select.php:152
+#: modules/select.php:154
 msgid "drop-down menu"
 msgstr "menu danh sách"
 
-#: modules/acceptance.php:217
+#: modules/acceptance.php:232
 msgid "acceptance"
 msgstr "điều khoản chấp nhận"
 
-#: modules/acceptance.php:225
+#: modules/acceptance.php:240
 msgid "Generate a form-tag for an acceptance checkbox. For more details, see %s."
 msgstr "Tạo mục nhập để người dùng chấp nhận điều khoản. Xem chi tiết tại %s"
 
-#: modules/acceptance.php:227
+#: modules/acceptance.php:242
 msgid "Acceptance Checkbox"
 msgstr "Đánh dấu chấp nhận điều khoản"
 
-#. translators: 1: blog name, 2: blog URL
-#: includes/contact-form-template.php:67 includes/contact-form-template.php:96
+#: includes/contact-form-template.php:68 includes/contact-form-template.php:97
 msgid "This e-mail was sent from a contact form on %1$s (%2$s)"
 msgstr "Email này được gửi đến từ form liên hệ của website %1$s (%2$s)"
 
-#: includes/contact-form-template.php:144
+#: includes/contact-form-template.php:145
 msgid "Sender's message was sent successfully"
 msgstr "Form được gửi đi thành công"
 
-#: includes/contact-form-template.php:151
+#: includes/contact-form-template.php:152
 msgid "Sender's message failed to send"
 msgstr "Nếu có lỗi xảy ra và không thể gửi form đi"
 
-#: includes/contact-form-template.php:158
+#: includes/contact-form-template.php:159
 msgid "Validation errors occurred"
 msgstr "Dữ liệu nhập vào không hợp lệ"
 
-#: includes/contact-form-template.php:172
+#: includes/contact-form-template.php:173
 msgid "There are terms that the sender must accept"
 msgstr "Có điều khoản bắt buộc người sử dụng phải xác nhận đồng ý"
 
-#: includes/contact-form-template.php:179
+#: includes/contact-form-template.php:180
 msgid "There is a field that the sender must fill in"
 msgstr "Có mục bắt buộc người dùng phải nhập"
 
-#: includes/contact-form-template.php:186
+#: includes/contact-form-template.php:187
 msgid "There is a field with input that is longer than the maximum allowed length"
 msgstr "Nếu có mục nào đó nhập dài hơn số kí tự cho phép"
 
-#: includes/contact-form-template.php:193
+#: includes/contact-form-template.php:194
 msgid "There is a field with input that is shorter than the minimum allowed length"
 msgstr "Nếu có mục nhập ngắn hơn số kí tự tối thiểu"
 
-#: includes/contact-form.php:84 includes/contact-form.php:234
+#: includes/contact-form.php:93 includes/contact-form.php:254
 msgid "Untitled"
 msgstr "Chưa có tiêu đề"
 
-#: modules/acceptance.php:247 modules/acceptance.php:250
-#: modules/checkbox.php:302 modules/checkbox.php:305 modules/select.php:186
-#: modules/select.php:189
+#: modules/select.php:188 modules/select.php:191 modules/checkbox.php:307
+#: modules/checkbox.php:310 modules/acceptance.php:262
+#: modules/acceptance.php:265
 msgid "Options"
 msgstr "Các tuỳ chọn"
 
-#: modules/acceptance.php:262 modules/checkbox.php:323 modules/date.php:204
-#: modules/file.php:257 modules/number.php:212 modules/quiz.php:218
-#: modules/really-simple-captcha.php:295 modules/really-simple-captcha.php:310
-#: modules/recaptcha.php:490 modules/select.php:204 modules/submit.php:75
-#: modules/text.php:298 modules/textarea.php:172
+#: modules/select.php:206 modules/quiz.php:221 modules/checkbox.php:328
+#: modules/date.php:205 modules/really-simple-captcha.php:297
+#: modules/really-simple-captcha.php:312 modules/textarea.php:177
+#: modules/acceptance.php:277 modules/submit.php:75 modules/number.php:213
+#: modules/file.php:257 modules/text.php:299
 msgid "Class attribute"
 msgstr "Thuộc tính Class"
 
-#: modules/acceptance.php:275 modules/checkbox.php:336 modules/date.php:216
-#: modules/file.php:270 modules/number.php:224 modules/quiz.php:231
-#: modules/really-simple-captcha.php:322 modules/recaptcha.php:503
-#: modules/select.php:217 modules/submit.php:88 modules/text.php:311
-#: modules/textarea.php:185
+#: modules/select.php:219 modules/quiz.php:234 modules/checkbox.php:341
+#: modules/date.php:217 modules/really-simple-captcha.php:324
+#: modules/textarea.php:190 modules/acceptance.php:290 modules/submit.php:88
+#: modules/number.php:225 modules/file.php:270 modules/text.php:312
 msgid "Insert Tag"
 msgstr "Chèn vào Form"
 
-#: modules/checkbox.php:286 modules/checkbox.php:289 modules/date.php:160
-#: modules/date.php:163 modules/file.php:227 modules/file.php:230
-#: modules/number.php:163 modules/number.php:166 modules/select.php:171
-#: modules/select.php:174 modules/text.php:243 modules/text.php:246
-#: modules/textarea.php:146 modules/textarea.php:149
+#: modules/select.php:173 modules/select.php:176 modules/checkbox.php:291
+#: modules/checkbox.php:294 modules/date.php:161 modules/date.php:164
+#: modules/textarea.php:151 modules/textarea.php:154 modules/number.php:164
+#: modules/number.php:167 modules/file.php:227 modules/file.php:230
+#: modules/text.php:244 modules/text.php:247
 msgid "Field type"
 msgstr "Kiểu"
 
-#: modules/checkbox.php:341 modules/date.php:221 modules/number.php:229
-#: modules/select.php:222 modules/text.php:316 modules/textarea.php:190
+#: modules/select.php:224 modules/checkbox.php:346 modules/date.php:222
+#: modules/textarea.php:195 modules/number.php:230 modules/text.php:317
 msgid "To use the value input through this field in a mail field, you need to insert the corresponding mail-tag (%s) into the field on the Mail tab."
 msgstr "Để  giá trị được nhập xuất hiện trong email gửi đến, bạn cần chèn mail tag %s vào Nội dung email trong Cấu hình Email."
 
-#: modules/date.php:122
+#: modules/date.php:123
 msgid "Date is earlier than minimum limit"
 msgstr "Ngày sớm hơn khoảng thời gian giới hạn"
 
-#: modules/date.php:127
+#: modules/date.php:128
 msgid "Date is later than maximum limit"
 msgstr "Ngày trễ hơn khoảng thời gian giới hạn"
 
-#: modules/date.php:177 modules/number.php:185 modules/text.php:260
-#: modules/textarea.php:163
+#: modules/date.php:178 modules/textarea.php:168 modules/number.php:186
+#: modules/text.php:261
 msgid "Use this text as the placeholder of the field"
 msgstr "Sử dụng dòng này làm chữ chìm trong mẫu nhập (placeholder)"
 
@@ -972,39 +1055,39 @@ msgstr "Tải file lên gặp lỗi PHP"
 msgid "File Uploading and Attachment"
 msgstr "File tải lên và đính kèm"
 
-#: modules/number.php:125
+#: modules/number.php:126
 msgid "Number is smaller than minimum limit"
 msgstr "Số nhập vào nhỏ hơn giới hạn cho phép"
 
-#: modules/number.php:130
+#: modules/number.php:131
 msgid "Number is larger than maximum limit"
 msgstr "Số nhập vào vượt quá giới hạn cho phép"
 
-#: modules/quiz.php:161
+#: modules/quiz.php:164
 msgid "Sender doesn't enter the correct answer to the quiz"
 msgstr "Người nhập không trả lời đúng đáp án của câu hỏi."
 
-#: modules/text.php:175
+#: modules/text.php:176
 msgid "Email address that the sender entered is invalid"
 msgstr "Nhập địa chỉ Email không hợp lệ"
 
-#: modules/text.php:205
+#: modules/text.php:206
 msgid "text"
 msgstr "văn bản ngắn"
 
-#: modules/text.php:211
+#: modules/text.php:212
 msgid "tel"
 msgstr "số điện thoại"
 
-#: modules/text.php:273
+#: modules/text.php:274
 msgid "This field requires author's name"
 msgstr "Mục này bắt buộc nhập tên người gửi"
 
-#: modules/text.php:278
+#: modules/text.php:279
 msgid "This field requires author's email address"
 msgstr "Mục này bắt buộc nhập email người gửi"
 
-#: modules/text.php:283
+#: modules/text.php:284
 msgid "This field requires author's URL"
 msgstr "Mục này bắt buộc nhập địa chỉ website người gửi"
 
@@ -1060,32 +1143,31 @@ msgstr "Bạn có thể cần tạo tài khoản để sử dụng gói dịch v
 msgid "Any information you provide will not be shared with service providers without your authorization."
 msgstr "Bất kỳ thông tin bạn cung cấp sẽ không được chia sẻ với nhà cung cấp dịch vụ nếu thiếu sự uỷ quyền của bạn."
 
-#. translators: %s: title of form-tag like 'email' or 'checkboxes'
-#: admin/includes/tag-generator.php:45
+#: admin/includes/tag-generator.php:46
 msgid "Form-tag Generator: %s"
 msgstr "Khởi tạo mục nhập mới: %s"
 
-#. Plugin URI of the plugin/theme
+#. Plugin URI of the plugin
 msgid "https://contactform7.com/"
 msgstr "https://contactform7.com/"
 
-#: modules/checkbox.php:257
+#: modules/checkbox.php:262
 msgid "radio buttons"
 msgstr "tuỳ chọn radio"
 
-#: modules/checkbox.php:255
+#: modules/checkbox.php:260
 msgid "checkboxes"
 msgstr "tuỳ chọn checkbox"
 
-#: modules/checkbox.php:270
+#: modules/checkbox.php:275
 msgid "Generate a form-tag for a group of checkboxes. For more details, see %s."
 msgstr "Khởi tạo mục nhập tuỳ chọn checkbox. Để biết thêm, xem %s."
 
-#: modules/checkbox.php:272
+#: modules/checkbox.php:277
 msgid "Generate a form-tag for a group of radio buttons. For more details, see %s."
 msgstr "Khởi tạo tuỳ chọn dạng radio. Để biết thêm, xem %s."
 
-#: modules/checkbox.php:311
+#: modules/checkbox.php:316
 msgid "Make checkboxes exclusive"
 msgstr "Là checkbox duy nhất trong toàn bộ form"
 
@@ -1097,15 +1179,15 @@ msgstr "Khởi tạo mục nhập cho tải file lên. Để biết thêm, xem %
 msgid "To attach the file uploaded through this field to mail, you need to insert the corresponding mail-tag (%s) into the File Attachments field on the Mail tab."
 msgstr "Để đính kèm file qua mục nhập vào email, bạn cần chèn mail tag %s vào trong mục File đính kèm trong tab Cấu hình Mail."
 
-#: modules/number.php:151
+#: modules/number.php:152
 msgid "Generate a form-tag for a field for numeric value input. For more details, see %s."
 msgstr "Khởi tạo mục nhập cho chỉ số. Để biết thêm, xem %s."
 
-#: modules/really-simple-captcha.php:268
+#: modules/really-simple-captcha.php:270
 msgid "Generate form-tags for a CAPTCHA image and corresponding response input field. For more details, see %s."
 msgstr "Khởi tạo cho ảnh CAPTCHA và kiểm tra thông tin các mục nhập. Để biết thêm, xem %s."
 
-#: modules/select.php:159
+#: modules/select.php:161
 msgid "Generate a form-tag for a drop-down menu. For more details, see %s."
 msgstr "Khởi tạo tuỳ chọn cho menu. Để biết thêm, xem %s."
 
@@ -1133,6 +1215,10 @@ msgstr "<strong>Sao chép</strong> - Là thao tác tạo ra một bản sao khá
 msgid "On this screen, you can edit a contact form. A contact form is comprised of the following components:"
 msgstr "Trong màn hình này, bạn có thể sửa form. Nó bao gồm các thành phần sau:"
 
+#: admin/includes/help-tabs.php:75
+msgid "A form-tag is a short code enclosed in square brackets used in a form content. A form-tag generally represents an input field, and its components can be separated into four parts: type, name, options, and values. Contact Form 7 supports several types of form-tags including text fields, number fields, date fields, checkboxes, radio buttons, menus, file-uploading fields, CAPTCHAs, and quiz fields."
+msgstr "Tag Form là các shortcode ngắn nằm trong cặp dấu vuông, ví dụ [ten-cua-ban]. Nó đại diện cho các mục nhập ngoài website, và thường chứa các thành phần: loại, tên, các tuỳ chọn và giá trị. Contact Form 7 cung cấp một vài loại nhập phổ biến như văn bản, số, ngày tháng, tuỳ chọn checkbox, tuỳ chọn radio, menu, tải file, CAPTCHA chống spam và đặt câu hỏi."
+
 #: admin/includes/help-tabs.php:76
 msgid "While form-tags have a comparatively complex syntax, you don&#8217;t need to know the syntax to add form-tags because you can use the straightforward tag generator (<strong>Generate Tag</strong> button on this screen)."
 msgstr "Mặc dù cú pháp của Tag Form có vẻ phức tạp, khi tạo bạn chỉ cần nhập các nội dung vào và nhấn nút <strong>Chèn vào Form</strong> là nó sẽ hoạt động."
@@ -1141,39 +1227,33 @@ msgstr "Mặc dù cú pháp của Tag Form có vẻ phức tạp, khi tạo bạ
 msgid "A mail-tag is also a short code enclosed in square brackets that you can use in every Mail and Mail (2) field. A mail-tag represents a user input value through an input field of a corresponding form-tag."
 msgstr "Tag Mail là các đoạn mã ngắn trong cặp dấu ngoặc vuông được sử dụng trong tab Cấu hình Mail. Tag mail thực ra là các giá trị mà người dùng nhập vào khi gửi form như địa chỉ, họ và tên, số điện thoại."
 
-#: admin/includes/help-tabs.php:75
-msgid "A form-tag is a short code enclosed in square brackets used in a form content. A form-tag generally represents an input field, and its components can be separated into four parts: type, name, options, and values. Contact Form 7 supports several types of form-tags including text fields, number fields, date fields, checkboxes, radio buttons, menus, file-uploading fields, CAPTCHAs, and quiz fields."
-msgstr "Tag Form là các shortcode ngắn nằm trong cặp dấu vuông, ví dụ [ten-cua-ban]. Nó đại diện cho các mục nhập ngoài website, và thường chứa các thành phần: loại, tên, các tuỳ chọn và giá trị. Contact Form 7 cung cấp một vài loại nhập phổ biến như văn bản, số, ngày tháng, tuỳ chọn checkbox, tuỳ chọn radio, menu, tải file, CAPTCHA chống spam và đặt câu hỏi."
-
 #: admin/includes/help-tabs.php:79
 msgid "There are also special mail-tags that have specific names, but don&#8217;t have corresponding form-tags. They are used to represent meta information of form submissions like the submitter&#8217;s IP address or the URL of the page."
 msgstr "Có một vài Tag Mail có tên nhưng không chứa Tag Form. Nó thường được sử dụng để thu thập thông tin người nhập như địa chỉ Email hay địa chỉ page hiện tại."
 
-#. #-#-#-#-#  contact-form-7-code.pot (Contact Form 7 5.0.5)  #-#-#-#-#
-#. Plugin Name of the plugin/theme
-#: admin/admin.php:21 modules/flamingo.php:170
+#. Plugin Name of the plugin
+#: modules/flamingo.php:181 admin/admin.php:24
 msgid "Contact Form 7"
 msgstr "Contact Form 7"
 
-#: admin/admin.php:499
+#: admin/admin.php:501
 msgid "Contact form saved."
 msgstr "Thay đổi đã được lưu."
 
-#: admin/edit-contact-form.php:154
-#: admin/includes/class-contact-forms-list-table.php:92
+#: admin/edit-contact-form.php:168
+#: admin/includes/class-contact-forms-list-table.php:90
 msgid "Delete"
 msgstr "Xóa"
 
-#: admin/edit-contact-form.php:179 admin/includes/help-tabs.php:93
+#: admin/edit-contact-form.php:193 admin/includes/help-tabs.php:93
 msgid "FAQ"
 msgstr "Câu hỏi thường gặp"
 
-#: admin/edit-contact-form.php:26 admin/edit-contact-form.php:132
-#: modules/recaptcha.php:211
+#: admin/edit-contact-form.php:26 admin/edit-contact-form.php:146
 msgid "Save"
 msgstr "Lưu"
 
-#: admin/admin.php:555
+#: admin/admin.php:557
 msgid "Settings"
 msgstr "Cấu hình"
 
@@ -1189,7 +1269,7 @@ msgstr "Hỗ trợ"
 msgid "Use HTML content type"
 msgstr "Sử dụng mã HTML cho phần nội dung của thư"
 
-#: admin/edit-contact-form.php:125
+#: admin/edit-contact-form.php:139
 msgid "Status"
 msgstr "Trạng thái"
 
@@ -1201,8 +1281,8 @@ msgstr "Tác giả"
 msgid "Title"
 msgstr "Tiêu đề"
 
-#: admin/edit-contact-form.php:139
-#: admin/includes/class-contact-forms-list-table.php:156
+#: admin/edit-contact-form.php:153
+#: admin/includes/class-contact-forms-list-table.php:185
 msgid "Duplicate"
 msgstr "Sao chép"
 
@@ -1214,14 +1294,17 @@ msgstr "Ngày"
 msgid "Dismiss"
 msgstr "Bỏ qua"
 
-#: admin/admin.php:48
+#: admin/admin.php:54
 msgid "Integration"
 msgstr "Tích hợp"
 
+#. translators: links labeled 1: 'Akismet', 2: 'reCAPTCHA', 3: 'comment
+#. blacklist'
 #: admin/includes/welcome-panel.php:26
 msgid "https://contactform7.com/spam-filtering-with-akismet/"
 msgstr "https://contactform7.com/spam-filtering-with-akismet/"
 
+#. translators: %s: link labeled 'Flamingo'
 #: admin/includes/welcome-panel.php:45
 msgid "https://contactform7.com/save-submitted-messages-with-flamingo/"
 msgstr "https://contactform7.com/save-submitted-messages-with-flamingo/"
@@ -1230,16 +1313,16 @@ msgstr "https://contactform7.com/save-submitted-messages-with-flamingo/"
 msgid "Shortcode"
 msgstr "Shortcode"
 
-#: admin/admin.php:189
+#: admin/admin.php:305
 msgid "Error in deleting."
 msgstr "Lỗi khi xoá."
 
-#: admin/admin.php:398
+#: admin/admin.php:414
 msgid "Search Contact Forms"
 msgstr "Tìm kiếm các Form Liên hệ"
 
 #. translators: %s: search keywords
-#: admin/admin.php:385
+#: admin/admin.php:395
 msgid "Search results for &#8220;%s&#8221;"
 msgstr "Kết quả tìm kiếm cho &#8220;%s&#8221;"
 
@@ -1247,90 +1330,90 @@ msgstr "Kết quả tìm kiếm cho &#8220;%s&#8221;"
 msgid "Contact Form 7 needs your support."
 msgstr "Contact Form 7 cần sự ủng hộ của bạn."
 
-#: admin/admin.php:594
+#: admin/admin.php:597
 msgid "You are not allowed to edit this contact form."
 msgstr "Bạn không được phép sửa form liên hệ này."
 
 #. translators: 1: version of Contact Form 7, 2: version of WordPress, 3: URL
-#: admin/admin.php:575
+#: admin/admin.php:578
 msgid "<strong>Contact Form 7 %1$s requires WordPress %2$s or higher.</strong> Please <a href=\"%3$s\">update WordPress</a> first."
 msgstr "<strong>Contact Form 7 %1$s yêu cầu WordPress %2$s hoặc cao hơn.</strong> Hãy <a href=\"%3$s\">cập nhật WordPress</a> trước."
 
-#: admin/admin.php:28 admin/edit-contact-form.php:38
+#: admin/admin.php:32 admin/edit-contact-form.php:38
 msgid "Edit Contact Form"
 msgstr "Sửa Form"
 
-#: admin/admin.php:29 admin/admin.php:372 includes/contact-form.php:31
+#: admin/admin.php:33 admin/admin.php:380 includes/contact-form.php:31
 msgid "Contact Forms"
 msgstr "Danh sách Form"
 
-#: admin/admin.php:36 admin/edit-contact-form.php:36
+#: admin/admin.php:41 admin/edit-contact-form.php:36
 msgid "Add New Contact Form"
 msgstr "Thêm Form mới"
 
-#: admin/admin.php:47 admin/admin.php:467
+#: admin/admin.php:53 admin/admin.php:463
 msgid "Integration with Other Services"
 msgstr "Tích hợp với các bên khác"
 
-#: admin/admin.php:185
+#: admin/admin.php:301
 msgid "You are not allowed to delete this item."
 msgstr "Bạn không được phép xoá mục này."
 
-#: admin/admin.php:79 admin/admin.php:143
+#: admin/admin.php:197 admin/admin.php:259
 msgid "You are not allowed to edit this item."
 msgstr "Bạn không được phép sửa mục này."
 
-#: admin/admin.php:313
+#: admin/admin.php:124
 msgid "The changes you made will be lost if you navigate away from this page."
 msgstr "Các thay đổi bạn tạo ra sẽ bị mất nếu bạn thoát khỏi trang này."
 
 #. translators: %s: time since the creation of the contact form
-#: admin/includes/class-contact-forms-list-table.php:215
+#: admin/includes/class-contact-forms-list-table.php:241
 msgid "%s ago"
 msgstr "%s trước"
 
-#: admin/includes/class-contact-forms-list-table.php:217
+#: admin/includes/class-contact-forms-list-table.php:245
 msgid "Y/m/d"
 msgstr "d/m/Y"
 
-#: admin/includes/class-contact-forms-list-table.php:204
+#: admin/includes/class-contact-forms-list-table.php:230
 msgid "Y/m/d g:i:s A"
 msgstr "d/m/Y g:i:s A"
 
-#: admin/edit-contact-form.php:111
+#: admin/edit-contact-form.php:125
 msgid "You can also use this old-style shortcode:"
 msgstr "Bạn cũng có thể sử dụng shortcode kiểu cũ này:"
 
 #. translators: %s: title of contact form
-#: admin/includes/class-contact-forms-list-table.php:117
+#: admin/includes/class-contact-forms-list-table.php:121
 msgid "Edit &#8220;%s&#8221;"
 msgstr "Sửa &#8220;%s&#8221;"
 
-#: admin/admin.php:22
+#: admin/admin.php:25
 msgid "Contact"
 msgstr "Form liên hệ"
 
-#: admin/admin.php:37 admin/admin.php:379 admin/edit-contact-form.php:46
+#: admin/admin.php:42 admin/admin.php:387 admin/edit-contact-form.php:47
 msgid "Add New"
 msgstr "Tạo form mới"
 
-#: admin/admin.php:497
+#: admin/admin.php:499
 msgid "Contact form created."
 msgstr "Form đã được tạo thành công."
 
-#: admin/admin.php:501
+#: admin/admin.php:503
 msgid "Contact form deleted."
 msgstr "Form đã được xoá thành công."
 
-#: admin/edit-contact-form.php:81
+#: admin/edit-contact-form.php:95
 msgid "Enter title here"
 msgstr "Tên Form"
 
-#: admin/edit-contact-form.php:104
+#: admin/edit-contact-form.php:118
 msgid "Copy this shortcode and paste it into your post, page, or text widget content:"
 msgstr "Để sử dụng, bạn chỉ cần copy đoạn code ngắn này và cho vào trong nội dung bài viết, trang hay widget HTML tuỳ chỉnh:"
 
-#: admin/edit-contact-form.php:154
+#: admin/edit-contact-form.php:168
 msgid ""
 "You are about to delete this contact form.\n"
 "  'Cancel' to stop, 'OK' to delete."
@@ -1338,11 +1421,11 @@ msgstr ""
 "Bạn chắc chắn muốn xoá form này?\n"
 "  'Huỷ' để huỷ bỏ, 'OK' để xoá."
 
-#: admin/edit-contact-form.php:182 admin/includes/help-tabs.php:92
+#: admin/edit-contact-form.php:196 admin/includes/help-tabs.php:92
 msgid "https://contactform7.com/docs/"
 msgstr "https://contactform7.com/docs/"
 
-#: admin/edit-contact-form.php:183 admin/includes/help-tabs.php:92
+#: admin/edit-contact-form.php:197 admin/includes/help-tabs.php:92
 msgid "Docs"
 msgstr "Tài liệu hướng dẫn"
 
@@ -1350,29 +1433,28 @@ msgstr "Tài liệu hướng dẫn"
 msgid "https://contactform7.com/support/"
 msgstr "https://contactform7.com/support/"
 
-#: admin/edit-contact-form.php:223 admin/includes/editor.php:61
+#: admin/edit-contact-form.php:237 admin/includes/editor.php:61
 msgid "Form"
 msgstr "Nội dung Form"
 
-#: admin/edit-contact-form.php:227 admin/includes/editor.php:93
+#: admin/edit-contact-form.php:241 admin/includes/editor.php:93
 msgid "Mail"
 msgstr "Cấu hình Mail"
 
-#: admin/edit-contact-form.php:231 admin/includes/editor.php:222
+#: admin/edit-contact-form.php:245 admin/includes/editor.php:222
 msgid "Messages"
 msgstr "Thông báo và Chú ý"
 
-#. translators: %d: number of additional settings
-#: admin/edit-contact-form.php:245
+#: admin/edit-contact-form.php:259
 msgid "Additional Settings (%d)"
 msgstr "Các tuỳ chọn khác (%d)"
 
-#: admin/edit-contact-form.php:247 admin/includes/editor.php:247
+#: admin/edit-contact-form.php:261 admin/includes/editor.php:247
 #: admin/includes/editor.php:252
 msgid "Additional Settings"
 msgstr "Tuỳ chọn khác"
 
-#: admin/includes/class-contact-forms-list-table.php:146
+#: admin/includes/class-contact-forms-list-table.php:167
 msgid "Edit"
 msgstr "Sửa"
 
@@ -1404,6 +1486,7 @@ msgstr "Nội dung"
 msgid "Exclude lines with blank mail-tags from output"
 msgstr "Không bao gồm các dòng chứa mail tag trống"
 
+#. translators: %s: link labeled 'making a donation'
 #: admin/includes/welcome-panel.php:35
 msgid "https://contactform7.com/donate/"
 msgstr "https://contactform7.com/donate/"
@@ -1416,7 +1499,7 @@ msgstr "Mail nhận"
 msgid "From"
 msgstr "Mail gửi"
 
-#: admin/edit-contact-form.php:178 admin/includes/help-tabs.php:93
+#: admin/edit-contact-form.php:192 admin/includes/help-tabs.php:93
 msgid "https://contactform7.com/faq/"
 msgstr "https://contactform7.com/faq/"
 

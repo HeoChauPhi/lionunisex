@@ -73,19 +73,20 @@ class AdminColumns extends Plugin {
 		}
 
 		$this->register_admin();
+		$this->localize();
 
-		add_action( 'init', array( $this, 'init_capabilities' ) );
+		$caps = new Capabilities\Manage();
+		$caps->register();
+
 		add_action( 'init', array( $this, 'install' ) );
 		add_action( 'init', array( $this, 'notice_checks' ) );
+		add_action( 'init', array( $this, 'register_global_scripts' ) );
 
 		add_filter( 'plugin_action_links', array( $this, 'add_settings_link' ), 1, 2 );
-		add_action( 'plugins_loaded', array( $this, 'localize' ) );
 
 		add_action( 'ac/screen', array( $this, 'init_table_on_screen' ) );
 		add_action( 'ac/screen/quick_edit', array( $this, 'init_table_on_quick_edit' ) );
 		add_action( 'wp_ajax_ac_get_column_value', array( $this, 'table_ajax_value' ) );
-
-		add_action( 'admin_enqueue_scripts', array( $this, 'add_global_javascript_var' ), 1 );
 
 		add_filter( 'wp_redirect', array( $this, 'redirect_after_status_change' ) );
 	}
@@ -115,7 +116,8 @@ class AdminColumns extends Plugin {
 		$list_screen = $screen->get_list_screen();
 
 		if ( $list_screen instanceof ListScreen ) {
-			new ScreenController( $list_screen );
+			$controller = new ScreenController( $list_screen );
+			$controller->register();
 		}
 	}
 
@@ -189,20 +191,6 @@ class AdminColumns extends Plugin {
 	 */
 	public function get_version() {
 		return AC_VERSION;
-	}
-
-	/**
-	 * Initialize current user and make sure any administrator user can use Admin Columns
-	 * @since 3.2
-	 */
-	public function init_capabilities() {
-		$caps = new Capabilities();
-
-		if ( ! $caps->is_administrator() || $caps->has_manage() ) {
-			return;
-		}
-
-		add_action( 'admin_init', array( $caps, 'add_manage' ) );
 	}
 
 	/**
@@ -302,6 +290,16 @@ class AdminColumns extends Plugin {
 	}
 
 	/**
+	 * @return void
+	 */
+	public function register_global_scripts() {
+		wp_register_script( 'ac-select2-core', $this->get_url() . 'assets/js/select2.js', array(), $this->get_version() );
+		wp_register_script( 'ac-select2', $this->get_url() . 'assets/js/select2_conflict_fix.js', array( 'jquery', 'ac-select2-core' ), $this->get_version() );
+		wp_register_style( 'ac-select2', $this->get_url() . 'assets/css/select2.css', array(), $this->get_version() );
+		wp_register_style( 'ac-jquery-ui', $this->get_url() . 'assets/css/ac-jquery-ui.css', array(), $this->get_version() );
+	}
+
+	/**
 	 * Get a list of post types for which Admin Columns is active
 	 * @since 1.0
 	 * @return array List of post type keys (e.g. post, page)
@@ -331,18 +329,9 @@ class AdminColumns extends Plugin {
 	 * Load text-domain
 	 */
 	public function localize() {
-		load_plugin_textdomain( 'codepress-admin-columns', false, $this->get_dir() . '/languages/' );
-	}
+		$path = pathinfo( $this->get_dir() );
 
-	/**
-	 * Add a global JS var that ideally contains all AC and ACP API methods
-	 */
-	public function add_global_javascript_var() {
-		?>
-		<script>
-			var AdminColumns = {};
-		</script>
-		<?php
+		load_plugin_textdomain( 'codepress-admin-columns', false, $path['basename'] . '/languages/' );
 	}
 
 	/**

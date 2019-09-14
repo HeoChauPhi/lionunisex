@@ -69,7 +69,7 @@ class Advanced_Cf7_Db {
 	public function __construct() {
 
 		$this->plugin_name = 'advanced-cf7-db';
-		$this->version = '1.1.2';
+		$this->version = '1.6.2';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -107,7 +107,7 @@ class Advanced_Cf7_Db {
 		 * of the plugin.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-advanced-cf7-db-i18n.php';
-		
+
 		/**
 		 * The file responsible for defining all functions that used in both admin and frontend
 		 * side of the site.
@@ -118,12 +118,7 @@ class Advanced_Cf7_Db {
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-advanced-cf7-db-admin.php';
-		
-		/*
-		*** For dom pdf
-		*/
-		// require_once(dirname(dirname(__FILE__)).'/admin/pdfgenerate/dompdf/src/Dompdf.php');
-		
+
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
@@ -164,55 +159,55 @@ class Advanced_Cf7_Db {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		
+
 		// Adding custom screen
 		$this->loader->add_action('admin_menu', $plugin_admin, 'vsz_cf7_plugin_menu',9);
-		
-		//Get form related fields information 
+
+		//Get form related fields information
 		$this->loader->add_filter('vsz_cf7_admin_fields', $plugin_admin,'vsz_cf7_admin_fields_callback', 10, 2);
-		
+
 		//Display export option box throw this action
 		$this->loader->add_action('vsz_cf7_after_bulkaction_btn', $plugin_admin,'vsz_cf7_after_bulkaction_btn_callback', 20, 2);
-		
+
 		//Display search text box here
 		$this->loader->add_action('vsz_cf7_after_datesection_btn', $plugin_admin,'vsz_cf7_after_datesection_btn_callback', 20, 2);
-		
-		//Display "Display setting" banner here 
+
+		//Display "Display setting" banner here
 		$this->loader->add_action('vsz_cf7_display_settings_btn', $plugin_admin,'vsz_cf7_display_settings_btn_callback', 20);
-		
-		
+
+
 		//Add additional table header here
 		$this->loader->add_action('vsz_cf7_admin_after_heading_field',$plugin_admin, 'vsz_cf7_admin_after_heading_field_callback', 11, 2);
-		
+
 		//Display edit information link here
 		$this->loader->add_action('vsz_cf7_admin_after_body_field',$plugin_admin, 'vsz_cf7_admin_after_body_edit_field_func', 21, 2);
-		
-		//Display field setting form here 
+
+		//Display field setting form here
 		$this->loader->add_action('vsz_cf7_after_admin_form', $plugin_admin,'vsz_cf7_after_admin_setting_form_callback');
 		//Display edit entry form here
 		$this->loader->add_action('vsz_cf7_after_admin_form', $plugin_admin,'vsz_cf7_after_admin_edit_values_form_callback');
-		
+
 		//Save all other additionals values here
 		$this->loader->add_action('admin_init', $plugin_admin,'vsz_cf7_save_setting_callback');
-		
+
 		//Call Ajax for display entry related form information in edit form
 		$this->loader->add_action('wp_ajax_vsz_cf7_edit_form_value',$plugin_admin, 'vsz_cf7_edit_form_ajax');
-		
-		//Define filter for which field information  not editable in edit form 
+
+		//Define filter for which field information  not editable in edit form
 		$this->loader->add_filter('vsz_cf7_not_editable_fields',$plugin_admin, 'vsz_cf7_not_editable_fields_callback');
 
 		// Multi site support
 		$this->loader->add_action( 'wpmu_new_blog',$plugin_admin,'vsz_cf7_add_new_table_for_sites', 10, 6);
-		
+
 		// Provide multi site support for active plugin
 		$this->loader->add_action( 'plugins_loaded',$plugin_admin,'vsz_cf7_create_new_table_for_sites');
-		
+
 		// Provide custom capability
 		$this->loader->add_action('save_post',$plugin_admin,'vsz_cf7_create_role_for_contact_form');
-		
+
 		// Edit Popup file upload
 		$this->loader->add_action('wp_ajax_acf7_db_edit_scr_file_upload',$plugin_admin,'vsz_acf7_db_edit_scr_file_upload');
-		
+
 		// Edit Popup file delete
 		$this->loader->add_action('wp_ajax_acf7_db_edit_scr_file_delete',$plugin_admin,'vsz_acf7_db_edit_scr_file_delete');
 	}
@@ -225,12 +220,12 @@ class Advanced_Cf7_Db {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
-		
+
 		$plugin_public = new Advanced_Cf7_Db_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-		
+
 		// Register shortcode
 		$this->loader->add_action( 'after_setup_theme',$plugin_public,'vsz_acf7_db_register_shortcode' );
 

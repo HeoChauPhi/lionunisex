@@ -9,7 +9,7 @@
  * Plugin Name:       Advanced CF7 DB
  * Plugin URI:        https://wordpress.org/plugins/advanced-cf7-db/
  * Description:       Save all contact form 7 submitted data to the database, View, Export, ordering, Change field labels, Import data using CSV very easily.
- * Version:           1.6.1
+ * Version:           1.7.2
  * Author:            Vsourz Digital
  * Author URI:        https://www.vsourz.com
  * License:           GPL-2.0+
@@ -23,7 +23,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 global $vsz_cf7db_current_version;
-$vsz_cf7db_current_version = '1.6.1';
+$vsz_cf7db_current_version = '1.7.2';
 /**
  * Defining all the table names and setting their prefix here
  */
@@ -34,6 +34,7 @@ define('VSZ_CF7_DATA_TABLE_NAME',  $wpdb->prefix.'cf7_vdata');
 define('VSZ_CF7_DATA_ENTRY_TABLE_NAME', $wpdb->prefix.'cf7_vdata_entry');
 
 define('VSZ_CF7_UPLOAD_FOLDER','advanced-cf7-upload');
+define('VSZ_CF7_URL_PATH',plugins_url('advanced-cf7-db'));
 
 /**
  * The code that runs during plugin activation.

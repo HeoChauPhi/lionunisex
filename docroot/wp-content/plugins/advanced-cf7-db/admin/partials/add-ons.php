@@ -4,8 +4,8 @@
     width: 48.2%;
 }
 .grid4 .col:nth-of-type(4n+1), .grid3 .col:nth-of-type(2n+1), .grid2 .col:nth-of-type(2n+1) {
-   margin-left: 0; 
-     clear: left; 
+   margin-left: 0;
+     clear: left;
 	 position:relative;
 }
 img {
@@ -45,7 +45,7 @@ img {
     padding-bottom: 20px;
     text-align: center !important;
     font-weight: normal;
-	
+
 }
 .buybtn{
 	    display: inline-block;
@@ -84,12 +84,12 @@ img {
 			<div class="wrap about-wrap cf7db-about-wrapp">
 				<h3>You may be interested in our popular Add-ons of Advanced CF7 DB</h3>
 				Make your site <i><b> do more </b></i> today.
-			
+
 			<div class="cf7db-extension-wrapper grid3">
 				<article class="col">
                     <div class="cf7db-extension-item">
                         <div class="cf7db-extension-item-img">
-                            <a href="https://codecanyon.net/item/schedule-report-for-advanced-cf7-db/21560647" target="_blank"><img src="https://s3.envato.com/files/242784582/590x300.jpg"></a>
+                            <a href="https://codecanyon.net/item/schedule-report-for-advanced-cf7-db/21560647" target="_blank"><img src="<?php echo VSZ_CF7_URL_PATH; ?>/images/schedule-report.jpg"></a>
                         </div>
                         <div class="cf7db-extension-item-desc">
                             <p class="cf7db-extension-item-heading">Schedule Report For Advanced CF7 DB </p>
@@ -115,7 +115,7 @@ img {
 				<article class="col">
                     <div class="cf7db-extension-item">
                         <div class="cf7db-extension-item-img">
-                            <a href="https://codecanyon.net/item/advanced-cf7-db-gdpr-compliant/22386060" target="_blank"><img src="https://s3.envato.com/files/251742361/590x300.jpg"></a>
+                            <a href="https://codecanyon.net/item/advanced-cf7-db-gdpr-compliant/22386060" target="_blank"><img src="<?php echo VSZ_CF7_URL_PATH; ?>/images/gdpr-compliant.jpg"></a>
                         </div>
                         <div class="cf7db-extension-item-desc">
                             <p class="cf7db-extension-item-heading">Advanced CF7 DB - GDPR compliant</p>
@@ -136,11 +136,11 @@ img {
                                     <a href="https://codecanyon.net/item/advanced-cf7-db-gdpr-compliant/22386060" class="buybtn" target="_blank"><span class="buybtn-text">Get Now</span></a>
                             </div>
                     </div>
-                </article>	
+                </article>
 				<article class="col">
                     <div class="cf7db-extension-item">
                         <div class="cf7db-extension-item-img">
-                            <a href="https://codecanyon.net/item/advanced-cf7-db-user-access-manager/22058788" target="_blank"><img src="https://s3.envato.com/files/248160195/590x300.jpg"></a>
+                            <a href="https://codecanyon.net/item/advanced-cf7-db-user-access-manager/22058788" target="_blank"><img src="<?php echo VSZ_CF7_URL_PATH; ?>/images/user-access-manager.jpg"></a>
                         </div>
                         <div class="cf7db-extension-item-desc">
                             <p class="cf7db-extension-item-heading"> Advanced CF7 DB - User Access Manager </p>
@@ -152,17 +152,17 @@ img {
 									<li> Provide access of contact form 7 DB to View & Update data to individual users OR based on user Role.</li>
 									<li>Provide access of Single/Multiple forms to single user.</li>
 								</ul>
-							</div>	
+							</div>
                         </div>
 						<div class="cf7db-extension-buy-now">
                                     <a href="https://codecanyon.net/item/advanced-cf7-db-user-access-manager/22058788" class="buybtn" target="_blank"><span class="buybtn-text">Get Now</span></a>
                             </div>
                     </div>
-                </article>	
+                </article>
 				<article class="col">
                     <div class="cf7db-extension-item">
                         <div class="cf7db-extension-item-img">
-                            <a href="https://codecanyon.net/item/advanced-cf7-db-reply-back/22478892" target="_blank"><img src="https://s3.envato.com/files/252741698/590x300.jpg"></a>
+                            <a href="https://codecanyon.net/item/advanced-cf7-db-reply-back/22478892" target="_blank"><img src="<?php echo VSZ_CF7_URL_PATH; ?>/images/reply-back.jpg"></a>
                         </div>
                         <div class="cf7db-extension-item-desc">
                             <p class="cf7db-extension-item-heading"> Advanced CF7 DB - Reply Back </p>
@@ -175,15 +175,15 @@ img {
 									<li>Compatible with every versions of Advanced CF7 DB.</li>
 									<li>Easy to install and use.</li>
 								</ul>
-							</div>	
+							</div>
                         </div>
 						  <div class="cf7db-extension-buy-now">
                                     <a href="https://codecanyon.net/item/advanced-cf7-db-reply-back/22478892" class="buybtn" target="_blank"><span class="buybtn-text">Get Now</span></a>
                             </div>
                     </div>
                 </article>
-			
-			
+
+
 				<table style="width: 100%;"></table>
 			</div>
 			</div>
@@ -227,22 +227,22 @@ jQuery(container).each(function() {
 ;( function( $, window, document, undefined )
 {
     'use strict';
- 
+
     var $list       = $( '.grid3' ),
         $items      = $list.find( '.col .cf7db-extension-item-desc'),
         setHeights  = function()
         {
 			// DATE Height
             $items.css( 'height', 'auto' );
- 
+
             var perRow = Math.floor( $list.width() / $items.width() );
             if( perRow == null || perRow < 2 ) return true;
- 
+
             for( var i = 0, j = $items.length; i < j; i += perRow )
             {
                 var maxHeight   = 0,
                     $row        = $items.slice( i, i + perRow );
- 
+
                 $row.each( function()
                 {
                     var itemHeight = parseInt( $( this ).outerHeight() );
@@ -251,19 +251,19 @@ jQuery(container).each(function() {
                 $row.css( 'height', maxHeight );
             }
         };
- 
+
     $(function() { setHeights(); });
     $( window ).on( 'resize', setHeights );
 	$( window ).on( 'load', setHeights );
 	window.onorientationchange = setHeights;
     //$list.find( 'img' ).on( 'load', setHeights );
- 
+
 })( jQuery, window, document );
 jQuery(document).ready(function(){
  // equalheight('.grid3 .col .cf7db-extension-item-desc');
 
 jQuery(window).load(function() {
-	
+
  // equalheight('.grid3 .col .cf7db-extension-item-desc');
 });
 

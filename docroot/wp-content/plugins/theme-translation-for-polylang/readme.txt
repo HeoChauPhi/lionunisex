@@ -2,8 +2,8 @@
 Contributors: marcinkazmierski
 Tags: polylang, multilingual, translate, translation, language, languages, twig, multilanguage, international, localization, timber, theme
 Requires at least: 3.8
-Tested up to: 5.2
-Stable tag: 3.0.0
+Tested up to: 5.2.3
+Stable tag: 3.1.0
 License: GPL2
 
 Theme and plugin translation using Polylang for WordPress.
@@ -26,12 +26,16 @@ Plugin is needed to translate the WordPress themes and plugins by Polylang.
 In addition, is implemented the integration with Timber library (read more: http://timber.upstatement.com) – which allows to translate twig's skins in simple way.
 Plugin in searched skins or plugins chooses texts from Polylang functions, such as:
 
+*    _e();
+*    __();
 *    pll_e();
 *    pll__();
 
 For example:
 
 `<p><?php pll_e('My text'); ?></p>`
+
+`<p><?php _e('My another text', 'my_theme'); ?></p>`
 
 On the timber context declare this functions like:
 
@@ -51,11 +55,16 @@ or
 
 You don't need programs like poedit – you don't change files with extensions like: `.pot`, `.po`, `.mo`.
 "Theme and plugin translation for Polylang" is highly efficient because the scanner is worked only on admin dashbord in tab:
+
 `Settings -> Languages -> String translation`
+
 or
+
 `Languages -> String translation`
 
+
 = Export and import string translation =
+
 `Languages -> Export/import translations`
 
 == Installation ==
@@ -71,8 +80,11 @@ This plugin requires PHP 5.0
 `<?php
  pll_e('My string'); // similar to _e();
  // or:
- $var = pll_('My string'); // similar to __();`
-
+ $var = pll_('My string'); // similar to __();
+ // or:
+  _e('My string', 'my_theme');
+ // or:
+  $var = __('My string', 'my_theme');`
 
 = How to enable Twig extension with "Theme and plugin translation for Polylang"? [Timber plugin] =
 
@@ -127,7 +139,14 @@ Then you can use in twig templates polylang functions like this (in templates/ho
 
 == Changelog ==
 
-= 2.0.0 - 2019/05/12 =
+= 3.1.0 - 2019/09/13 =
+
+* Translate strings from functions: _e( string $text, string $domain = 'default' ) and __( string $text, string $domain = 'default' ).
+* Updated plugin description.
+* Test with WordPress 5.2.3 version and Polylang version 2.6.x.
+* Updated version.
+
+= 3.0.0 - 2019/05/12 =
 
 * Added import and export feature.
 * Updated plugin description.

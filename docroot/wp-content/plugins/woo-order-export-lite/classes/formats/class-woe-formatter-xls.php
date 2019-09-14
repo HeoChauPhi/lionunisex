@@ -13,6 +13,7 @@ class WOE_Formatter_Xls extends WOE_Formatter_Plain_Format {
 	private $string_format_force = false;
 	private $string_format_fields;
 	private $date_format_fields;
+	private $image_positions = array();
 
 	public function __construct(
 		$mode,
@@ -29,10 +30,13 @@ class WOE_Formatter_Xls extends WOE_Formatter_Plain_Format {
 		$this->string_format_force = apply_filters( "woe_{$format}_string_format_force", false );
 
 		$field_formats = $this->field_formats['order']; // overwrite! probably modified by parent
-		
+
 		if ( $this->settings['force_general_format'] ) {
-			foreach( array( "string", "date", "money", "number" ) as $type)
-				add_filter( "woe_xls_{$type}_format_fields", function($fields) { return array(); });
+			foreach ( array( "string", "date", "money", "number" ) as $type ) {
+				add_filter( "woe_xls_{$type}_format_fields", function ( $fields ) {
+					return array();
+				} );
+			}
 		}
 
 		$this->string_format_fields = isset( $field_formats['string'] ) ? $field_formats['string'] : array();
@@ -47,7 +51,10 @@ class WOE_Formatter_Xls extends WOE_Formatter_Plain_Format {
 
 		$this->number_format_fields = isset( $field_formats['number'] ) ? $field_formats['number'] : array();
 		$this->number_format_fields = apply_filters( "woe_{$format}_number_format_fields", $this->number_format_fields );
-		
+
+		$this->image_format_fields = isset( $field_formats['image'] ) ? $field_formats['image'] : array();
+		$this->image_format_fields = apply_filters( "woe_{$format}_image_format_fields", $this->image_format_fields );
+
 		if ( $mode != 'preview' ) {
 			//more memory for XLS?
 			ini_set( 'memory_limit', '512M' );
@@ -74,13 +81,22 @@ class WOE_Formatter_Xls extends WOE_Formatter_Plain_Format {
 			}
 
 			// Excel uses another format!	
-			$this->date_format  = apply_filters( 'woe_xls_date_format', $this->convert_php_date_format( $date_format ) );
-			$this->money_format = apply_filters( 'woe_xls_money_format', PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00 );
+			$this->date_format   = apply_filters( 'woe_xls_date_format', $this->convert_php_date_format( $date_format ) );
+			$this->money_format  = apply_filters( 'woe_xls_money_format', PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00 );
 			$this->number_format = apply_filters( 'woe_xls_number_format', PHPExcel_Style_NumberFormat::FORMAT_NUMBER );
 			// Excel will format!
 			$this->auto_format_dates             = false;
 			$this->format_number_fields_original = $this->format_number_fields;
 			$this->format_number_fields          = false;
+
+			$this->image_positions = array();
+			if ( $this->mode != 'preview' ) {
+				$tmp_data = get_transient( $this->get_tmp_data_transient_name() );
+
+				if ( ! empty( $tmp_data['image_positions'] ) ) {
+					$this->image_positions = $tmp_data['image_positions'];
+				}
+			}
 		} else {
 			$this->auto_format_dates = true;
 		}
@@ -134,6 +150,21 @@ class WOE_Formatter_Xls extends WOE_Formatter_Plain_Format {
 	public function output( $rec ) {
 		$rows = parent::output( $rec );
 
+		if ( $this->mode != 'preview' ) {
+			if ( 0 === count( $this->image_positions ) ) {
+				foreach ( $rows as $row ) {
+					$pos = 0;
+					foreach ( $row as $field => $text ) {
+						if ( $this->field_format_is( $field, $this->image_format_fields ) ) {
+							$this->image_positions[] = $pos;
+						}
+						$pos ++;
+					}
+					break;
+				}
+			}
+		}
+
 		foreach ( $rows as $row ) {
 			if ( $this->has_output_filter ) {
 				$row = apply_filters( "woe_xls_output_filter", $row, $this );
@@ -144,13 +175,26 @@ class WOE_Formatter_Xls extends WOE_Formatter_Plain_Format {
 
 			if ( $this->mode == 'preview' ) {
 				$row          = array_map( "nl2br", $row );
+
+				$image_preview_multiply = 5;
+				foreach ( $row as $column => &$cell ) {
+					if ( $this->field_format_is( $column, $this->image_format_fields ) ) {
+						$html = $this->make_img_html_from_path(
+							$cell,
+							$this->settings['row_images_width'] * $image_preview_multiply,
+							$this->settings['row_images_height'] * $image_preview_multiply
+						);
+						$cell = $html ? $html : "";
+					}
+				}
+
 				$this->rows[] = $row;
 			} else {
 				$this->last_row ++;
 				$pos = 0;
 				foreach ( $row as $field => $text ) {
-					if ( $this->string_format_force OR $this->field_format_is( $field,$this->string_format_fields ) ) {// STRING
-						$this->objPHPExcel->getActiveSheet()->getStyleByColumnAndRow( $pos,$this->last_row )->getNumberFormat()->setFormatCode( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
+					if ( $this->string_format_force OR $this->field_format_is( $field, $this->string_format_fields ) ) {// STRING
+						$this->objPHPExcel->getActiveSheet()->getStyleByColumnAndRow( $pos, $this->last_row )->getNumberFormat()->setFormatCode( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
 						$this->objPHPExcel->getActiveSheet()->setCellValueExplicitByColumnAndRow( $pos, $this->last_row, $text );
 					} elseif ( $this->format_number_fields_original AND $this->field_format_is( $field, $this->money_format_fields ) ) { // MONEY
 						$this->objPHPExcel->getActiveSheet()->getStyleByColumnAndRow( $pos, $this->last_row )->getNumberFormat()->setFormatCode( $this->money_format );
@@ -164,7 +208,10 @@ class WOE_Formatter_Xls extends WOE_Formatter_Plain_Format {
 							if ( empty( $this->settings['global_job_settings']['time_format'] ) ) { // must remove time!
 								$text = date( "Y-m-d", strtotime( $text ) );
 							}
-							$text = PHPExcel_Shared_Date::PHPToExcel( new DateTime( $text ) );
+							try {
+								$text = PHPExcel_Shared_Date::PHPToExcel( new DateTime( $text ) );
+							} catch (Exception $e) {}
+
 							$this->objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow( $pos, $this->last_row, $text );
 						}
 					} else {
@@ -176,6 +223,13 @@ class WOE_Formatter_Xls extends WOE_Formatter_Plain_Format {
 			}
 		}
 
+
+		if ( $this->mode != 'preview' ) {
+			$tmp_data = array();
+			$tmp_data['image_positions'] = $this->image_positions;
+			set_transient( $this->get_tmp_data_transient_name(), $tmp_data );
+		}
+
 	}
 
 	public function finish() {
@@ -184,7 +238,7 @@ class WOE_Formatter_Xls extends WOE_Formatter_Plain_Format {
 			$max_columns = 0;
 			fwrite( $this->handle, '<table>' );
 			if ( count( $this->rows ) < 2 ) {
-				$this->rows[] = array( __( '<td colspan=10><b>No results</b></td>', 'woo-order-export-lite' ) );
+				$this->rows[] = array( '<td colspan=10><b>'. __( 'No results', 'woo-order-export-lite' ) . '</b></td>');
 			}
 			foreach ( $this->rows as $num => $rec ) {
 				$max_columns = max( $max_columns, count( $rec ) );
@@ -196,7 +250,7 @@ class WOE_Formatter_Xls extends WOE_Formatter_Plain_Format {
 					}
 					$rec = array_reverse( $rec );
 				}
-				if ( $num == 0 AND $this->settings['display_column_names'] ) {
+				if ( $num === 0 AND $this->settings['display_column_names'] ) {
 					fwrite( $this->handle,
 						'<tr style="font-weight:bold"><td>' . join( '</td><td>', $rec ) . "</td><tr>\n" );
 				} else {
@@ -218,10 +272,71 @@ class WOE_Formatter_Xls extends WOE_Formatter_Plain_Format {
 					//do nothing here , adjustment failed gracefully
 				}
 			}
+
+			$sheet        = $this->objPHPExcel->getActiveSheet();
+			$start_row = $this->settings['display_column_names'] ? 2 : 1;
+
+			foreach ( $this->image_positions as $column_index ) {
+				$columnIterator = $sheet->getColumnIterator()
+				                        ->seek(PHPExcel_Cell::stringFromColumnIndex($column_index))
+				                        ->current()
+				                        ->getCellIterator($start_row);
+
+				$columnIterator->setIterateOnlyExistingCells( true );
+				foreach ( $columnIterator as $cell ) {
+					/**
+					 * @var PHPExcel_Cell $cell
+					 */
+
+					$value = $cell->getValue();
+
+					$objDrawing = new PHPExcel_Worksheet_Drawing();    //create object for Worksheet drawing
+
+					if ( wc_is_valid_url( $value ) ) {
+						$url  = $value;
+						$path = get_temp_dir() . '/' . md5( $url ); //Path to signature .jpg file
+
+						if ( ! file_exists( $path ) ) {
+							$ch = curl_init( $url );
+							$fp = fopen( $path, 'wb' );
+							curl_setopt( $ch, CURLOPT_FILE, $fp );
+							curl_setopt( $ch, CURLOPT_HEADER, 0 );
+							curl_exec( $ch );
+							curl_close( $ch );
+							fclose( $fp );
+						}
+					} else {
+						$path = $value;
+					}
+
+					if ( file_exists( $path ) ) {
+						$objDrawing->setPath( $path );
+						$objDrawing->setCoordinates( $cell->getCoordinate() );        //set image to cell
+						$row              = $cell->getRow();
+						$col              = $cell->getColumn();
+						$row_image_width  = $this->settings['row_images_width'];
+						$row_image_height = $this->settings['row_images_height'];
+
+
+						$this->objPHPExcel->getActiveSheet()->getColumnDimension( $col )->setWidth( $row_image_width );
+						$this->objPHPExcel->getActiveSheet()->getRowDimension( $row )->setRowHeight( $row_image_height );
+
+						$objDrawing->setResizeProportional( false ); // ignore proportional
+						$objDrawing->setWidth( $row_image_width );                 //set width, height
+						$objDrawing->setHeight( $row_image_height );
+
+						$objDrawing->setWorksheet( $this->objPHPExcel->getActiveSheet() );  //save
+						$cell->setValue("");
+					}
+				}
+			}
+
 			do_action( 'woe_xls_print_footer', $this->objPHPExcel, $this );
 			$objWriter = PHPExcel_IOFactory::createWriter( $this->objPHPExcel,
 				$this->settings['use_xls_format'] ? 'Excel5' : 'Excel2007' );
 			$objWriter->save( $this->filename );
+
+			delete_transient( $this->get_tmp_data_transient_name() );
 		}
 	}
 
@@ -267,14 +382,4 @@ class WOE_Formatter_Xls extends WOE_Formatter_Plain_Format {
 		return strtr( $date_format, $replacements );
 	}
 
-	protected function field_format_is( $field, $format_fields ) {
-		if ( in_array( $field, $format_fields ) ) {
-			return true;
-		}
-		if ( preg_match( '#^(.+?)_\d+$#', $field, $duplicated_field ) ) {
-			return in_array( $duplicated_field[1], $format_fields );
-		}
-
-		return false;
-	}
 }

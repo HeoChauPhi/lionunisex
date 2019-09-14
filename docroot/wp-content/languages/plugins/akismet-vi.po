@@ -55,7 +55,7 @@ msgstr "Thông báo bảo mật của Akismet"
 msgid "Privacy"
 msgstr "Riêng tư"
 
-#: class.akismet.php:1423
+#: class.akismet.php:1418
 msgid "This site uses Akismet to reduce spam. <a href=\"%s\" target=\"_blank\" rel=\"nofollow noopener\">Learn how your comment data is processed</a>."
 msgstr "Website này sử dụng Akismet để hạn chế spam. <a href=\"%s\" target=\"_blank\" rel=\"nofollow noopener\">Tìm hiểu bình luận của bạn được duyệt như thế nào</a>."
 
@@ -63,7 +63,7 @@ msgstr "Website này sử dụng Akismet để hạn chế spam. <a href=\"%s\" 
 msgid "We collect information about visitors who comment on Sites that use our Akismet anti-spam service. The information we collect depends on how the User sets up Akismet for the Site, but typically includes the commenter's IP address, user agent, referrer, and Site URL (along with other information directly provided by the commenter such as their name, username, email address, and the comment itself)."
 msgstr "Chúng tôi thu thập thông tin về người dùng đã bình luận trên website sử dụng dịch vụ của Akismet. Các thông tin thu thập phụ thuộc vào cách người sử dụng cài đặt Akismet trên website, nhưng thông thường bao gồm địa chỉ IP, trình duyệt, nguồn đến và địa chỉ Website (bên cạnh các thông tin khác người dùng trực tiếp nhập như họ tên, tài khoản, địa chỉ email và nội dung bình luận)."
 
-#: class.akismet.php:226
+#: class.akismet.php:231
 msgid "Comment discarded."
 msgstr "Bình luận bị loại bỏ."
 
@@ -219,7 +219,7 @@ msgstr "Không còn bình luận để kiểm tra, Akismet sẽ chỉ kiểm tra
 msgid "Checking for Spam"
 msgstr "Đang kiểm tra Spam"
 
-#: class.akismet.php:507
+#: class.akismet.php:512
 msgid "Comment not found."
 msgstr "Không tìm thấy bình luận."
 
@@ -678,11 +678,11 @@ msgstr "Akismet nhận định đây là bình luận rác trong quá trình t�
 msgid "Akismet cleared this comment during an automatic retry."
 msgstr "Akismet đã xác minh đây không phải là bình luận rác trong quá trình tự động kiểm tra lại."
 
-#: class.akismet.php:1268
+#: class.akismet.php:1277
 msgid "Please <a href=\"%1$s\">upgrade WordPress</a> to a current version, or <a href=\"%2$s\">downgrade to version 2.4 of the Akismet plugin</a>."
 msgstr "Hãy <a href=\"%1$s\">nâng cấp Wordpress</a> tới phiên bản hiện tại, hoặc <a href=\"%2$s\">hạ cấp plugin Akismet xuống 2.4</a>."
 
-#: class.akismet.php:1268
+#: class.akismet.php:1277
 msgid "Akismet %s requires WordPress %s or higher."
 msgstr "Akismet %s yêu cầu phiên bản WordPress %s hoặc cao hơn."
 

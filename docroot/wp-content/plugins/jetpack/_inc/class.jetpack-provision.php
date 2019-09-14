@@ -1,5 +1,9 @@
 <?php //phpcs:ignore
 
+use Automattic\Jetpack\Connection\Client;
+use Automattic\Jetpack\Roles;
+use Automattic\Jetpack\Sync\Actions;
+
 class Jetpack_Provision { //phpcs:ignore
 
 	/**
@@ -35,9 +39,9 @@ class Jetpack_Provision { //phpcs:ignore
 
 		// If Jetpack is currently connected, and is not in Safe Mode already, kick off a sync of the current
 		// functions/callables so that we can test if this site is in IDC.
-		if ( Jetpack::is_active() && ! Jetpack::validate_sync_error_idc_option() && Jetpack_Sync_Actions::sync_allowed() ) {
-			Jetpack_Sync_Actions::do_full_sync( array( 'functions' => true ) );
-			Jetpack_Sync_Actions::$sender->do_full_sync();
+		if ( Jetpack::is_active() && ! Jetpack::validate_sync_error_idc_option() && Actions::sync_allowed() ) {
+			Actions::do_full_sync( array( 'functions' => true ) );
+			Actions::$sender->do_full_sync();
 		}
 
 		if ( Jetpack::validate_sync_error_idc_option() ) {
@@ -47,10 +51,8 @@ class Jetpack_Provision { //phpcs:ignore
 			);
 		}
 
-		$blog_id    = Jetpack_Options::get_option( 'id' );
-		$blog_token = Jetpack_Data::get_access_token();
 
-		if ( ! $blog_id || ! $blog_token || ( isset( $named_args['force_register'] ) && intval( $named_args['force_register'] ) ) ) {
+		if ( ! Jetpack::connection()->is_registered() || ( isset( $named_args['force_register'] ) && intval( $named_args['force_register'] ) ) ) {
 			// This code mostly copied from Jetpack::admin_page_load.
 			Jetpack::maybe_set_version_option();
 			$registered = Jetpack::try_registration();
@@ -59,9 +61,6 @@ class Jetpack_Provision { //phpcs:ignore
 			} elseif ( ! $registered ) {
 				return new WP_Error( 'registration_error', __( 'There was an unspecified error registering the site', 'jetpack' ) );
 			}
-
-			$blog_id    = Jetpack_Options::get_option( 'id' );
-			$blog_token = Jetpack_Data::get_access_token();
 		}
 
 		// If the user isn't specified, but we have a current master user, then set that to current user.
@@ -100,8 +99,9 @@ class Jetpack_Provision { //phpcs:ignore
 			$user = wp_get_current_user();
 
 			// Role.
-			$role        = Jetpack::translate_current_user_to_role();
-			$signed_role = Jetpack::sign_role( $role );
+			$roles       = new Roles();
+			$role        = $roles->translate_current_user_to_role();
+			$signed_role = Jetpack::connection()->sign_role( $role );
 
 			$secrets = Jetpack::init()->generate_secrets( 'authorize' );
 
@@ -191,7 +191,7 @@ class Jetpack_Provision { //phpcs:ignore
 			$url = add_query_arg( array( 'calypso_env' => $calypso_env ), $url );
 		}
 
-		$result = Jetpack_Client::_wp_remote_request( $url, $request );
+		$result = Client::_wp_remote_request( $url, $request );
 
 		if ( is_wp_error( $result ) ) {
 			return $result;
@@ -258,7 +258,7 @@ class Jetpack_Provision { //phpcs:ignore
 		);
 
 		$url = sprintf( 'https://%s/rest/v1.3/jpphp/partner-keys/verify', self::get_api_host() );
-		$result = Jetpack_Client::_wp_remote_request( $url, $request );
+		$result = Client::_wp_remote_request( $url, $request );
 
 		if ( is_wp_error( $result ) ) {
 			return $result;

@@ -3,6 +3,88 @@
     "title": "Group for Product",
     "fields": [
         {
+            "key": "field_5d481fe56fc55",
+            "label": "Third Party Form",
+            "name": "third_party_form",
+            "type": "select",
+            "instructions": "Integrate Facebook Pixel or Google Sheet",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "facebook_pixel": "Facebook Pixel Form",
+                "google_sheet": "Google Sheet"
+            },
+            "default_value": [],
+            "allow_null": 1,
+            "multiple": 0,
+            "ui": 0,
+            "return_format": "value",
+            "ajax": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_5d4ba720b37de",
+            "label": "Facebook form",
+            "name": "facebook_form",
+            "type": "post_object",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5d481fe56fc55",
+                        "operator": "==",
+                        "value": "facebook_pixel"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "wpcf7_contact_form"
+            ],
+            "taxonomy": "",
+            "allow_null": 0,
+            "multiple": 0,
+            "return_format": "id",
+            "ui": 1
+        },
+        {
+            "key": "field_5d51369c01918",
+            "label": "Google Sheet",
+            "name": "google_sheet",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5d481fe56fc55",
+                        "operator": "==",
+                        "value": "google_sheet"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
             "key": "field_5cd4f7f5ad522",
             "label": "Return And Policy",
             "name": "return_and_policy",
@@ -58,5 +140,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1557461028
+    "modified": 1565603739
 }

@@ -16978,8 +16978,6 @@ body.woocommerce-page .main-inner {
       -webkit-box-direction: normal;
       -ms-flex-direction: column;
       flex-direction: column;
-      -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
       height: 100%;
       max-width: 100%;
       padding: 0rem 1.875rem;

@@ -36,7 +36,7 @@ class WOE_Formatter_Xml extends WOE_Formatter {
 			fwrite( $this->handle, "<" . $this->settings['root_tag'] . ">" . $this->linebreak );
 		}
 
-		fwrite( $this->handle, apply_filters( "woe_xml_output_after_root_tag", '' ) );
+		fwrite( $this->handle, apply_filters( "woe_xml_output_after_root_tag", '', $this ) );
 
 	}
 
@@ -71,11 +71,13 @@ class WOE_Formatter_Xml extends WOE_Formatter {
 					$rec );
 				$child_labels = apply_filters( 'woe_xml_child_labels_' . $original_key, $child_labels, $field_value,
 					$rec );
-					
-				if( empty($child_labels ) ) // can't export!
+
+				if ( empty( $child_labels ) ) // can't export!
+				{
 					continue;
-					
-				$childs = $xml->addChild( $label ); // add Products
+				}
+
+				$childs = $label ? $xml->addChild( $label ) : $xml; // add Products , or use root!
 
 				foreach ( $field_value as $child_key => $child_element ) {
 					$tag_name = $child_tag ? $child_tag : $child_key;
@@ -114,6 +116,7 @@ class WOE_Formatter_Xml extends WOE_Formatter {
 	}
 
 	public function finish( $data = '' ) {
+		fwrite( $this->handle, apply_filters( "woe_xml_output_before_closing_root_tag", '', $this ) );
 		if ( $this->settings['root_tag'] ) {
 			fwrite( $this->handle, "</" . $this->settings['root_tag'] . ">" . $this->linebreak );
 		}
