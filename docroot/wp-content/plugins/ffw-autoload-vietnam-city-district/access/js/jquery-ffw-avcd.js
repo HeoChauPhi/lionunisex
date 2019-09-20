@@ -24,7 +24,7 @@
         //console.log(response.city_data);
       },
       error: function(response) {
-        console.log(response);
+        //console.log(response);
       }
     });
   }
@@ -49,7 +49,7 @@
         });
       },
       error: function(response) {
-        console.log(response);
+        //console.log(response);
       }
     });
   }
@@ -58,7 +58,7 @@
     $('#billing_district').attr('type', 'hidden');
     $('#billing_city').val($('.billing_city_select').find(':selected').text());
     var city_code = $('.billing_city_select').find(':selected').data('city-code');
-    console.log(city_code);
+    //console.log(city_code);
 
     $.ajax({
       type : "post",
@@ -74,7 +74,7 @@
         });
       },
       error: function(response) {
-        console.log(response);
+        //console.log(response);
       }
     });
   }

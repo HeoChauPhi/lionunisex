@@ -1,7 +1,7 @@
 <?php
 /* Plugin Name: Theme and plugin translation for Polylang (TTfP)
 Description: Polylang - theme and plugin translation for WordPress
-Version: 3.1.0
+Version: 3.1.1
 Author: Marcin Kazmierski
 License: GPL2
 */
@@ -127,8 +127,8 @@ class Polylang_Theme_Translation
                 $strings = array_merge($strings, $matches[1]);
             }
 
-            // find wp functions
-            preg_match_all("/[\s=\(]+_[_e][\s]*\([\s]*[\'\"](.*?)[\'\"][\s]*,[\s]*[\'\"](.*?)[\'\"][\s]*\)/s", file_get_contents($file), $matches);
+            // find wp functions: __(), _e()
+            preg_match_all("/[\s=\(\.]+_[_e][\s]*\([\s]*[\'\"](.*?)[\'\"][\s]*,[\s]*[\'\"](.*?)[\'\"][\s]*\)/s", file_get_contents($file), $matches);
             if (!empty($matches[1])) {
                 $strings = array_merge($strings, $matches[1]);
             }
@@ -227,4 +227,3 @@ function tt_pll_gettext_filter($original)
     }
     return $translation;
 }
-

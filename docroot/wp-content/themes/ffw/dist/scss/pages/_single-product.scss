@@ -368,4 +368,26 @@
       }
     }
   }
+
+  .upsells {
+    clear: both;
+    margin-top: rem(40px);
+    width: 100%;
+
+    > h2 {
+      font-weight: 700;
+      margin: rem(0 0 20px);
+    }
+
+    > ul.products {
+      margin: rem(0 -10px);
+
+      > li.product {
+        width: 25%;
+        clear: none !important;
+        margin: rem(0 0 30px);
+        padding: rem(0 10px);
+      }
+    }
+  }
 }

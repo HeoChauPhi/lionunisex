@@ -478,6 +478,7 @@
 
   $( document ).ajaxStop(function() {
     // Call to function
+    $('.woocommerce table.shop_table th.product-thumbnail').empty();
     $('.cart-form-title').clone().removeClass('hidden').appendTo('.woocommerce table.shop_table th.product-thumbnail');
     wcNoticeRemove();
     // Cart page auto update
